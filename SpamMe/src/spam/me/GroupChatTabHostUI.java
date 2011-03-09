@@ -31,6 +31,8 @@ public class GroupChatTabHostUI extends Activity{
         //Setting up tabs
         TabHost tabHost = (TabHost) this.findViewById(R.id.groupchattabhost);  // The activity TabHost
         doTabSetup(tabHost);
+        
+        //spamMeFacade.addFriend();
 
         tabHost.setCurrentTab(0);
         

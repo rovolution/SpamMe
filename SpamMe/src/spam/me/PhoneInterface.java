@@ -86,9 +86,9 @@ public class PhoneInterface extends Activity {
 				"Msg is: " + msg, 
 				Toast.LENGTH_SHORT).show();
 		*/
-		PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, PhoneInterface.class), 0);
+		//PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, PhoneInterface.class), 0);
 		SmsManager sms = SmsManager.getDefault();
-		sms.sendTextMessage(number, null, msg, pi, null);
+		sms.sendTextMessage(number, null, msg, null, null);
 	}
 	public void receiveSMS(){
 	}

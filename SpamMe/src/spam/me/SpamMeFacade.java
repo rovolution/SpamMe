@@ -12,6 +12,7 @@ public class SpamMeFacade {
 		mySpamMeDb = new SpamMeDb();
 	}
 	public void addFriend(){
+		myPhoneInterface.getContactList();
 	}
 	public void removeMe(){
 		
