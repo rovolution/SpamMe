@@ -7,12 +7,17 @@ public class SpamMeFacade {
 	private PhoneInterface myPhoneInterface; 
 	private SpamMeDb mySpamMeDb; 
 	
+	public SpamMeFacade () {
+		myPhoneInterface = new PhoneInterface();
+		mySpamMeDb = new SpamMeDb();
+	}
 	public void addFriend(){
 	}
 	public void removeMe(){
 		
 	}
-	public void sendMsg(){
+	public void sendMsg(String msg, String number){
+		myPhoneInterface.sendSMS(msg, number);
 		
 	}
 	public void receiveMsg(){
