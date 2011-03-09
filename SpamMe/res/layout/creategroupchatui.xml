@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+<RelativeLayout
+	android:id="@+id/businesssearch"
+  	xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content">
+  	
+  	<!--Status text box and set status -->
+	<EditText
+		android:id="@+id/groupNameText"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:hint="Type group name here"
+	/>
+	<Button 
+		android:id="@+id/okayButton"
+		android:layout_height ="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="Okay"
+		android:onClick="okayClicked" 
+		android:layout_below="@id/groupNameText"
+	/>
+	
+	````
+</RelativeLayout>
+
+
+</LinearLayout>

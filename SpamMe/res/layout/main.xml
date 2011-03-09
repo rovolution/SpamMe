@@ -2,11 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
+    android:layout_height="fill_parent">
+    
+<RelativeLayout
+	android:id="@+id/businesssearch"
+  	xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content">
+  	
+  	<!--Status text box and set status -->
+	<Button 
+		android:id="@+id/setStatusButton"
+		android:layout_height ="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="Set Status"
+		android:onClick="StatusClicked" 
+		android:layout_alignParentRight="true"
+	/>
+	<EditText
+		android:id="@+id/statusText"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:hint="Set status here"
+		android:layout_toLeftOf="@id/setStatusButton"
+	/>
+	<Button 
+		android:id="@+id/newGroupChatButton"
+		android:layout_height ="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_below="@id/statusText"
+		android:text="Start a new Group Chat"
+		android:onClick="newGroupChatClicked" 
+	/>
+	<TextView 
+		android:id="@+id/savedChatsText"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/newGroupChatButton"
+		android:text="My Group Chats"
+	/>
+	<Spinner 
+		android:id="@+id/savedChatsDropDown" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:layout_below="@id/savedChatsText"
+	/>
+
+	
+
+</RelativeLayout>
+
+
 </LinearLayout>
