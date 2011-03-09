@@ -12,8 +12,12 @@
             </intent-filter>
         </activity>
 		<activity android:name=".CreateGroupChatUI" android:label="Create Group Chat" android:launchMode="singleTop"></activity>
+		<activity android:name=".GroupChatTabHostUI" android:label="Group Chat" android:launchMode="singleTop"></activity>
 		
     </application>
 
-
+	<uses-permission android:name="android.permission.SEND_SMS">
+    </uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_SMS">
+    </uses-permission>
 </manifest> 

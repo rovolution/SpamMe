@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/groupchattabhost"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="5dp">
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0" />
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:padding="5dp" 
+            android:layout_weight="1">
+    
+ 		<!-- Message Tab -->
+		<LinearLayout 
+		  	android:id="@+id/messagetab"
+		  	xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent">
+	    
+		<TextView android:id="@+id/textone"
+		              android:layout_width="wrap_content"
+		              android:layout_height="wrap_content"
+		              android:text="Hello, I'm the message tab!" />
+		</LinearLayout>
+		
+		<!-- Members Tab -->
+		<LinearLayout 
+		  	android:id="@+id/memberstab"
+		  	xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent">
+	    
+		<TextView android:id="@+id/texttwo"
+		              android:layout_width="wrap_content"
+		              android:layout_height="wrap_content"
+		              android:text="Hello, I'm the members tab!" />
+		</LinearLayout>
+		
+		<!-- Options Tab -->
+		<LinearLayout 
+		  	android:id="@+id/optionstab"
+		  	xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent">
+	    
+		<TextView android:id="@+id/textthree"
+		              android:layout_width="wrap_content"
+		              android:layout_height="wrap_content"
+		              android:text="Hello, I'm the options tab!" />
+		</LinearLayout>
+	</FrameLayout>
+	
+	</LinearLayout>
+</TabHost>
