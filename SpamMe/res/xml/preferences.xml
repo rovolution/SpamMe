@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="Status Message">
+		<EditTextPreference android:title="Set Status Message"
+			android:key="statusMessage"
+			android:defaultValue="Available"
+		/>
+	</PreferenceCategory>
+</PreferenceScreen>
