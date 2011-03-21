@@ -2,6 +2,8 @@ package spam.me;
 
 import java.util.List;
 
+import android.view.View;
+
 public class SpamMeFacade {
 	private List<GroupChat> groupChatList; 
 	private PhoneInterface myPhoneInterface; 
@@ -11,8 +13,11 @@ public class SpamMeFacade {
 		myPhoneInterface = new PhoneInterface();
 		mySpamMeDb = new SpamMeDb();
 	}
-	public void addFriend(){
-		myPhoneInterface.getContactList();
+	public void addFriend(View v){
+		List<Person> myContacts;
+		myContacts = myPhoneInterface.getContactList();
+		
+		
 	}
 	public void removeMe(){
 		

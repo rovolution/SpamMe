@@ -38,8 +38,6 @@ public class SpamMe extends Activity {
 	public void newGroupChatClicked (View v)
 	{
     	int myReqCode = 1;
-    	//Intent featuredEvent = new Intent(v.getContext(), FeaturedEvent.class);
-    	//startActivityIfNeeded(featuredEvent, myReqCode);
     	Intent newGroupChat = new Intent(v.getContext(), CreateGroupChatUI.class); 
     	startActivityIfNeeded(newGroupChat, myReqCode); 
     }
@@ -47,7 +45,6 @@ public class SpamMe extends Activity {
 	public void StatusClicked (View v)
 	{
 		TextView statusText = (TextView) findViewById(R.id.statusText);
-		System.out.println(statusText.getText().toString());
 		String statusMsg = statusText.getText().toString();
 		
 		SharedPreferences.Editor editor = preferences.edit();

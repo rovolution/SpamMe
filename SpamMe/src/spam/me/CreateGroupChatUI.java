@@ -18,10 +18,7 @@ public class CreateGroupChatUI extends Activity{
 	public void okayClicked(View v){
 		
 		int myReqCode = 0;
-    	//Intent featuredEvent = new Intent(v.getContext(), FeaturedEvent.class);
-    	//startActivityIfNeeded(featuredEvent, myReqCode);
     	Intent groupChatTabHost = new Intent(v.getContext(), GroupChatTabHostUI.class); 
     	startActivityIfNeeded(groupChatTabHost, myReqCode); 
-    	
 	}
 }

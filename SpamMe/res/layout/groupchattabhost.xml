@@ -64,11 +64,28 @@
 		    android:orientation="vertical"
 		    android:layout_width="fill_parent"
 		    android:layout_height="fill_parent">
-	    
-		<TextView android:id="@+id/texttwo"
-		              android:layout_width="wrap_content"
-		              android:layout_height="wrap_content"
-		              android:text="Hello, I'm the members tab!" />
+		    
+		    <!-- The list of members -->
+		    <ListView
+				android:id="@android:id/list"
+				android:layout_width="fill_parent"
+        		android:layout_height="fill_parent"
+    		/>
+    		<!-- What to show when there are no members -->
+    		<TextView  
+    			android:id="@android:id/empty"
+    			android:layout_width="fill_parent" 
+    			android:layout_height="wrap_content" 
+    			android:text="@string/noMembers"
+    		/>
+	    	<!-- The button to add members to the group -->
+			<Button
+				android:id="@+id/SendSMSButton"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="Add New Members"
+				android:onClick="addNewMemberClicked"
+			/>
 		</LinearLayout>
 		
 		<!-- Options Tab -->

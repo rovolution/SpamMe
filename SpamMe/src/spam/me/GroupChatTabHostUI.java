@@ -69,6 +69,9 @@ public class GroupChatTabHostUI extends Activity{
 					
 	}
 		
+	public void addNewMemberClicked(View v){
+		spamMeFacade.addFriend(v);
+	}
 	/*
 	public void sendSMS(String msg, String number){
 		PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, GroupChatTabHostUI.class), 0);
