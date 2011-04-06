@@ -76,7 +76,7 @@
     			android:id="@android:id/empty"
     			android:layout_width="fill_parent" 
     			android:layout_height="wrap_content" 
-    			android:text="@string/noMembers"
+    			android:text="@string/no_members"
     		/>
 	    	<!-- The button to add members to the group -->
 			<Button

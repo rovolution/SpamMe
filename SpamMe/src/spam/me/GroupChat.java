@@ -3,9 +3,9 @@ package spam.me;
 import java.util.List;
 
 public class GroupChat {
-	private List <Person> membersList; 
-	private List <Message> messageChain; 
-	private String groupName; 
+	private List <Person> membersList;
+	private List <Message> messageChain;
+	private String groupName;
 	private int groupID;
 	
 	public void addPerson(Person newPerson){

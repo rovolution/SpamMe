@@ -15,9 +15,14 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.PhoneLookup;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SpamMe extends Activity {
-	SharedPreferences preferences;
+	private SharedPreferences preferences;
+	private User mySelf;
+	
+	//SpamMeFacade - API for application
+	private SpamMeFacade spamMeFacade = new SpamMeFacade();
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -26,13 +31,7 @@ public class SpamMe extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		
-		TextView statusText = (TextView) this.findViewById(R.id.statusText);
-		String myStatus = preferences.getString("statusMessage", "");
-		if (statusText != null && myStatus != null)
-		{
-			statusText.setHint(myStatus);
-		}
+		setStatusHint();
 	}
     
 	public void newGroupChatClicked (View v)
@@ -46,9 +45,20 @@ public class SpamMe extends Activity {
 	{
 		TextView statusText = (TextView) findViewById(R.id.statusText);
 		String statusMsg = statusText.getText().toString();
+		spamMeFacade.setStatusText(preferences, statusMsg);
 		
-		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString("statusMessage", statusMsg);
-		editor.commit();
+		Toast.makeText(getBaseContext(), "New Status set", 3).show();
+		setStatusHint();
+		statusText.setText("");
+	}
+	
+	private void setStatusHint() {	
+		TextView statusText = (TextView) findViewById(R.id.statusText);
+
+		String myStatus = preferences.getString("statusMessage", "");
+		if (statusText != null && myStatus != null)
+		{
+			statusText.setHint(myStatus);
+		}	
 	}
 }

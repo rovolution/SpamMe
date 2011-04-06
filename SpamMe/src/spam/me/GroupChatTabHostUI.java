@@ -1,21 +1,18 @@
 package spam.me;
 
-import spam.me.R;
-import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.Intent;
+import android.app.ListActivity;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.Toast;
 
-public class GroupChatTabHostUI extends Activity{
+public class GroupChatTabHostUI extends ListActivity
+{
 	//SpamMeFacade - API for application
 	private SpamMeFacade spamMeFacade = new SpamMeFacade();
-	
+	GroupChat myGroupChat;
 	
 	EditText inputPhoneNo;
 	EditText inputMsg;

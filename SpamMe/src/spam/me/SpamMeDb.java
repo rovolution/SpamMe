@@ -21,4 +21,7 @@ public class SpamMeDb {
 	public void removeMember(Person removePerson){
 		
 	}
+	public GroupChat getGroupChat(int groupId){
+		return null;	
+	}
 }
