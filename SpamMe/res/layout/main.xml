@@ -32,6 +32,7 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@id/statusText"
       	android:layout_marginTop="12dip"
+      	android:layout_marginRight="10dip"
 		android:text="Status Is:"
 	/>
 	<RadioGroup
@@ -41,16 +42,18 @@
 		android:layout_below="@id/statusText"
 		android:layout_toRightOf="@+id/statusIsText"
 		android:orientation="horizontal"
-		>
+	>
 		<RadioButton
-			android:id="@+id/statusOn" 
+			android:id="@+id/statusOn"
 			android:checked="true"
 			android:text="On"
+			android:onClick="statusOnClicked"
 		/>
 		<RadioButton
 			android:id="@+id/statusOff"
 			android:layout_marginLeft="40dip"
 			android:text="Off"
+			android:onClick="statusOffClicked"
 		/>
 	</RadioGroup>
 	<Button 
@@ -59,7 +62,7 @@
 		android:layout_width="wrap_content"
 		android:layout_below="@+id/statusToggle"
 		android:text="Start a new Group Chat"
-		android:onClick="newGroupChatClicked" 
+		android:onClick="newGroupChatClicked"
 	/>
 	<TextView
 		android:id="@+id/savedChatsText"
@@ -69,14 +72,13 @@
 		android:text="My Group Chats"
 	/>
 	<Spinner 
-		android:id="@+id/savedChatsDropDown" 
-		android:layout_width="wrap_content" 
+		android:id="@+id/savedChatsDropDown"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/savedChatsText"
 	/>
 
 	
-
 </RelativeLayout>
 
 

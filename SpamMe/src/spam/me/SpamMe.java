@@ -52,6 +52,14 @@ public class SpamMe extends Activity {
 		statusText.setText("");
 	}
 	
+	public void statusOnClicked (View v) {	
+		Toast.makeText(getBaseContext(), "Status enabled", 3).show();
+	}
+	
+	public void statusOffClicked (View v) {	
+		Toast.makeText(getBaseContext(), "Status disabled", 3).show();
+	}
+	
 	private void setStatusHint() {	
 		TextView statusText = (TextView) findViewById(R.id.statusText);
 
@@ -61,4 +69,6 @@ public class SpamMe extends Activity {
 			statusText.setHint(myStatus);
 		}	
 	}
+
+	
 }
