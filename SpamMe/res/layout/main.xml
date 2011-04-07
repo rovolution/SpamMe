@@ -26,15 +26,42 @@
 		android:hint="Set status here"
 		android:layout_toLeftOf="@id/setStatusButton"
 	/>
+	<TextView
+		android:id="@+id/statusIsText"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/statusText"
+      	android:layout_marginTop="12dip"
+		android:text="Status Is:"
+	/>
+	<RadioGroup
+		android:id="@+id/statusToggle" 
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_below="@id/statusText"
+		android:layout_toRightOf="@+id/statusIsText"
+		android:orientation="horizontal"
+		>
+		<RadioButton
+			android:id="@+id/statusOn" 
+			android:checked="true"
+			android:text="On"
+		/>
+		<RadioButton
+			android:id="@+id/statusOff"
+			android:layout_marginLeft="40dip"
+			android:text="Off"
+		/>
+	</RadioGroup>
 	<Button 
 		android:id="@+id/newGroupChatButton"
 		android:layout_height ="wrap_content"
 		android:layout_width="wrap_content"
-		android:layout_below="@id/statusText"
+		android:layout_below="@+id/statusToggle"
 		android:text="Start a new Group Chat"
 		android:onClick="newGroupChatClicked" 
 	/>
-	<TextView 
+	<TextView
 		android:id="@+id/savedChatsText"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
