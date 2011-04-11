@@ -29,21 +29,25 @@
 		    android:layout_height="fill_parent">
 	   
 		   	<!--List of messages -->
-			<ListView android:id="@android:id/list"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentTop="true"
-				android:layout_weight="1.0"/>
-			<TextView android:id="@android:id/empty"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:text="@string/no_chat_history"
-			    android:textColor="#FF0000"
-			    />
-			    
+		   	<RelativeLayout 
+		   		xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent" 
+                android:layout_height="wrap_content">
+				<ListView android:id="@+id/msgList" 
+				    android:layout_width="wrap_content"
+					android:layout_height="100px" 
+			    	android:layout_alignParentTop="true"
+					android:layout_weight="1.0"/>
+				<TextView android:id="@+id/msgListEmpty"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentTop="true"
+			    	android:text="@string/no_chat_history"
+			    	android:textColor="#FF0000"/>
+		   	</RelativeLayout>
 		    <!-- Other Message Components (message input, send button) -->
 			<TextView android:id="@+id/textone"
-			    android:layout_width="wrap_content"
+			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
 			    android:text="Enter the phone number" />
 			<EditText
@@ -79,20 +83,25 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="fill_parent">
 		    
-		    <!-- The list of members -->
-		    <ListView
-				android:id="@android:id/list"
-				android:layout_width="fill_parent"
-        		android:layout_height="fill_parent"
-    		/>
-    		<!-- What to show when there are no members -->
-    		<TextView  
-    			android:id="@android:id/empty"
-    			android:layout_width="fill_parent" 
-    			android:layout_height="wrap_content" 
-    			android:text="@string/no_members"
-				android:textColor="#FF0000"
-    		/>
+		    
+		   	<!--List of members in chatroom -->
+		   	<RelativeLayout 
+		   		xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent" 
+                android:layout_height="wrap_content">
+				<ListView android:id="@+id/memberList" 
+				    android:layout_width="wrap_content"
+					android:layout_height="300px" 
+			    	android:layout_alignParentTop="true"
+					android:layout_weight="1.0"/>
+				<TextView android:id="@+id/memberListEmpty"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentTop="true"
+			    	android:text="@string/no_members"
+			    	android:textColor="#FF0000"/>
+		   	</RelativeLayout>
+		    
 	    	<!-- The button to add members to the group -->
 			<Button
 				android:id="@+id/SendSMSButton"

@@ -1,21 +1,28 @@
 package spam.me;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TabHost;
 import android.widget.Toast;
+import android.widget.ArrayAdapter;
 
-public class GroupChatTabHostUI extends ListActivity
+
+public class GroupChatTabHostUI extends Activity
 {
 	//SpamMeFacade - API for application
 	private SpamMeFacade spamMeFacade;
 	GroupChat myGroupChat;
-	
 	EditText inputPhoneNo;
 	EditText inputMsg;
+	private ListView list;
+	private TextView errorMsg;
+
+	
 	
 	/** Called when the activity is first created. */ 
 	@Override
@@ -30,14 +37,31 @@ public class GroupChatTabHostUI extends ListActivity
         //Setting up tabs
         TabHost tabHost = (TabHost) this.findViewById(R.id.groupchattabhost);  // The activity TabHost
         doTabSetup(tabHost);
-        
-        //spamMeFacade.addFriend();
-
         tabHost.setCurrentTab(0);
         
-        inputPhoneNo = (EditText)findViewById(R.id.PhoneNoTxt);
-        inputMsg = (EditText)findViewById(R.id.messageTxt);
-        
+		//Dummy data for messages (NOTE: Later replace with read messages from DB)
+        String[] messages = new String[] { "Bob says: werwerwerwerwer", "Windows7 says: Blue screen of death", "Eclipse says: Loading forever", "Suse says: wooho",
+				"Ubuntu says: sudo rm *" };
+        //Find the messageList and msgListEmpty error msg
+        list=(ListView)findViewById(R.id.msgList);
+        errorMsg=(TextView)findViewById(R.id.msgListEmpty);
+        //Check the list to see if it is empty too see whether to display it or not
+		setListVisibility(messages.length, list, errorMsg);
+		//By using setAdpater method in listview we an add members array in memberList.
+		list.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 , messages));
+		
+		
+		//Dummy data for members list
+        String[] members = new String[] { "Bob", "Windows7", "Tim", "Suse",
+				"Ubuntu", "Solaris", "Android", "iPhone", "Billy Bob","Sammyboy" };
+		//Find the memberList
+        list=(ListView)findViewById(R.id.memberList);
+        errorMsg=(TextView)findViewById(R.id.memberListEmpty);
+        //Check the list to see if it is empty too see whether to display it or not
+		setListVisibility(members.length, list, errorMsg);
+		//By using setAdpater method in listview we an add members array in memberList.
+		list.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 , members));
+		
     }
 	
 	//Handler for SendSMS button
@@ -102,7 +126,28 @@ public class GroupChatTabHostUI extends ListActivity
         spec = tHost.newTabSpec("options");
         spec.setIndicator("Options", res.getDrawable(R.drawable.icon));
         spec.setContent(R.id.optionstab);
-        tHost.addTab(spec);	
-		
+        tHost.addTab(spec);		
 	}
+	
+	/*
+	 * Checks to see if a given list has items. If so, it will display the list in the XML
+	 * If not, the appropriate error message will be displayed instead indicating an empty list
+	 */
+	private void setListVisibility(int hasItems, ListView inputList, TextView inputErrorMsg) {
+        //If there ARE NO messages in the chat room:
+		if (hasItems == 0) {
+			//Make the message list invisible
+			inputList.setVisibility(View.INVISIBLE);
+			//Make the msgListEmpty visible
+			inputErrorMsg.setVisibility(View.VISIBLE);
+		}
+		//If there ARE messages in the chat room:
+		else {
+			//Make the message list visible
+			inputList.setVisibility(View.VISIBLE);
+			//Make the msgListEmpty invisible
+			inputErrorMsg.setVisibility(View.INVISIBLE);
+		}		
+	}
+	
 }
