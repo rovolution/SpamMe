@@ -27,34 +27,48 @@
 		    android:orientation="vertical"
 		    android:layout_width="fill_parent"
 		    android:layout_height="fill_parent">
-	    
-		<TextView android:id="@+id/textone"
-		              android:layout_width="wrap_content"
-		              android:layout_height="wrap_content"
-		              android:text="Enter the phone number" />
-		<EditText
-			android:id="@+id/PhoneNoTxt"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-		/>
-		<TextView 
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:text="Message"
-		/>
-		<EditText
-			android:id="@+id/messageTxt"
-			android:layout_width="fill_parent"
-			android:layout_height="150px"
-			android:gravity="top"
-		/>
-		<Button
-			android:id="@+id/SendSMSButton"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:text="Send Msg"
-			android:onClick="SendSMSButtonClicked"
-		/>
+	   
+		   	<!--List of messages -->
+			<ListView android:id="@android:id/list"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentTop="true"
+				android:layout_weight="1.0"/>
+			<TextView android:id="@android:id/empty"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="@string/no_chat_history"
+			    android:textColor="#FF0000"
+			    />
+			    
+		    <!-- Other Message Components (message input, send button) -->
+			<TextView android:id="@+id/textone"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="Enter the phone number" />
+			<EditText
+				android:id="@+id/PhoneNoTxt"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+			/>
+			<TextView 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="Message"
+			/>
+			<EditText
+				android:id="@+id/messageTxt"
+				android:layout_width="fill_parent"
+				android:layout_height="100px"
+				android:gravity="top"
+			/>
+			<Button
+				android:id="@+id/SendSMSButton"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="Send Msg"
+				android:onClick="SendSMSButtonClicked"
+			/>
 		</LinearLayout>
 		
 		<!-- Members Tab -->
@@ -77,6 +91,7 @@
     			android:layout_width="fill_parent" 
     			android:layout_height="wrap_content" 
     			android:text="@string/no_members"
+				android:textColor="#FF0000"
     		/>
 	    	<!-- The button to add members to the group -->
 			<Button
