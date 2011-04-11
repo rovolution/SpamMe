@@ -19,6 +19,7 @@ public class CreateGroupChatUI extends Activity{
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        spamMeFacade = new SpamMeFacade (this);
         setContentView(R.layout.creategroupchatui);
         
         inputGroupName = (EditText)findViewById(R.id.groupNameText);
@@ -35,11 +36,11 @@ public class CreateGroupChatUI extends Activity{
 		
 		//Save group name to the database: 
 		spamMeFacade.addNewGroupName(groupName);
-		/*
+		
 		int myReqCode = 0;
     	Intent groupChatTabHost = new Intent(v.getContext(), GroupChatTabHostUI.class); 
     	startActivityIfNeeded(groupChatTabHost, myReqCode);
-    	*/ 
+    	 
     	
     	
 	}

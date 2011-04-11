@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class SpamMeFacade {
 	private List<GroupChat> groupChatList; 
 	private PhoneInterface myPhoneInterface; 
-	private SpamMeDb mySpamMeDb;
+	private final SpamMeDb mySpamMeDb;
 	private SpamMePreferences mySpamMePreferences;
 	
 	public SpamMeFacade (Context c) {
@@ -29,7 +29,7 @@ public class SpamMeFacade {
 	
 	public void addNewGroupName(String name){
 		Log.i("SpamMeFacade: ", "addNewGroupName name: " + name);
-		//mySpamMeDb.addGroupChat(name);
+		mySpamMeDb.addGroupChat(name);
 	}
 	public void removeMe(int groupId){
 		

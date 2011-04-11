@@ -49,6 +49,7 @@ public class GroupChatTabHostUI extends ListActivity
 		
 		String number = inputPhoneNo.getText().toString();
 		String msg = inputMsg.getText().toString();
+		
 		if (number.length()>0 && msg.length()>0){
 			/*
 			Bundle bundle = new Bundle();

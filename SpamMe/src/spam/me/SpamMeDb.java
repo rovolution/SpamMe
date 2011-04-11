@@ -10,11 +10,11 @@ import android.util.Log;
 
 public class SpamMeDb extends SQLiteOpenHelper{
 	//for logging/debugging purposes:
-	private static final String TAG = "ICUPDb";
+	private static final String TAG = "SpamMeDB";
 	
 	
 	private static SQLiteDatabase Db;
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 5;
 	private static final String DATABASE_NAME = "spamMeDB";
 	private final Context spamMeCtx;
 	
@@ -54,9 +54,9 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	 @Override
 	public void onCreate(SQLiteDatabase db){
 		 try{
-         	Db.execSQL(TABLE_CREATE_GROUPS);
-         	//Db.execSQL(TABLE_CREATE_MESSAGES);
-         	//Db.execSQL(TABLE_CREATE_GROUPMEMBERS);
+         	db.execSQL(TABLE_CREATE_GROUPS);
+         	//db.execSQL(TABLE_CREATE_MESSAGES);
+         	//db.execSQL(TABLE_CREATE_GROUPMEMBERS);
          	//DEBUG
          	Log.i(TAG, "DB TABLE Successfully");
          }
@@ -74,7 +74,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
      public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
          Log.w(TAG, "Upgrading database from  " + oldVersion + " to "
         		 + newVersion + ", which will destroy all old data");
-         db.execSQL("DROP TABLE IF EXISTS group");
+         db.execSQL("DROP TABLE IF EXISTS groups");
          db.execSQL("DROP TABLE IF EXISTS messages");
          db.execSQL("DROP TABLE IF EXISTS groupmembers");
          onCreate(db);
@@ -93,7 +93,6 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	      	  Log.i(TAG, "DB open EXCEPTION");  
 	      	  e1.printStackTrace();  
 	        }
-
 	    	this.spamMeCtx = ctx;
 	    	
 	 }
@@ -132,6 +131,8 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	 * If the there was an error throws SQLException
 	 */
 	public int addGroupChat(String name)throws SQLException{
+		Log.i("SpamMeDB: ", "addNewGroupChat name: " + name);
+		
 		Cursor mCursor = null;
 		//Check to see if the name is already in the database
 		mCursor = getDb().query(true, TABLE_GROUPS, new String[] {"id"}, KEY_NAME + "=" + "'" + name + "'",
@@ -157,6 +158,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	    		throw new SQLException();
 	    	}
 		}
+		
 	}
 	
 	public void removeGroupChat(){
