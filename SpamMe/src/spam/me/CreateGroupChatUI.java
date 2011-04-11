@@ -30,18 +30,22 @@ public class CreateGroupChatUI extends Activity{
 	public void okayClicked(View v){
 		//Get the user's input for Group Name
 		groupName = inputGroupName.getText().toString();
-		Toast.makeText(getBaseContext(), 
-				groupName, 
-				Toast.LENGTH_SHORT).show();
 		
 		//Save group name to the database: 
-		spamMeFacade.addNewGroupName(groupName);
+		int i = spamMeFacade.addNewGroupName(groupName);
 		
-		int myReqCode = 0;
-    	Intent groupChatTabHost = new Intent(v.getContext(), GroupChatTabHostUI.class); 
-    	startActivityIfNeeded(groupChatTabHost, myReqCode);
-    	 
-    	
-    	
+		//Name the user entered already exists in database, doesn't get added
+		if (i == -1){
+			Toast.makeText(getBaseContext(), 
+					"This name is already used, please enter a different name", 
+					Toast.LENGTH_SHORT).show();
+		}
+		
+		//Name gets added and the GroupChatTabHost activity gets started
+		else{
+			int myReqCode = 0;
+			Intent groupChatTabHost = new Intent(v.getContext(), GroupChatTabHostUI.class); 
+			startActivityIfNeeded(groupChatTabHost, myReqCode);
+		}
 	}
 }

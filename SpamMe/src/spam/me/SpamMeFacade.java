@@ -27,9 +27,10 @@ public class SpamMeFacade {
 		// How should we display the list of contacts?
 	}
 	
-	public void addNewGroupName(String name){
+	public int addNewGroupName(String name){
 		Log.i("SpamMeFacade: ", "addNewGroupName name: " + name);
-		mySpamMeDb.addGroupChat(name);
+		return mySpamMeDb.addGroupChat(name);
+		
 	}
 	public void removeMe(int groupId){
 		

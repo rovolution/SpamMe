@@ -14,7 +14,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	
 	
 	private static SQLiteDatabase Db;
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 13;
 	private static final String DATABASE_NAME = "spamMeDB";
 	private final Context spamMeCtx;
 	
@@ -23,21 +23,21 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	 * Creating 3 tables: Group, Messages, and GroupMembers
 	 */
 	private static final String TABLE_CREATE_GROUPS =
-	    	"create table groups (id integer primary key autoincrement, "
+	    	"create table groups (groupsID integer primary key autoincrement, "
 	        + "name text not null);";
 	 
 	private static final String TABLE_CREATE_MESSAGES =
     	"create table messages (id integer primary key autoincrement, "
-        + "groupID integer not null, " 
-        + "sender text not null, "
-        + "message text not null, "
-        + "FORIEGN KEY(groupID) REFERENCES group(id);";
+        + "groupID integer not null,"
+        + "sender text not null,"
+        + "message text not null,"
+        + "FOREIGN KEY(groupID) REFERENCES groups(groupsID));";
 	
 	private static final String TABLE_CREATE_GROUPMEMBERS =
     	"create table groupmembers (id integer primary key autoincrement, "
         + "groupID integer not null, "
         + "member text not null, "
-        + "FOREIGN KEY(groupID) REFERENCE group(id);";
+        + "FOREIGN KEY(groupID) REFERENCES groups(groupsID));";
 	
 	/**
 	 * SpamMe Database creation statement
@@ -55,13 +55,13 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	public void onCreate(SQLiteDatabase db){
 		 try{
          	db.execSQL(TABLE_CREATE_GROUPS);
-         	//db.execSQL(TABLE_CREATE_MESSAGES);
-         	//db.execSQL(TABLE_CREATE_GROUPMEMBERS);
+         	db.execSQL(TABLE_CREATE_MESSAGES);
+         	db.execSQL(TABLE_CREATE_GROUPMEMBERS);
          	//DEBUG
          	Log.i(TAG, "DB TABLE Successfully");
          }
          catch (SQLException e){
-         	Log.i(TAG, "DB Create failed");
+         	Log.i(TAG, "DB Create failed " + e.getMessage() );
          }
 		
 	}
@@ -132,10 +132,12 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	 */
 	public int addGroupChat(String name)throws SQLException{
 		Log.i("SpamMeDB: ", "addNewGroupChat name: " + name);
-		
+		if (name == ""){
+			return -1;
+		}
 		Cursor mCursor = null;
 		//Check to see if the name is already in the database
-		mCursor = getDb().query(true, TABLE_GROUPS, new String[] {"id"}, KEY_NAME + "=" + "'" + name + "'",
+		mCursor = getDb().query(true, TABLE_GROUPS, new String[] {"groupsID"}, KEY_NAME + "=" + "'" + name + "'",
 				null, null, null, null, null);
 		
 		//Name already exists don't create a new entry
