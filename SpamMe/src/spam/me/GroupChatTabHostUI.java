@@ -11,7 +11,7 @@ import android.widget.Toast;
 public class GroupChatTabHostUI extends ListActivity
 {
 	//SpamMeFacade - API for application
-	private SpamMeFacade spamMeFacade = new SpamMeFacade();
+	private SpamMeFacade spamMeFacade;
 	GroupChat myGroupChat;
 	
 	EditText inputPhoneNo;
@@ -21,6 +21,8 @@ public class GroupChatTabHostUI extends ListActivity
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        spamMeFacade = new SpamMeFacade(this);
         
         //Setting xml file for UI
         setContentView(R.layout.groupchattabhost);
@@ -47,6 +49,7 @@ public class GroupChatTabHostUI extends ListActivity
 		
 		String number = inputPhoneNo.getText().toString();
 		String msg = inputMsg.getText().toString();
+		
 		if (number.length()>0 && msg.length()>0){
 			/*
 			Bundle bundle = new Bundle();
