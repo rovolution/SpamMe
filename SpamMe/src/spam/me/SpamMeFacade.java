@@ -31,6 +31,7 @@ public class SpamMeFacade {
 		Log.i("SpamMeFacade: ", "addNewGroupName name: " + name);
 		return mySpamMeDb.addGroupChat(name);
 		
+		
 	}
 	public void removeMe(int groupId){
 		

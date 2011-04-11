@@ -50,6 +50,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	private static final String TABLE_MESSAGES = "messages";
 	private static final String TABLE_GROUPMEMBERS = "groupmembers";
 	private static final String KEY_NAME = "name";
+	private static final String KEY_GROUPSID = "groupsID";
 	
 	 @Override
 	public void onCreate(SQLiteDatabase db){
@@ -137,7 +138,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		}
 		Cursor mCursor = null;
 		//Check to see if the name is already in the database
-		mCursor = getDb().query(true, TABLE_GROUPS, new String[] {"groupsID"}, KEY_NAME + "=" + "'" + name + "'",
+		mCursor = getDb().query(true, TABLE_GROUPS, new String[] {KEY_GROUPSID}, KEY_NAME + "=" + "'" + name + "'",
 				null, null, null, null, null);
 		
 		//Name already exists don't create a new entry
@@ -162,8 +163,27 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		}
 		
 	}
-	
-	public void removeGroupChat(){
+	/**
+	 * Removes the name from the Groups table
+	 * Returns true on sucess and false on failure
+	 */
+	public boolean removeGroupChat(String removeName){
+		Cursor mCursor = null;
+		//Check to see if the name is already in the database
+		mCursor = getDb().query(false, TABLE_GROUPS, new String[] {KEY_GROUPSID}, KEY_NAME + "=" + "'" + removeName + "'",
+				null, null, null, null, null);
+		
+		//Name exists delete Group Name
+		if (mCursor != null && mCursor.moveToFirst()){
+			Log.i("SpamMeDB: ", "removeGroupChat name: " + removeName); 
+			int deleteSuccess = getDb().delete(TABLE_GROUPS, KEY_GROUPSID + "==" + (mCursor.getInt(mCursor.getColumnIndex(KEY_GROUPSID))), null);
+			
+			if (deleteSuccess == 1){
+				return true;
+			}
+			return false;
+		}
+		return false;
 		
 	}
 	public void addMember(Person newPerson){
