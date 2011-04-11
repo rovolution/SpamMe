@@ -2,7 +2,9 @@ package spam.me;
 
 import java.util.List;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,20 +14,23 @@ public class SpamMeFacade {
 	private SpamMeDb mySpamMeDb;
 	private SpamMePreferences mySpamMePreferences;
 	
-	public SpamMeFacade () {
+	public SpamMeFacade (Context c) {
 		myPhoneInterface = new PhoneInterface();
-		mySpamMeDb = new SpamMeDb();
+		mySpamMeDb = new SpamMeDb(c);
 		mySpamMePreferences = new SpamMePreferences();
 	}
 	
-	public void addFriend(View v)
-	{
+	public void addFriend(View v){
 		List<Person> myContacts;
 		myContacts = myPhoneInterface.getContactList();
 		
 		// How should we display the list of contacts?
 	}
 	
+	public void addNewGroupName(String name){
+		Log.i("SpamMeFacade: ", "addNewGroupName name: " + name);
+		//mySpamMeDb.addGroupChat(name);
+	}
 	public void removeMe(int groupId){
 		
 	}

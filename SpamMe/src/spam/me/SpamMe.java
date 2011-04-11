@@ -22,7 +22,7 @@ public class SpamMe extends Activity {
 	private User mySelf;
 	
 	//SpamMeFacade - API for application
-	private SpamMeFacade spamMeFacade = new SpamMeFacade();
+	private SpamMeFacade spamMeFacade;
 	
 	/** Called when the activity is first created. */
 	@Override
