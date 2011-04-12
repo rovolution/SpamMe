@@ -37,6 +37,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
     	"create table groupmembers (id integer primary key autoincrement, "
         + "groupID integer not null, "
         + "member text not null, "
+        + "phoneNumber text not, "
         + "FOREIGN KEY(groupID) REFERENCES groups(groupsID));";
 	
 	/**
@@ -51,6 +52,10 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	private static final String TABLE_GROUPMEMBERS = "groupmembers";
 	private static final String KEY_NAME = "name";
 	private static final String KEY_GROUPSID = "groupsID";
+	private static final String KEY_ID = "id";
+	private static final String KEY_MEMBER = "member";
+	private static final String KEY_PHONENUMBER = "phoneNumber";
+	private static final String KEY_GROUPID = "groupID";
 	
 	 @Override
 	public void onCreate(SQLiteDatabase db){
@@ -186,8 +191,45 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		return false;
 		
 	}
-	public void addMember(Person newPerson){
+	
+	/**
+	 * Method adds the new member to the database (Table_GroupMembers)
+	 * If the name already exists or empty string returns -1
+	 * If the name was added successfully returns 1
+	 * If the there was an error throws SQLException
+	 * NEEDS TO BE CHECKED
+	 */
+	public int addMember(GroupChat group, Person newPerson){
+		Cursor mCursor = null;
 		
+		//Check to see if the name is already in the database
+		mCursor = getDb().query(false, 
+				TABLE_GROUPMEMBERS, new String[] {KEY_ID}, 
+				KEY_MEMBER + "=" + "'" + newPerson.getName() + "'" + "and" + KEY_GROUPID + "=" + group.getGroupId(),
+				null, null, null, null, null);
+		
+		//Name already exists don't create a new entry
+		if (mCursor != null && mCursor.moveToFirst()){
+			return -1;
+		}
+		
+		//Name doesn't exist, create a new entry
+		else{
+			long rowID;
+	    	ContentValues inputValue = new ContentValues();
+	    	inputValue.put(KEY_MEMBER, newPerson.getName());
+	    	inputValue.put(KEY_PHONENUMBER, newPerson.getPhoneNum());
+	    	inputValue.put(KEY_GROUPID, group.getGroupId());
+	    	rowID = getDb().insert(TABLE_GROUPMEMBERS, null, inputValue);
+				mCursor.close();
+				mCursor.deactivate();
+	    	if (rowID >= 0){
+	    		return 1;
+	    	}
+	    	else{
+	    		throw new SQLException();
+	    	}
+		}
 	}
 	public void removeMember(Person removePerson){
 		

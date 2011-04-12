@@ -47,6 +47,7 @@ public class CreateGroupChatUI extends Activity{
 		else{
 			int myReqCode = 0;
 			Intent groupChatTabHost = new Intent(v.getContext(), GroupChatTabHostUI.class); 
+			groupChatTabHost.putExtra("newGroupChatID", myGroupChat.getGroupId());
 			startActivityIfNeeded(groupChatTabHost, myReqCode);
 		}
 		

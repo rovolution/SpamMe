@@ -44,7 +44,7 @@ public class SpamMeFacade {
 	/**
 	 * Makes the necessary calls to add a particular group  member to the group chat
 	 */
-	public int addNewGroupMember (GroupChat group, String member){
+	public int addNewGroupMember (GroupChat group, Person p){
 		return 0;
 	}
 	public void removeMe(int groupId){
