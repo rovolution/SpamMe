@@ -14,7 +14,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	
 	
 	private static SQLiteDatabase Db;
-	private static final int DATABASE_VERSION = 13;
+	private static final int DATABASE_VERSION = 14;
 	private static final String DATABASE_NAME = "spamMeDB";
 	private final Context spamMeCtx;
 	
@@ -127,7 +127,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	}
 	/**
 	 * Method adds the new group name to the database
-	 * If the name already exists returns -1
+	 * If the name already exists or empty string returns -1
 	 * If the name was added successfully returns 1
 	 * If the there was an error throws SQLException
 	 */

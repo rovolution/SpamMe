@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class CreateGroupChatUI extends Activity{
-	private GroupChat myGroupChat;
+	private GroupChat myGroupChat = new GroupChat();
 	String groupName;
 	EditText inputGroupName;
 	//SpamMeFacade - API for application
@@ -30,10 +30,12 @@ public class CreateGroupChatUI extends Activity{
 	public void okayClicked(View v){
 		//Get the user's input for Group Name
 		groupName = inputGroupName.getText().toString();
+	
+		//Save the group name into a group chat object
+		myGroupChat.setGroupName(groupName);
 		
-		//Save group name to the database: 
-		int i = spamMeFacade.addNewGroupName(groupName);
-		
+		int i = spamMeFacade.addNewGroup(myGroupChat);
+	
 		//Name the user entered already exists in database, doesn't get added
 		if (i == -1){
 			Toast.makeText(getBaseContext(), 
@@ -47,5 +49,6 @@ public class CreateGroupChatUI extends Activity{
 			Intent groupChatTabHost = new Intent(v.getContext(), GroupChatTabHostUI.class); 
 			startActivityIfNeeded(groupChatTabHost, myReqCode);
 		}
+		
 	}
 }
