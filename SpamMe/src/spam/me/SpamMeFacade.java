@@ -26,12 +26,26 @@ public class SpamMeFacade {
 		
 		// How should we display the list of contacts?
 	}
+	/**
+	 * Method makes the necessary calls to add a new group to the database
+	 * Returns -1 if entry was not added to the database
+	 * Returns 1 if name was added successfully
+	 */
+	public int addNewGroup(GroupChat group){
+		//Check for group name
+		if (!group.getGroupName().equals(null)){
+			return mySpamMeDb.addGroupChat(group.getGroupName());
+		}
+		else{
+			return -1;
+		}
+	}
 	
-	public int addNewGroupName(String name){
-		Log.i("SpamMeFacade: ", "addNewGroupName name: " + name);
-		return mySpamMeDb.addGroupChat(name);
-		
-		
+	/**
+	 * Makes the necessary calls to add a particular group  member to the group chat
+	 */
+	public int addNewGroupMember (GroupChat group, Person p){
+		return 0;
 	}
 	public void removeMe(int groupId){
 		
