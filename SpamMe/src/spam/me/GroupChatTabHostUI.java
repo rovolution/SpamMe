@@ -48,7 +48,11 @@ public class GroupChatTabHostUI extends Activity
         //Check the list to see if it is empty too see whether to display it or not
 		setListVisibility(messages.length, list, errorMsg);
 		//By using setAdpater method in listview we an add members array in memberList.
-		list.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 , messages));
+		//list.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 , messages));
+		//list.setAdapter(new ArrayAdapter<String>(this, R.layout.messagelist, R.id.label, messages));
+		ArrayAdapter<String> msgAdapter = new MessageArrayAdaptor(this, messages);
+		list.setAdapter(msgAdapter);
+		
 		
 		
 		//Dummy data for members list
