@@ -21,6 +21,7 @@ public class GroupChatTabHostUI extends Activity
 	EditText inputMsg;
 	private ListView list;
 	private TextView errorMsg;
+	public int groupID;
 
 	
 	
@@ -31,12 +32,18 @@ public class GroupChatTabHostUI extends Activity
         
         spamMeFacade = new SpamMeFacade(this);
         
+        
+        
         //Getting the groupID from CreateGroupChatUI
         Bundle extras = getIntent().getExtras();
-        int groupID = extras.getInt("newGroupChatID");
+        extras.getInt("newGroupChatID");
         
         //Setting xml file for UI
         setContentView(R.layout.groupchattabhost);
+        
+      //Initializing the edit texts
+        inputPhoneNo = (EditText)findViewById(R.id.PhoneNoTxt);
+        inputMsg = (EditText)findViewById(R.id.messageTxt);
         
         //Setting up tabs
         TabHost tabHost = (TabHost) this.findViewById(R.id.groupchattabhost);  // The activity TabHost
@@ -78,9 +85,9 @@ public class GroupChatTabHostUI extends Activity
 				"Send SMS got clicked", 
 				Toast.LENGTH_SHORT).show();
 		
-		
 		String number = inputPhoneNo.getText().toString();
 		String msg = inputMsg.getText().toString();
+	
 		
 		if (number.length()>0 && msg.length()>0){
 			/*
