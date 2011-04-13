@@ -8,6 +8,14 @@ public class GroupChat {
 	private String groupName;
 	private int groupID;
 	
+	//Default Constructor
+	//Set everything to null and the groupID to be -1
+	public GroupChat(){
+		membersList = null;
+		messageChain = null;
+		groupName = null;
+		groupID = -1;
+	}
 	public void addPerson(Person newPerson){
 		membersList.add(newPerson);
 	}

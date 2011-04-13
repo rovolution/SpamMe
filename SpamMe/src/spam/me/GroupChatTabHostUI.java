@@ -40,19 +40,23 @@ public class GroupChatTabHostUI extends Activity
 
 	/** Called when the activity is first created. */ 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		spamMeFacade = new SpamMeFacade(this);
-
-		//Setting xml file for UI
-		setContentView(R.layout.groupchattabhost);
-
-		//Setting up tabs
-		TabHost tabHost = (TabHost) this.findViewById(R.id.groupchattabhost);  // The activity TabHost
-		doTabSetup(tabHost);
-		tabHost.setCurrentTab(0);
-
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        spamMeFacade = new SpamMeFacade(this);
+        
+        //Getting the groupID from CreateGroupChatUI
+        Bundle extras = getIntent().getExtras();
+        int groupID = extras.getInt("newGroupChatID");
+        
+        //Setting xml file for UI
+        setContentView(R.layout.groupchattabhost);
+        
+        //Setting up tabs
+        TabHost tabHost = (TabHost) this.findViewById(R.id.groupchattabhost);  // The activity TabHost
+        doTabSetup(tabHost);
+        tabHost.setCurrentTab(0);
+        
 		//Dummy data for messages (NOTE: Later replace with read messages from DB)
 		String[] messages = new String[] { "Bob: werwerwerwerwer", "Me: Blue screen of death", "Me: Loading forever", "Suse: wooho",
 		"Ubuntu: sudo rm *" };
