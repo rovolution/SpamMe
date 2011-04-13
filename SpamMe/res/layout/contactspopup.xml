@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  	xmlns:android="http://schemas.android.com/apk/res/android"
+  	xmlns:my="http://schemas.android.com/apk/res/ICUP.App"
+  	android:orientation="vertical"
+  	android:layout_width="fill_parent"
+  	android:layout_height="fill_parent"
+  	android:background="#CC000000"
+  	android:id="@+id/contactsPopup">
+         
+	<ScrollView 
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+    android:background="#000000">
+    	
+		<RelativeLayout 
+			xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent" 
+            android:layout_height="wrap_content">
+			<ListView android:id="@+id/contactList" 
+			    android:layout_width="wrap_content"
+				android:layout_height="300px" 
+			   	android:layout_alignParentTop="true"
+				android:layout_weight="1.0"/>
+			<TextView android:id="@+id/contactListEmpty"
+			   	android:layout_width="wrap_content"
+			   	android:layout_height="wrap_content"
+			   	android:layout_alignParentTop="true"
+			   	android:text="@string/no_contacts"
+			   	android:layout_weight="0.0"/>
+		</RelativeLayout>
+   	</ScrollView>
+</LinearLayout>	

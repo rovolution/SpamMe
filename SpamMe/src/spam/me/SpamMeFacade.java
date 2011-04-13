@@ -22,7 +22,7 @@ public class SpamMeFacade {
 	
 	public void addFriend(View v){
 		List<Person> myContacts;
-		myContacts = myPhoneInterface.getContactList();
+		//myContacts = myPhoneInterface.getContactList();
 		
 		// How should we display the list of contacts?
 	}
@@ -60,6 +60,7 @@ public class SpamMeFacade {
 	
 	public void setStatusText(SharedPreferences preferences, String statusMsg)
 	{
+		System.out.println(statusMsg);
 		mySpamMePreferences.setStatusText(preferences, statusMsg);
 	}
 	

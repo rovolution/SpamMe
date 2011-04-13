@@ -30,6 +30,7 @@ public class SpamMe extends Activity {
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		spamMeFacade = new SpamMeFacade(this);
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		setStatusHint();
 	}
@@ -45,6 +46,7 @@ public class SpamMe extends Activity {
 	{
 		TextView statusText = (TextView) findViewById(R.id.statusText);
 		String statusMsg = statusText.getText().toString();
+		
 		spamMeFacade.setStatusText(preferences, statusMsg);
 		
 		Toast.makeText(getBaseContext(), "New Status set", 3).show();
