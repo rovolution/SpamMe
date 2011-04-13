@@ -2,5 +2,6 @@
 <resources>
     <string name="app_name">SpamMe</string>
     <string name="no_members">There are currently no members in this group.</string>
+    <string name="no_contacts">You have no contacts on your phone.</string>
     <string name="no_chat_history">No chat history.</string>
 </resources>
