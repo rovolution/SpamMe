@@ -20,7 +20,7 @@
 			android:text="@+id/TextView01" android:layout_weight="1"
 			android:layout_marginLeft="3px" android:layout_marginBottom="3px"
 			android:layout_marginRight="3px" android:layout_marginTop="3px"
-			android:textColor="#000000">
+			android:textColor="#000000" android:clickable="true" android:onClick="expandMsgClicked">
 		</TextView>
 		<ImageView 
 			android:id="@+id/ImageView01" 

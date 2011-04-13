@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
@@ -46,8 +48,6 @@ public class GroupChatTabHostUI extends Activity
         
         spamMeFacade = new SpamMeFacade(this);
         
-        
-        
         //Getting the groupID from CreateGroupChatUI
         Bundle extras = getIntent().getExtras();
         extras.getInt("newGroupChatID");
@@ -55,7 +55,7 @@ public class GroupChatTabHostUI extends Activity
         //Setting xml file for UI
         setContentView(R.layout.groupchattabhost);
         
-      //Initializing the edit texts
+        //Initializing the edit texts
         inputPhoneNo = (EditText)findViewById(R.id.PhoneNoTxt);
         inputMsg = (EditText)findViewById(R.id.messageTxt);
         
@@ -73,8 +73,6 @@ public class GroupChatTabHostUI extends Activity
 		//Check the list to see if it is empty too see whether to display it or not
 		setListVisibility(messages.length, list, errorMsg);
 		//By using setAdpater method in listview we an add members array in memberList.
-		//list.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 , messages));
-		//list.setAdapter(new ArrayAdapter<String>(this, R.layout.messagelist, R.id.label, messages));
 		ArrayAdapter<String> msgAdapter = new MessageArrayAdaptor(this, messages);
 		list.setAdapter(msgAdapter);
 
@@ -88,7 +86,7 @@ public class GroupChatTabHostUI extends Activity
 		setListVisibility(members.length, list, errorMsg);
 		//By using setAdpater method in listview we an add members array in memberList.
 		list.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 , members));
-
+		
 	}
 
 	//Handler for SendSMS button
@@ -112,11 +110,11 @@ public class GroupChatTabHostUI extends Activity
 			spamMeFacade.sendMsg(msg, number);
 			//sendSMS(msg, number);
 		}
-		else 
+		else {
 			Toast.makeText(getBaseContext(), 
 					"Please enter both number and message.", 
 					Toast.LENGTH_SHORT).show();
-
+		}
 	}
 
 	public void addNewMemberClicked(View v){
@@ -271,5 +269,29 @@ public class GroupChatTabHostUI extends Activity
 			inputErrorMsg.setVisibility(View.INVISIBLE);
 		}		
 	}
+	
+	
+	//Used to expand a message bubble's text if it is clicked on
+    public void expandMsgClicked(View v) {
+      
+    	//Prepare the alert box
+    	AlertDialog.Builder fullMsgDisplay = new AlertDialog.Builder(this);
 
+    	//Extract the text from the message bubble
+    	TextView msgExpand = (TextView)v;
+    	String msgContent = (String) msgExpand.getText();
+
+    	//Set the message to display
+    	fullMsgDisplay.setMessage(msgContent);
+
+    	//Add a confirm button to the alert box and assign a click listener
+    	fullMsgDisplay.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+    		//Click listener on the alert box
+    		public void onClick(DialogInterface arg0, int arg1) {
+    			//Do nothing after the user clicks "OK"
+    		}
+    	});
+    	//Display to screen
+    	fullMsgDisplay.show();   	
+     }
 }

@@ -4,6 +4,7 @@ package spam.me;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -13,7 +14,7 @@ public class MessageArrayAdaptor extends ArrayAdapter<String> {
 	private final String[] values;
 	private LayoutInflater inflator;
 
-	static class ViewHolder {
+	static class ViewHolder{
 		public TextView text;
 		public ImageView image;
 	}
@@ -48,6 +49,7 @@ public class MessageArrayAdaptor extends ArrayAdapter<String> {
 		ViewHolder holder = (ViewHolder) rowView.getTag();
 		//Set the message text
 		holder.text.setText(values[position]);
+		
 		//Dynamically adjust the TextView size
 		int height_in_pixels = holder.text.getLineCount() * holder.text.getLineHeight(); //approx height text
 		
@@ -61,6 +63,11 @@ public class MessageArrayAdaptor extends ArrayAdapter<String> {
 		String msgSender = myMsg.substring(0, 3);
 		return msgSender.equals("Me:");
 	}
+	
+	// Implement the OnClickListener callback
+    public void onClick(View v) {
+      // do something when the button is clicked
+    }
 }
 
 	
