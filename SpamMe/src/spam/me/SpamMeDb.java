@@ -240,4 +240,19 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		return null;	
 	}
 	
+	public String[] getAllGroupChatNames (){
+		Cursor mCursor = getDb().query(true, TABLE_GROUPS, new String[] {KEY_GROUPSID, KEY_NAME},  KEY_GROUPSID +">" + 0 , null,
+				null, null, null, null); 
+		int count = mCursor.getCount();
+		String[] name = new String[count];
+		if (mCursor != null && 	mCursor.moveToFirst()){
+			for (int i = 0; i<count; i++){
+				name[i] = mCursor.getString(mCursor.getColumnIndex(KEY_NAME));
+				mCursor.moveToNext();
+			}
+		}
+		
+		return name;
+	}
+	
 }

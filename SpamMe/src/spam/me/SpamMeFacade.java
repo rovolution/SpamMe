@@ -26,6 +26,7 @@ public class SpamMeFacade {
 		
 		// How should we display the list of contacts?
 	}
+	
 	/**
 	 * Method makes the necessary calls to add a new group to the database
 	 * Returns -1 if entry was not added to the database
@@ -46,11 +47,19 @@ public class SpamMeFacade {
 	}
 	
 	/**
+	 * Method to retrieve all the saved groups
+	 * Returns an array of GroupChats
+	 */
+	public String[] getSavedGroups(){
+		return mySpamMeDb.getAllGroupChatNames();
+	}
+	/**
 	 * Makes the necessary calls to add a particular group  member to the group chat
 	 */
 	public int addNewGroupMember (GroupChat group, Person p){
 		return 0;
 	}
+	
 	public void removeMe(int groupId){
 		
 	}

@@ -39,10 +39,12 @@ public class SpamMe extends Activity {
 		
         //Initializing the drop down menu
         dropDownMenu = (Spinner)findViewById(R.id.savedChatsDropDown);
-        String [] groupNames = new String[] {"group1", "group2", "group3"};
+        String [] groupNames;
+        groupNames = spamMeFacade.getSavedGroups();
+       // String [] groupNames = new String[] {"group1", "group2", "group3"};
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, groupNames);
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.id.savedChatsDropDown, groupNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         dropDownMenu.setAdapter(adapter);
         dropDownMenu.setOnItemSelectedListener(new MyOnItemSelectedListener());
 	}
@@ -86,10 +88,17 @@ public class SpamMe extends Activity {
 	public class MyOnItemSelectedListener implements OnItemSelectedListener{
 
 		@Override
-	    public void onItemSelected(AdapterView<?> parent,
-	            View view, int pos, long id) {
+	    public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
 	          Toast.makeText(parent.getContext(), "The group is " +
 	              parent.getItemAtPosition(pos).toString(), Toast.LENGTH_LONG).show();
+	          
+	          //Start the GroupChatTab activity for the appropriate group
+	          /*
+	          int myReqCode = 0;
+	          Intent groupChatTabHost = new Intent(v.getContext(), GroupChatTabHostUI.class); 
+	          groupChatTabHost.putExtra("newGroupChatID", myGroupChat.getGroupId());
+	          startActivityIfNeeded(groupChatTabHost, myReqCode);
+	          */
 	        }
         @Override
 		public void onNothingSelected(AdapterView parent) {
