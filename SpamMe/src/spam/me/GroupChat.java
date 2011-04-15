@@ -6,7 +6,7 @@ public class GroupChat {
 	private List <Person> membersList;
 	private List <Message> messageChain;
 	private String groupName;
-	private int groupID;
+	private long groupID;
 	
 	//Default Constructor
 	//Set everything to null and the groupID to be -1
@@ -46,12 +46,12 @@ public class GroupChat {
 		return groupName;
 	}
 	
-	public void setGroupId (int id)
+	public void setGroupId (long id)
 	{
 		groupID = id;
 	}
 	
-	public int getGroupId ()
+	public long getGroupId ()
 	{
 		return groupID;
 	}

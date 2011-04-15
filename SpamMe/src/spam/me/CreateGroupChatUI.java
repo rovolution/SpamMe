@@ -28,16 +28,18 @@ public class CreateGroupChatUI extends Activity{
 	
 	//Handler for okay button when creating a new group chat
 	public void okayClicked(View v){
+		long ret;
 		//Get the user's input for Group Name
 		groupName = inputGroupName.getText().toString();
 	
 		//Save the group name into a group chat object
 		myGroupChat.setGroupName(groupName);
 		
-		long i = spamMeFacade.addNewGroup(myGroupChat);
-	
+		ret = spamMeFacade.addNewGroup(myGroupChat);
+		myGroupChat.setGroupId(ret);
+		System.out.println("CreateGroupChatUI i = " + ret);
 		//Name the user entered already exists in database, doesn't get added
-		if (i == -1){
+		if (ret == -1){
 			Toast.makeText(getBaseContext(), 
 					"This name is already used, please enter a different name", 
 					Toast.LENGTH_SHORT).show();

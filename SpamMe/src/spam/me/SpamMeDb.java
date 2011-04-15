@@ -149,7 +149,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		
 		//Name already exists don't create a new entry
 		if (mCursor != null && mCursor.moveToFirst()){
-			return mCursor.getInt(mCursor.getColumnIndex(KEY_GROUPSID));
+			return -1;
 		}
 		
 		//Name doesn't exist, create a new entry
@@ -161,6 +161,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 				mCursor.close();
 				mCursor.deactivate();
 	    	if (rowID >= 0){
+	    		System.out.println("ROW ID IS " + rowID);
 	    		return rowID;
 	    	}
 	    	else{

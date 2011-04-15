@@ -37,7 +37,7 @@ public class GroupChatTabHostUI extends Activity
 	EditText inputMsg;
 	private ListView list;
 	private TextView errorMsg;
-	public int groupID;
+	public long groupID;
 
 	protected PopupWindow popup;
 
@@ -50,7 +50,7 @@ public class GroupChatTabHostUI extends Activity
         
         //Getting the groupID from CreateGroupChatUI
         Bundle extras = getIntent().getExtras();
-        extras.getInt("newGroupChatID");
+        groupID = extras.getLong("newGroupChatID");
         
         //Setting xml file for UI
         setContentView(R.layout.groupchattabhost);
@@ -96,17 +96,11 @@ public class GroupChatTabHostUI extends Activity
 				Toast.LENGTH_SHORT).show();
 
 		String number = inputPhoneNo.getText().toString();
-		String msg = inputMsg.getText().toString();
+		String msg = String.valueOf(groupID) + " " +inputMsg.getText().toString();
+		//Testing the groupID
+		System.out.println(msg);
 
 		if (number.length()>0 && msg.length()>0){
-			/*
-			Bundle bundle = new Bundle();
-			bundle.putString("message", msg); 
-			bundle.putString("phoneNumber", number);
-			Intent phoneInterfaceIntent = new Intent(this.getApplicationContext(), PhoneInterface.class);
-			phoneInterfaceIntent.putExtras(bundle);
-			startActivityForResult(phoneInterfaceIntent, 0);
-			 */
 			spamMeFacade.sendMsg(msg, number);
 			//sendSMS(msg, number);
 		}

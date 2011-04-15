@@ -34,7 +34,11 @@ public class SpamMeFacade {
 	public long addNewGroup(GroupChat group){
 		//Check for group name
 		if (!group.getGroupName().equals(null)){
-			return mySpamMeDb.addGroupChat(group.getGroupName());
+			long i = mySpamMeDb.addGroupChat(group.getGroupName());
+			System.out.println("SpamMeFacade addNewGroup: " + i );
+			System.out.println("SpamMeFacade groupname: " + group.getGroupName());
+			group.setGroupId(i);
+			return i;
 		}
 		else{
 			return -1;
