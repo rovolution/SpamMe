@@ -18,10 +18,13 @@ import android.provider.ContactsContract.PhoneLookup;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,12 +35,13 @@ public class GroupChatTabHostUI extends Activity
 	//SpamMeFacade - API for application
 	private SpamMeFacade spamMeFacade;
 
-	GroupChat myGroupChat;
-	EditText inputPhoneNo;
-	EditText inputMsg;
+	private GroupChat myGroupChat;
+	private EditText inputPhoneNo; 
+	private EditText inputMsg;
+	
 	private ListView list;
 	private TextView errorMsg;
-	public long groupID;
+	private long groupID;
 
 	protected PopupWindow popup;
 
@@ -59,6 +63,7 @@ public class GroupChatTabHostUI extends Activity
         inputPhoneNo = (EditText)findViewById(R.id.PhoneNoTxt);
         inputMsg = (EditText)findViewById(R.id.messageTxt);
         
+
         //Setting up tabs
         TabHost tabHost = (TabHost) this.findViewById(R.id.groupchattabhost);  // The activity TabHost
         doTabSetup(tabHost);
