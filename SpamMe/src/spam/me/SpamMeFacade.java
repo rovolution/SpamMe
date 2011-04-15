@@ -31,7 +31,7 @@ public class SpamMeFacade {
 	 * Returns -1 if entry was not added to the database
 	 * Returns 1 if name was added successfully
 	 */
-	public int addNewGroup(GroupChat group){
+	public long addNewGroup(GroupChat group){
 		//Check for group name
 		if (!group.getGroupName().equals(null)){
 			return mySpamMeDb.addGroupChat(group.getGroupName());

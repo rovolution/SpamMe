@@ -34,7 +34,7 @@ public class CreateGroupChatUI extends Activity{
 		//Save the group name into a group chat object
 		myGroupChat.setGroupName(groupName);
 		
-		int i = spamMeFacade.addNewGroup(myGroupChat);
+		long i = spamMeFacade.addNewGroup(myGroupChat);
 	
 		//Name the user entered already exists in database, doesn't get added
 		if (i == -1){

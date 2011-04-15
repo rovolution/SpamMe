@@ -136,7 +136,8 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	 * If the name was added successfully returns 1
 	 * If the there was an error throws SQLException
 	 */
-	public int addGroupChat(String name)throws SQLException{
+	public long addGroupChat(String name)throws SQLException{
+		
 		Log.i("SpamMeDB: ", "addNewGroupChat name: " + name);
 		if (name == ""){
 			return -1;
@@ -148,7 +149,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		
 		//Name already exists don't create a new entry
 		if (mCursor != null && mCursor.moveToFirst()){
-			return -1;
+			return mCursor.getInt(mCursor.getColumnIndex(KEY_GROUPSID));
 		}
 		
 		//Name doesn't exist, create a new entry
@@ -160,7 +161,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 				mCursor.close();
 				mCursor.deactivate();
 	    	if (rowID >= 0){
-	    		return 1;
+	    		return rowID;
 	    	}
 	    	else{
 	    		throw new SQLException();

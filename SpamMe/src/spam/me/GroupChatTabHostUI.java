@@ -86,7 +86,7 @@ public class GroupChatTabHostUI extends Activity
 		setListVisibility(members.length, list, errorMsg);
 		//By using setAdpater method in listview we an add members array in memberList.
 		list.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 , members));
-		
+
 	}
 
 	//Handler for SendSMS button
@@ -137,7 +137,7 @@ public class GroupChatTabHostUI extends Activity
 			ArrayAdapter myAdapter = new ContactAdapter(this, v.getContext(), R.layout.contactitem, myHomies);
 			contactList.setAdapter(myAdapter);
 			contactList.setVisibility(View.VISIBLE);
-			
+
 			TextView emptyContacts =(TextView) popup.getContentView().findViewById(R.id.contactListEmpty);
 			emptyContacts.setVisibility(View.GONE);
 
@@ -212,7 +212,7 @@ public class GroupChatTabHostUI extends Activity
 
 			contacts.close();
 		}
-		
+
 		return contactList;
 	}
 
@@ -269,8 +269,8 @@ public class GroupChatTabHostUI extends Activity
 			inputErrorMsg.setVisibility(View.INVISIBLE);
 		}		
 	}
-	
-	
+
+
 	//Used to expand a message bubble's text if it is clicked on
     public void expandMsgClicked(View v) {
       
