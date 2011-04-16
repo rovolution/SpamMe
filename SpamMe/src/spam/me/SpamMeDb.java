@@ -255,13 +255,9 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		List <Person> members = new ArrayList(); 
 		List <Message> messages = new ArrayList();
 		Person p = new Person(); 
-		Message m = new Message();
-		
+		Message m = new Message();		
 		long groupID;
-		/*
-		private List <Message> messageChain;
-		
-		*/
+
 		//Set groupName for group
 		group.setGroupName(groupName);
 		
@@ -301,7 +297,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 				m.setContent(messageCursor.getString(messageCursor.getColumnIndex(KEY_MESSAGE)));
 				m.setOwner(messageCursor.getString(messageCursor.getColumnIndex(KEY_SENDER)));
 				m.setGroupID(groupID);
-				//Add person to the members list
+				//Add message to message chain
 				messages.add(m);
 			}
 			//Set members for group

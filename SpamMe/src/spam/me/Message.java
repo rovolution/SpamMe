@@ -2,7 +2,7 @@ package spam.me;
 
 public class Message {
 	private String content;
-	private Person owner;
+	private Person owner = new Person();
 	private enum msgType {REMOVE, ADD, TEXT};
 	private msgType type;
 	private long groupID;
@@ -20,6 +20,7 @@ public class Message {
 	}
 	
 	public void setOwner(String newOwner){
+		owner.setName(newOwner);
 	}
 	
 	public msgType getType(){
