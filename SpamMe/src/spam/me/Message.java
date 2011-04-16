@@ -19,8 +19,9 @@ public class Message {
 		return owner;
 	}
 	
-	public void setOwner(String newOwner){
-		owner.setName(newOwner);
+	public void setOwner(String name, String number){
+		owner.setName(name);
+		owner.setPhoneNum(number);
 	}
 	
 	public msgType getType(){

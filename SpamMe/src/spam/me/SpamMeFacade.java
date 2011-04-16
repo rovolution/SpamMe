@@ -83,8 +83,8 @@ public class SpamMeFacade {
 	public void disableStatus(){
 		
 	}
-	public GroupChat getGroupChat(int groupId){
-		return null;
+	public GroupChat getGroupChat(String groupName){
+		return mySpamMeDb.getGroupChat(groupName);
 		
 	}
 	public void startNewChat(){

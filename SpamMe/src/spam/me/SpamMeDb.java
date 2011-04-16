@@ -255,7 +255,8 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		List <Person> members = new ArrayList(); 
 		List <Message> messages = new ArrayList();
 		Person p = new Person(); 
-		Message m = new Message();		
+		Message m = new Message();
+		String phoneNumber;
 		long groupID;
 
 		//Set groupName for group
@@ -295,7 +296,8 @@ public class SpamMeDb extends SQLiteOpenHelper{
 			for (int i = 0; i<messageCount; i++){
 				//Set the content, owner, and groupID for message
 				m.setContent(messageCursor.getString(messageCursor.getColumnIndex(KEY_MESSAGE)));
-				m.setOwner(messageCursor.getString(messageCursor.getColumnIndex(KEY_SENDER)));
+				phoneNumber = fetchPhoneNum(messageCursor.getString(messageCursor.getColumnIndex(KEY_SENDER)));
+				m.setOwner(messageCursor.getString(messageCursor.getColumnIndex(KEY_SENDER)), phoneNumber);
 				m.setGroupID(groupID);
 				//Add message to message chain
 				messages.add(m);
@@ -304,6 +306,16 @@ public class SpamMeDb extends SQLiteOpenHelper{
 			group.setMessageChain(messages);
 		}
 		return group;
+	}
+	
+	public String fetchPhoneNum (String name){
+		String number = "";
+		Cursor mCursor = getDb().query(true, TABLE_GROUPMEMBERS, new String[]{KEY_PHONENUMBER}, KEY_MEMBER + "=" + name,
+				null, null, null, null, null);
+		if (mCursor != null && mCursor.moveToFirst()){
+			number = mCursor.getString(mCursor.getColumnIndex(KEY_PHONENUMBER));
+		}
+		return number;
 	}
 	
 	/**
