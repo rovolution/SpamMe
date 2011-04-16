@@ -40,13 +40,18 @@ public class SpamMe extends Activity {
         //Initializing the drop down menu
         dropDownMenu = (Spinner)findViewById(R.id.savedChatsDropDown);
         String [] groupNames;
+        
         groupNames = spamMeFacade.getSavedGroups();
-       // String [] groupNames = new String[] {"group1", "group2", "group3"};
+        if (groupNames == null){
+        	groupNames = new String[] {""};
+        }
+ 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, groupNames);
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.id.savedChatsDropDown, groupNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         dropDownMenu.setAdapter(adapter);
         dropDownMenu.setOnItemSelectedListener(new MyOnItemSelectedListener());
+        
 	}
     
 	public void newGroupChatClicked (View v)
@@ -99,7 +104,7 @@ public class SpamMe extends Activity {
 	          groupChatTabHost.putExtra("newGroupChatID", myGroupChat.getGroupId());
 	          startActivityIfNeeded(groupChatTabHost, myReqCode);
 	          */
-	        }
+	    }
         @Override
 		public void onNothingSelected(AdapterView parent) {
 	          // Do nothing.

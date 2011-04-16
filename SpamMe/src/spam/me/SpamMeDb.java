@@ -1,5 +1,8 @@
 package spam.me;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -14,7 +17,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	
 	
 	private static SQLiteDatabase Db;
-	private static final int DATABASE_VERSION = 14;
+	private static final int DATABASE_VERSION = 17;
 	private static final String DATABASE_NAME = "spamMeDB";
 	private final Context spamMeCtx;
 	
@@ -37,7 +40,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
     	"create table groupmembers (id integer primary key autoincrement, "
         + "groupID integer not null, "
         + "member text not null, "
-        + "phoneNumber text not, "
+        + "phoneNumber text not null, "
         + "FOREIGN KEY(groupID) REFERENCES groups(groupsID));";
 	
 	/**
@@ -56,6 +59,8 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	private static final String KEY_MEMBER = "member";
 	private static final String KEY_PHONENUMBER = "phoneNumber";
 	private static final String KEY_GROUPID = "groupID";
+	private static final String KEY_SENDER = "sender";
+	private static final String KEY_MESSAGE = "message";
 	
 	 @Override
 	public void onCreate(SQLiteDatabase db){
@@ -240,19 +245,96 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		return null;	
 	}
 	
-	public String[] getAllGroupChatNames (){
-		Cursor mCursor = getDb().query(true, TABLE_GROUPS, new String[] {KEY_GROUPSID, KEY_NAME},  KEY_GROUPSID +">" + 0 , null,
-				null, null, null, null); 
-		int count = mCursor.getCount();
-		String[] name = new String[count];
-		if (mCursor != null && 	mCursor.moveToFirst()){
-			for (int i = 0; i<count; i++){
-				name[i] = mCursor.getString(mCursor.getColumnIndex(KEY_NAME));
-				mCursor.moveToNext();
+	/**
+	 * Method returns a GroupChat object of the given groupName
+	 * @param groupName
+	 * @return GroupChat
+	 */
+	public GroupChat getGroupChat(String groupName){
+		GroupChat group = new GroupChat();
+		List <Person> members = new ArrayList(); 
+		List <Message> messages = new ArrayList();
+		Person p = new Person(); 
+		Message m = new Message();
+		
+		long groupID;
+		/*
+		private List <Message> messageChain;
+		
+		*/
+		//Set groupName for group
+		group.setGroupName(groupName);
+		
+		//Query Groups table with the groupName to get ID 
+		Cursor mCursor = getDb().query(true, TABLE_GROUPS, new String[]{KEY_GROUPSID}, KEY_NAME + "=" + groupName,
+				null, null, null, null, null);
+		groupID = mCursor.getLong(mCursor.getColumnIndex(KEY_NAME));
+		//Set groupID for group
+		group.setGroupId(groupID);
+		
+		
+		//Use the ID to get the members 
+		Cursor membersCursor = getDb().query(true, TABLE_GROUPMEMBERS, new String[]{KEY_MEMBER, KEY_PHONENUMBER}, KEY_GROUPID + "=" + groupID,
+				null, null, null, null, null);
+		int membersCount = membersCursor.getCount();
+		//Set the members in groupChat object
+		if (membersCursor != null && membersCursor.moveToFirst()){
+			for (int i = 0; i<membersCount; i++){
+				//Set the name and phone number for person
+				p.setName(membersCursor.getString(membersCursor.getColumnIndex(KEY_MEMBER)));
+				p.setPhoneNum(membersCursor.getString(membersCursor.getColumnIndex(KEY_PHONENUMBER)));
+				//Add person to the members list
+				members.add(p);
 			}
+			//Set members for group
+			group.setMembersList(members);
 		}
 		
-		return name;
+		//Use ID to get the messages
+		Cursor messageCursor = getDb().query(true, TABLE_MESSAGES, new String[]{KEY_MESSAGE, KEY_SENDER}, KEY_GROUPID + "=" + groupID,
+				null, null, null, null, null);
+		int messageCount = messageCursor.getCount();
+		//Set the messages in groupChat object
+		if (messageCursor != null && messageCursor.moveToFirst()){
+			for (int i = 0; i<messageCount; i++){
+				//Set the content, owner, and groupID for message
+				m.setContent(messageCursor.getString(messageCursor.getColumnIndex(KEY_MESSAGE)));
+				m.setOwner(messageCursor.getString(messageCursor.getColumnIndex(KEY_SENDER)));
+				m.setGroupID(groupID);
+				//Add person to the members list
+				messages.add(m);
+			}
+			//Set members for group
+			group.setMessageChain(messages);
+		}
+		return group;
+	}
+	
+	/**
+	 * Method returns an array of all the group names in the database
+	 * @return String[]
+	 */
+	public String[] getAllGroupChatNames (){
+		//Query for any non-null entries in the Groups table
+		Cursor mCursor = getDb().query(true, TABLE_GROUPS, new String[] {KEY_GROUPSID, KEY_NAME},  KEY_GROUPSID +">" + 0 , null,
+				null, null, null, null); 
+		
+		//Save number of groups in Groups table
+		int count = mCursor.getCount();
+		
+		String[] names = new String[count];
+		
+		
+		if (mCursor != null && 	mCursor.moveToFirst()){
+			for (int i = 0; i<count; i++){
+				names[i] = mCursor.getString(mCursor.getColumnIndex(KEY_NAME));
+				mCursor.moveToNext();
+			}
+			return names;
+		}
+		else{
+			return null;
+		}
 	}
 	
 }

@@ -5,7 +5,7 @@ public class Message {
 	private Person owner;
 	private enum msgType {REMOVE, ADD, TEXT};
 	private msgType type;
-	private int groupID;
+	private long groupID;
 	
 	
 	public String getContent(){
@@ -30,11 +30,11 @@ public class Message {
 		
 	}
 	
-	public int getGroupID(){
+	public long getGroupID(){
 		return groupID;
 	}
 	
-	public void setGroupID(msgType newType){
-		
+	public void setGroupID(long id){
+		groupID = id;
 	}
 }
