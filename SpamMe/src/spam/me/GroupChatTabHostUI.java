@@ -16,8 +16,12 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.PhoneLookup;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnKeyListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -51,6 +55,8 @@ public class GroupChatTabHostUI extends Activity
         //Getting the groupID from CreateGroupChatUI
         Bundle extras = getIntent().getExtras();
         groupID = extras.getLong("newGroupChatID");
+        
+        myGroupChat.setGroupId(groupID);
         
         //Setting xml file for UI
         setContentView(R.layout.groupchattabhost);
@@ -114,47 +120,73 @@ public class GroupChatTabHostUI extends Activity
 	public void addNewMemberClicked(View v){
 		ArrayList<Person> myHomies = new ArrayList<Person>();
 
+		int popupHeight = (int) v.getContext().getApplicationContext().getResources().getDisplayMetrics().heightPixels;
+		int popupWidth = (int) v.getContext().getResources().getDisplayMetrics().widthPixels;
+		
+		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		v = inflater.inflate(R.layout.contactspopup, null);
+
+		popup = new PopupWindow(v, popupWidth, popupHeight, false);
+		popup.setFocusable(true);
+		popup.setTouchable(true);
+		popup.showAtLocation(findViewById(R.id.groupchattabhost), Gravity.CENTER, 0, 0);
+
 		myHomies = (ArrayList<Person>) getContactList();
+		
 		if (myHomies != null || !myHomies.isEmpty())
 		{
-			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = inflater.inflate(R.layout.contactspopup, null);
-
-			int popupHeight = (int) ((getApplicationContext().getResources().getDisplayMetrics().heightPixels) - 25);
-			int popupWidth = (int) ((getApplicationContext().getResources().getDisplayMetrics().widthPixels));
-
-			popup = new PopupWindow(v, popupWidth, popupHeight, false);
-			popup.setOutsideTouchable(false);
-			popup.showAtLocation(findViewById(R.id.groupchattabhost), Gravity.CENTER, 0, 0);
-
-			ListView contactList = (ListView)popup.getContentView().findViewById(R.id.contactList);
+			final ListView contactList = (ListView)popup.getContentView().findViewById(R.id.contactList);
 			ArrayAdapter myAdapter = new ContactAdapter(this, v.getContext(), R.layout.contactitem, myHomies);
 			contactList.setAdapter(myAdapter);
 			contactList.setVisibility(View.VISIBLE);
-
+			contactList.setMinimumHeight(popupHeight);
+			
 			TextView emptyContacts =(TextView) popup.getContentView().findViewById(R.id.contactListEmpty);
 			emptyContacts.setVisibility(View.GONE);
-
-			spamMeFacade.addFriend(v);
+			
+			contactList.setOnItemClickListener(new OnItemClickListener(){
+				public void onItemClick(AdapterView<?> a, View v, int position,long id) {
+	        		Person newMember = (Person) contactList.getItemAtPosition(position);
+	        		
+	        		System.out.println("Item clicked: " + newMember.getName());
+	    			
+	    			spamMeFacade.addFriend(v, myGroupChat, newMember);
+				}
+	        });
+			
+			contactList.setOnKeyListener(new OnKeyListener() {
+				@Override
+				public boolean onKey(View v, int keyCode, KeyEvent event) {
+					if (keyCode == KeyEvent.KEYCODE_BACK) {
+						if (popup != null) {
+							popup.dismiss();
+							return true;
+						}
+					}
+					return false;
+				}
+			});
 		}
 		else
 		{
-			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = inflater.inflate(R.layout.contactspopup, null);
-
-			int popupHeight = (int) ((getApplicationContext().getResources().getDisplayMetrics().heightPixels) - 25)/2;
-			int popupWidth = (int) ((getApplicationContext().getResources().getDisplayMetrics().widthPixels))/2;
-
-			popup = new PopupWindow(v, popupWidth, popupHeight, false);
-			popup.setOutsideTouchable(false);
-			popup.showAtLocation(findViewById(R.id.groupchattabhost), Gravity.CENTER, 0, 0);
-
 			ListView contactList = (ListView) popup.getContentView().findViewById(R.id.contactList);
 			TextView emptyContacts =(TextView) popup.getContentView().findViewById(R.id.contactListEmpty);
 
 			contactList.setVisibility(View.GONE);
 			emptyContacts.setVisibility(View.VISIBLE);
-			System.out.println("myHomies is null");
+			
+			contactList.setOnKeyListener(new OnKeyListener() {
+				@Override
+				public boolean onKey(View v, int keyCode, KeyEvent event) {
+					if (keyCode == KeyEvent.KEYCODE_BACK) {
+						if (popup != null) {
+							popup.dismiss();
+							return true;
+						}
+					}
+					return false;
+				}
+			});
 		}
 	}
 
@@ -288,4 +320,18 @@ public class GroupChatTabHostUI extends Activity
     	//Display to screen
     	fullMsgDisplay.show();   	
      }
+    
+    // If the popup is showing, then the back button should dismiss it
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (popup != null) {
+				if (popup.isShowing()) {
+					popup.dismiss();
+					return true;
+				}
+			}
+		}
+
+		return super.onKeyDown(keyCode, event);
+	}
 }

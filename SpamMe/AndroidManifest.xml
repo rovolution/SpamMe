@@ -5,7 +5,8 @@
       android:versionName="1.0">
     <application android:icon="@drawable/icon" android:label="@string/app_name">
         <activity android:name=".SpamMe"
-                  android:label="@string/app_name">
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -17,8 +18,8 @@
         		<action android:name= "android.provider.Telephony.SMS_RECEIVED" />
         	</intent-filter>
         </receiver>
-		<activity android:name=".CreateGroupChatUI" android:label="Create Group Chat" android:launchMode="singleTop"></activity>
-		<activity android:name=".GroupChatTabHostUI" android:label="Group Chat" android:launchMode="singleTop"></activity>
+		<activity android:name=".CreateGroupChatUI" android:label="Create Group Chat" android:launchMode="singleTop" android:screenOrientation="portrait" android:configChanges="orientation|screenLayout|keyboardHidden"></activity>
+		<activity android:name=".GroupChatTabHostUI" android:label="Group Chat" android:launchMode="singleTop" android:screenOrientation="portrait" android:configChanges="orientation|screenLayout|keyboardHidden"></activity>
     </application>
 
 	<uses-permission android:name="android.permission.READ_CONTACTS">

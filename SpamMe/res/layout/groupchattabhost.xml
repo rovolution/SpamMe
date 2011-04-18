@@ -88,28 +88,31 @@
 		   	<RelativeLayout 
 		   		xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent" 
-                android:layout_height="wrap_content">
+                android:layout_height="fill_parent">
 				<ListView android:id="@+id/memberList" 
 				    android:layout_width="wrap_content"
-					android:layout_height="300px" 
+					android:layout_height="fill_parent" 
 			    	android:layout_alignParentTop="true"
-					android:layout_weight="1.0"/>
+					android:layout_weight="1.0"
+					android:layout_marginBottom = "50dip"/>
 				<TextView android:id="@+id/memberListEmpty"
 			    	android:layout_width="wrap_content"
 			    	android:layout_height="wrap_content"
 			    	android:layout_alignParentTop="true"
 			    	android:text="@string/no_members"
-			    	android:textColor="#FF0000"/>
-		   	</RelativeLayout>
+			    	android:textColor="#FF0000"
+			    	android:layout_marginBottom = "50dip"/>
 		    
 	    	<!-- The button to add members to the group -->
 			<Button
 				android:id="@+id/SendSMSButton"
 				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
+				android:layout_height="50dip"
+				android:layout_alignParentBottom="true"
 				android:text="Add New Members"
 				android:onClick="addNewMemberClicked"
 			/>
+			</RelativeLayout>
 		</LinearLayout>
 		
 		<!-- Options Tab -->

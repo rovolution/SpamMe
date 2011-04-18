@@ -20,11 +20,8 @@ public class SpamMeFacade {
 		mySpamMePreferences = new SpamMePreferences();
 	}
 	
-	public void addFriend(View v){
-		List<Person> myContacts;
-		//myContacts = myPhoneInterface.getContactList();
-		
-		// How should we display the list of contacts?
+	public void addFriend(View v, GroupChat myGroupChat, Person newMember){
+		mySpamMeDb.addMember(myGroupChat, newMember);
 	}
 	/**
 	 * Method makes the necessary calls to add a new group to the database

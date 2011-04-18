@@ -13,21 +13,20 @@
 	android:layout_height="fill_parent"
     android:background="#000000">
     	
-		<RelativeLayout 
+		<LinearLayout 
 			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="vertical"
             android:layout_width="fill_parent" 
-            android:layout_height="wrap_content">
+            android:layout_height="fill_parent">
 			<ListView android:id="@+id/contactList" 
-			    android:layout_width="wrap_content"
-				android:layout_height="300px" 
-			   	android:layout_alignParentTop="true"
-				android:layout_weight="1.0"/>
+			    android:layout_width="fill_parent"
+				android:layout_height="800dip" 
+			   	android:layout_alignParentTop="true"/>
 			<TextView android:id="@+id/contactListEmpty"
-			   	android:layout_width="wrap_content"
-			   	android:layout_height="wrap_content"
-			   	android:layout_alignParentTop="true"
-			   	android:text="@string/no_contacts"
-			   	android:layout_weight="0.0"/>
-		</RelativeLayout>
+			   	android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentTop="true"
+			   	android:text="@string/no_contacts"/>
+		</LinearLayout>
    	</ScrollView>
 </LinearLayout>	
