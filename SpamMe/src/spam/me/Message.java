@@ -2,10 +2,10 @@ package spam.me;
 
 public class Message {
 	private String content;
-	private Person owner;
+	private Person owner = new Person();
 	private enum msgType {REMOVE, ADD, TEXT};
 	private msgType type;
-	private int groupID;
+	private long groupID;
 	
 	
 	public String getContent(){
@@ -19,7 +19,9 @@ public class Message {
 		return owner;
 	}
 	
-	public void setOwner(String newOwner){
+	public void setOwner(String name, String number){
+		owner.setName(name);
+		owner.setPhoneNum(number);
 	}
 	
 	public msgType getType(){
@@ -30,11 +32,11 @@ public class Message {
 		
 	}
 	
-	public int getGroupID(){
+	public long getGroupID(){
 		return groupID;
 	}
 	
-	public void setGroupID(msgType newType){
-		
+	public void setGroupID(long id){
+		groupID = id;
 	}
 }

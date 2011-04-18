@@ -23,6 +23,7 @@ public class SpamMeFacade {
 	public void addFriend(View v, GroupChat myGroupChat, Person newMember){
 		mySpamMeDb.addMember(myGroupChat, newMember);
 	}
+	
 	/**
 	 * Method makes the necessary calls to add a new group to the database
 	 * Returns -1 if entry was not added to the database
@@ -43,11 +44,19 @@ public class SpamMeFacade {
 	}
 	
 	/**
+	 * Method to retrieve all the saved groups
+	 * Returns an array of GroupChats
+	 */
+	public String[] getSavedGroups(){
+		return mySpamMeDb.getAllGroupChatNames();
+	}
+	/**
 	 * Makes the necessary calls to add a particular group  member to the group chat
 	 */
 	public int addNewGroupMember (GroupChat group, Person p){
 		return 0;
 	}
+	
 	public void removeMe(int groupId){
 		
 	}
@@ -71,8 +80,8 @@ public class SpamMeFacade {
 	public void disableStatus(){
 		
 	}
-	public GroupChat getGroupChat(int groupId){
-		return null;
+	public GroupChat getGroupChat(String groupName){
+		return mySpamMeDb.getGroupChat(groupName);
 		
 	}
 	public void startNewChat(){

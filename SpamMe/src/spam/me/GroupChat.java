@@ -35,7 +35,12 @@ public class GroupChat {
 	public List<Message> getMessageChain(){
 		return messageChain;
 	}
-	
+	public void setMembersList (List<Person> p){
+		membersList = p;
+	}
+	public void setMessageChain (List<Message>m){
+		messageChain = m;
+	}
 	public void setGroupName (String name)
 	{
 		groupName = name;
