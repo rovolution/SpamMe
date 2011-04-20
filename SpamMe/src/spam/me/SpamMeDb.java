@@ -212,11 +212,13 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		//Check to see if the name is already in the database
 		mCursor = getDb().query(false, 
 				TABLE_GROUPMEMBERS, new String[] {KEY_ID}, 
-				KEY_MEMBER + "=" + "'" + newPerson.getName() + "'" + "and" + KEY_GROUPID + "=" + group.getGroupId(),
+				KEY_MEMBER + "=" + "'" + newPerson.getName() + "'" + " and " + KEY_GROUPID + "=" + group.getGroupId(),
 				null, null, null, null, null);
 		
 		//Name already exists don't create a new entry
 		if (mCursor != null && mCursor.moveToFirst()){
+			mCursor.close();
+			mCursor.deactivate();
 			return -1;
 		}
 		
@@ -228,8 +230,8 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	    	inputValue.put(KEY_PHONENUMBER, newPerson.getPhoneNum());
 	    	inputValue.put(KEY_GROUPID, group.getGroupId());
 	    	rowID = getDb().insert(TABLE_GROUPMEMBERS, null, inputValue);
-				mCursor.close();
-				mCursor.deactivate();
+			mCursor.close();
+			mCursor.deactivate();
 	    	if (rowID >= 0){
 	    		return 1;
 	    	}

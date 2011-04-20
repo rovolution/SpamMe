@@ -20,8 +20,8 @@ public class SpamMeFacade {
 		mySpamMePreferences = new SpamMePreferences();
 	}
 	
-	public void addFriend(View v, GroupChat myGroupChat, Person newMember){
-		mySpamMeDb.addMember(myGroupChat, newMember);
+	public int addFriend(View v, GroupChat myGroupChat, Person newMember){
+		return mySpamMeDb.addMember(myGroupChat, newMember);
 	}
 	
 	/**

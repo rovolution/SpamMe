@@ -1,6 +1,7 @@
 package spam.me;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,11 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 public class ContactAdapter extends ArrayAdapter<Person> {
-	private ArrayList<Person> items;
+	private List<Person> items;
 	private Activity parentActivity;
 	
 	// Constructor
-	public ContactAdapter(Activity parent, Context context, int textViewResourceId, ArrayList<Person> items) {
+	public ContactAdapter(Activity parent, Context context, int textViewResourceId, List<Person> items) {
 		super(context, textViewResourceId, items);
 		this.items = items;
 		this.parentActivity = parent;

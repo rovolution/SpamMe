@@ -1,27 +1,28 @@
 package spam.me;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupChat {
-	private List <Person> membersList;
-	private List <Message> messageChain;
+	private List<Person> membersList;
+	private List<Message> messageChain;
 	private String groupName;
 	private long groupID;
 	
 	//Default Constructor
-	//Set everything to null and the groupID to be -1
+	// Initialize everything and set the groupID to -1
 	public GroupChat(){
-		membersList = null;
-		messageChain = null;
-		groupName = null;
+		membersList = new ArrayList<Person>();
+		messageChain = new ArrayList<Message>();
+		groupName = "";
 		groupID = -1;
 	}
 	public void addPerson(Person newPerson){
 		membersList.add(newPerson);
 	}
 	
-	public void removePerson(String phoneNumber){
-		
+	public void removePerson(Person oldPerson){
+		membersList.remove(oldPerson);
 	}
 	
 	public void addMessage (Message newMessage){

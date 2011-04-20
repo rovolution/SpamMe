@@ -37,10 +37,10 @@ public class GroupChatTabHostUI extends Activity
 	//SpamMeFacade - API for application
 	private SpamMeFacade spamMeFacade;
 
-	private GroupChat myGroupChat;
+	private GroupChat myGroupChat = new GroupChat();
 	private EditText inputPhoneNo; 
 	private EditText inputMsg;
-	
+
 	private ListView list;
 	private TextView errorMsg;
 	private long groupID;
@@ -49,30 +49,30 @@ public class GroupChatTabHostUI extends Activity
 
 	/** Called when the activity is first created. */ 
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        spamMeFacade = new SpamMeFacade(this);
-        
-        //Getting the groupID from CreateGroupChatUI
-        Bundle extras = getIntent().getExtras();
-        groupID = extras.getLong("newGroupChatID");
-        
-        myGroupChat.setGroupId(groupID);
-        
-        //Setting xml file for UI
-        setContentView(R.layout.groupchattabhost);
-        
-        //Initializing the edit texts
-        inputPhoneNo = (EditText)findViewById(R.id.PhoneNoTxt);
-        inputMsg = (EditText)findViewById(R.id.messageTxt);
-        
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        //Setting up tabs
-        TabHost tabHost = (TabHost) this.findViewById(R.id.groupchattabhost);  // The activity TabHost
-        doTabSetup(tabHost);
-        tabHost.setCurrentTab(0);
-        
+		spamMeFacade = new SpamMeFacade(this);
+
+		//Getting the groupID from CreateGroupChatUI
+		Bundle extras = getIntent().getExtras();
+		groupID = extras.getLong("newGroupChatID");
+		
+		myGroupChat.setGroupId(groupID);
+
+		//Setting xml file for UI
+		setContentView(R.layout.groupchattabhost);
+
+		//Initializing the edit texts
+		inputPhoneNo = (EditText)findViewById(R.id.PhoneNoTxt);
+		inputMsg = (EditText)findViewById(R.id.messageTxt);
+
+
+		//Setting up tabs
+		TabHost tabHost = (TabHost) this.findViewById(R.id.groupchattabhost);  // The activity TabHost
+		doTabSetup(tabHost);
+		tabHost.setCurrentTab(0);
+
 		//Dummy data for messages (NOTE: Later replace with read messages from DB)
 		String[] messages = new String[] { "Bob: werwerwerwerwer", "Me: Blue screen of death", "Me: Loading forever", "Suse: wooho",
 		"Ubuntu: sudo rm *" };
@@ -84,17 +84,14 @@ public class GroupChatTabHostUI extends Activity
 		//By using setAdpater method in listview we an add members array in memberList.
 		ArrayAdapter<String> msgAdapter = new MessageArrayAdaptor(this, messages);
 		list.setAdapter(msgAdapter);
-
-		//Dummy data for members list
-		String[] members = new String[] { "Bob", "Windows7", "Tim", "Suse",
-				"Ubuntu", "Solaris", "Android", "iPhone", "Billy Bob","Sammyboy" };
+		
 		//Find the memberList
 		list=(ListView)findViewById(R.id.memberList);
 		errorMsg=(TextView)findViewById(R.id.memberListEmpty);
 		//Check the list to see if it is empty too see whether to display it or not
-		setListVisibility(members.length, list, errorMsg);
+		setListVisibility(myGroupChat.getMembersList().size(), list, errorMsg);
 		//By using setAdpater method in listview we an add members array in memberList.
-		list.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 , members));
+		list.setAdapter(new ContactAdapter(this, this.getBaseContext(), R.layout.contactitem, myGroupChat.getMembersList()));
 
 	}
 
@@ -121,11 +118,11 @@ public class GroupChatTabHostUI extends Activity
 	}
 
 	public void addNewMemberClicked(View v){
-		ArrayList<Person> myHomies = new ArrayList<Person>();
+		List<Person> myHomies = new ArrayList<Person>();
 
-		int popupHeight = (int) v.getContext().getApplicationContext().getResources().getDisplayMetrics().heightPixels;
+		int popupHeight = (int) v.getContext().getResources().getDisplayMetrics().heightPixels;
 		int popupWidth = (int) v.getContext().getResources().getDisplayMetrics().widthPixels;
-		
+
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		v = inflater.inflate(R.layout.contactspopup, null);
 
@@ -135,7 +132,7 @@ public class GroupChatTabHostUI extends Activity
 		popup.showAtLocation(findViewById(R.id.groupchattabhost), Gravity.CENTER, 0, 0);
 
 		myHomies = (ArrayList<Person>) getContactList();
-		
+
 		if (myHomies != null || !myHomies.isEmpty())
 		{
 			final ListView contactList = (ListView)popup.getContentView().findViewById(R.id.contactList);
@@ -143,20 +140,36 @@ public class GroupChatTabHostUI extends Activity
 			contactList.setAdapter(myAdapter);
 			contactList.setVisibility(View.VISIBLE);
 			contactList.setMinimumHeight(popupHeight);
-			
+
 			TextView emptyContacts =(TextView) popup.getContentView().findViewById(R.id.contactListEmpty);
 			emptyContacts.setVisibility(View.GONE);
-			
+
+			final Activity thisOne = this;
 			contactList.setOnItemClickListener(new OnItemClickListener(){
 				public void onItemClick(AdapterView<?> a, View v, int position,long id) {
-	        		Person newMember = (Person) contactList.getItemAtPosition(position);
-	        		
-	        		System.out.println("Item clicked: " + newMember.getName());
-	    			
-	    			spamMeFacade.addFriend(v, myGroupChat, newMember);
+					Person newMember = (Person) contactList.getItemAtPosition(position);
+					
+					if (spamMeFacade.addFriend(v, myGroupChat, newMember) == -1)
+					{
+						System.out.println("This person is already a member of this Group Chat");
+					}
+					else
+					{
+						System.out.println("This person is added to this Group Chat");
+						
+						myGroupChat.addPerson(newMember);
+						list = (ListView) findViewById(R.id.memberList);
+						list.setAdapter(new ContactAdapter(thisOne, v.getContext(), R.layout.contactitem, myGroupChat.getMembersList()));
+						list.setVisibility(View.VISIBLE);
+						
+						errorMsg = (TextView)findViewById(R.id.memberListEmpty);
+						errorMsg.setVisibility(View.GONE);
+					}
+
+					popup.dismiss();
 				}
-	        });
-			
+			});
+
 			contactList.setOnKeyListener(new OnKeyListener() {
 				@Override
 				public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -177,7 +190,7 @@ public class GroupChatTabHostUI extends Activity
 
 			contactList.setVisibility(View.GONE);
 			emptyContacts.setVisibility(View.VISIBLE);
-			
+
 			contactList.setOnKeyListener(new OnKeyListener() {
 				@Override
 				public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -301,31 +314,31 @@ public class GroupChatTabHostUI extends Activity
 
 
 	//Used to expand a message bubble's text if it is clicked on
-    public void expandMsgClicked(View v) {
-      
-    	//Prepare the alert box
-    	AlertDialog.Builder fullMsgDisplay = new AlertDialog.Builder(this);
+	public void expandMsgClicked(View v) {
 
-    	//Extract the text from the message bubble
-    	TextView msgExpand = (TextView)v;
-    	String msgContent = (String) msgExpand.getText();
+		//Prepare the alert box
+		AlertDialog.Builder fullMsgDisplay = new AlertDialog.Builder(this);
 
-    	//Set the message to display
-    	fullMsgDisplay.setMessage(msgContent);
+		//Extract the text from the message bubble
+		TextView msgExpand = (TextView)v;
+		String msgContent = (String) msgExpand.getText();
 
-    	//Add a confirm button to the alert box and assign a click listener
-    	fullMsgDisplay.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-    		//Click listener on the alert box
-    		public void onClick(DialogInterface arg0, int arg1) {
-    			//Do nothing after the user clicks "OK"
-    		}
-    	});
-    	//Display to screen
-    	fullMsgDisplay.show();   	
-     }
-    
-    // If the popup is showing, then the back button should dismiss it
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+		//Set the message to display
+		fullMsgDisplay.setMessage(msgContent);
+
+		//Add a confirm button to the alert box and assign a click listener
+		fullMsgDisplay.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+			//Click listener on the alert box
+			public void onClick(DialogInterface arg0, int arg1) {
+				//Do nothing after the user clicks "OK"
+			}
+		});
+		//Display to screen
+		fullMsgDisplay.show();   	
+	}
+
+	// If the popup is showing, then the back button should dismiss it
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (popup != null) {
 				if (popup.isShowing()) {

@@ -42,8 +42,7 @@
 			    	android:layout_width="wrap_content"
 			    	android:layout_height="wrap_content"
 			    	android:layout_alignParentTop="true"
-			    	android:text="@string/no_chat_history"
-			    	android:textColor="#FF0000"/>
+			    	android:text="@string/no_chat_history"/>
 		   	</RelativeLayout>
 		    <!-- Other Message Components (message input, send button) -->
 			<TextView android:id="@+id/textone"
@@ -100,7 +99,6 @@
 			    	android:layout_height="wrap_content"
 			    	android:layout_alignParentTop="true"
 			    	android:text="@string/no_members"
-			    	android:textColor="#FF0000"
 			    	android:layout_marginBottom = "50dip"/>
 		    
 	    	<!-- The button to add members to the group -->
