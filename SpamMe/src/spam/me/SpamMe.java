@@ -65,7 +65,9 @@ public class SpamMe extends Activity {
 					System.out.println("The group chat name is " + selectedName);
 					gc = spamMeFacade.getGroupChat(selectedName);
 					System.out.println("The group chat ID is " + gc.getGroupId());
-					
+					if (gc.getMembersList() == null){
+						System.out.println("Members list is empty");
+					}
 					//Start activity for the indicated group chat
 					int myReqCode = 0;
 					Intent groupChatTabHost = new Intent(arg1.getContext(), GroupChatTabHostUI.class); 
