@@ -51,23 +51,24 @@ public class GroupChatTabHostUI extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		spamMeFacade = new SpamMeFacade(this);
-
-		//Getting the groupID from CreateGroupChatUI
-		Bundle extras = getIntent().getExtras();
-		groupID = extras.getLong("newGroupChatID");
-		
-		myGroupChat.setGroupId(groupID);
-
-		//Setting xml file for UI
-		setContentView(R.layout.groupchattabhost);
-
-		//Initializing the edit texts
-		inputPhoneNo = (EditText)findViewById(R.id.PhoneNoTxt);
-		inputMsg = (EditText)findViewById(R.id.messageTxt);
-
-
+        
+        //Initializations
+        spamMeFacade = new SpamMeFacade(this);
+        myGroupChat = new GroupChat();
+        
+        //Getting the groupID from CreateGroupChatUI
+        Bundle extras = getIntent().getExtras();
+        groupID = extras.getLong("newGroupChatID");
+        
+        myGroupChat.setGroupId(groupID);
+        
+        //Setting xml file for UI
+        setContentView(R.layout.groupchattabhost);
+        
+        //Initializing the edit texts
+        inputPhoneNo = (EditText)findViewById(R.id.PhoneNoTxt);
+        inputMsg = (EditText)findViewById(R.id.messageTxt);
+        
 		//Setting up tabs
 		TabHost tabHost = (TabHost) this.findViewById(R.id.groupchattabhost);  // The activity TabHost
 		doTabSetup(tabHost);
@@ -92,7 +93,6 @@ public class GroupChatTabHostUI extends Activity
 		setListVisibility(myGroupChat.getMembersList().size(), list, errorMsg);
 		//By using setAdpater method in listview we an add members array in memberList.
 		list.setAdapter(new ContactAdapter(this, this.getBaseContext(), R.layout.contactitem, myGroupChat.getMembersList()));
-
 	}
 
 	//Handler for SendSMS button
