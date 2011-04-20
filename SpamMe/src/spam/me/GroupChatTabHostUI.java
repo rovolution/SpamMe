@@ -52,7 +52,9 @@ public class GroupChatTabHostUI extends Activity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        //Initializations
         spamMeFacade = new SpamMeFacade(this);
+        myGroupChat = new GroupChat();
         
         //Getting the groupID from CreateGroupChatUI
         Bundle extras = getIntent().getExtras();

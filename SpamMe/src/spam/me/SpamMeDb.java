@@ -263,13 +263,20 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		group.setGroupName(groupName);
 		
 		//Query Groups table with the groupName to get ID 
-		Cursor mCursor = getDb().query(true, TABLE_GROUPS, new String[]{KEY_GROUPSID}, KEY_NAME + "=" + groupName,
+		//mCursor = getDb().query(true, TABLE_GROUPS, new String[] {KEY_GROUPSID}, KEY_NAME + "=" + "'" + name + "'",
+			//	null, null, null, null, null);
+		Cursor mCursor = getDb().query(true, TABLE_GROUPS, new String[]{KEY_GROUPSID}, KEY_NAME + "=" + "'" + groupName + "'",
 				null, null, null, null, null);
-		groupID = mCursor.getLong(mCursor.getColumnIndex(KEY_NAME));
-		//Set groupID for group
-		group.setGroupId(groupID);
+		if (mCursor != null && mCursor.moveToFirst()){
+			groupID = mCursor.getInt(mCursor.getColumnIndex(KEY_GROUPSID));
+			//Set groupID for group
+			group.setGroupId(groupID);
+			mCursor.close();
+			mCursor.deactivate();
+		}
+		return group;
 		
-		
+		/*
 		//Use the ID to get the members 
 		Cursor membersCursor = getDb().query(true, TABLE_GROUPMEMBERS, new String[]{KEY_MEMBER, KEY_PHONENUMBER}, KEY_GROUPID + "=" + groupID,
 				null, null, null, null, null);
@@ -316,6 +323,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 			number = mCursor.getString(mCursor.getColumnIndex(KEY_PHONENUMBER));
 		}
 		return number;
+		*/
 	}
 	
 	/**
@@ -330,11 +338,11 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		//Save number of groups in Groups table
 		int count = mCursor.getCount();
 		
-		String[] names = new String[count];
-		
+		String[] names = new String[count+1];
+		names[0]="Select a Group Chat";
 		
 		if (mCursor != null && 	mCursor.moveToFirst()){
-			for (int i = 0; i<count; i++){
+			for (int i = 1; i<count+1; i++){
 				names[i] = mCursor.getString(mCursor.getColumnIndex(KEY_NAME));
 				mCursor.moveToNext();
 			}
