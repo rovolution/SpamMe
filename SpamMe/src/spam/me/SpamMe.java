@@ -26,6 +26,7 @@ public class SpamMe extends Activity {
 	private Spinner dropDownMenu;
 	//SpamMeFacade - API for application
 	private SpamMeFacade spamMeFacade;
+	private ArrayAdapter adapter;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -44,14 +45,9 @@ public class SpamMe extends Activity {
 		//Query for the saved groups in the database
 		GroupChat [] savedGroups;
 		savedGroups = spamMeFacade.getSavedGroups();
-		ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, savedGroups);
+		adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, savedGroups);
 		dropDownMenu.setAdapter(adapter);
 
-			
-		//Set the drop down menu 
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-		dropDownMenu.setAdapter(adapter);
-		
 		dropDownMenu.setOnItemSelectedListener(new OnItemSelectedListener(){
 
 			@Override
@@ -73,50 +69,59 @@ public class SpamMe extends Activity {
 				}
 			}
 
-				@Override
-				public void onNothingSelected(AdapterView<?> arg0) {
-					// TODO Auto-generated method stub
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
 
-				}
+			}
 
-			});
+		});
 
-		}
-
-		public void newGroupChatClicked (View v)
-		{
-			int myReqCode = 1;
-			Intent newGroupChat = new Intent(v.getContext(), CreateGroupChatUI.class); 
-			startActivityIfNeeded(newGroupChat, myReqCode); 
-		}
-
-		public void StatusClicked (View v)
-		{
-			TextView statusText = (TextView) findViewById(R.id.statusText);
-			String statusMsg = statusText.getText().toString();
-
-			spamMeFacade.setStatusText(preferences, statusMsg);
-
-			Toast.makeText(getBaseContext(), "New Status set", 3).show();
-			setStatusHint();
-			statusText.setText("");
-		}
-
-		public void statusOnClicked (View v) {	
-			Toast.makeText(getBaseContext(), "Status enabled", 3).show();
-		}
-
-		public void statusOffClicked (View v) {	
-			Toast.makeText(getBaseContext(), "Status disabled", 3).show();
-		}
-
-		private void setStatusHint() {	
-			TextView statusText = (TextView) findViewById(R.id.statusText);
-
-			String myStatus = preferences.getString("statusMessage", "");
-			if (statusText != null && myStatus != null)
-			{
-				statusText.setHint(myStatus);
-			}	
-		}
 	}
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		GroupChat [] savedGroups;
+		savedGroups = spamMeFacade.getSavedGroups();
+		adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, savedGroups);
+		dropDownMenu.setAdapter(adapter);
+	}
+
+	public void newGroupChatClicked (View v)
+	{
+		int myReqCode = 1;
+		Intent newGroupChat = new Intent(v.getContext(), CreateGroupChatUI.class); 
+		startActivityIfNeeded(newGroupChat, myReqCode); 
+	}
+
+	public void StatusClicked (View v)
+	{
+		TextView statusText = (TextView) findViewById(R.id.statusText);
+		String statusMsg = statusText.getText().toString();
+
+		spamMeFacade.setStatusText(preferences, statusMsg);
+
+		Toast.makeText(getBaseContext(), "New Status set", 3).show();
+		setStatusHint();
+		statusText.setText("");
+	}
+
+	public void statusOnClicked (View v) {	
+		Toast.makeText(getBaseContext(), "Status enabled", 3).show();
+	}
+
+	public void statusOffClicked (View v) {	
+		Toast.makeText(getBaseContext(), "Status disabled", 3).show();
+	}
+
+	private void setStatusHint() {	
+		TextView statusText = (TextView) findViewById(R.id.statusText);
+
+		String myStatus = preferences.getString("statusMessage", "");
+		if (statusText != null && myStatus != null)
+		{
+			statusText.setHint(myStatus);
+		}	
+	}
+}
