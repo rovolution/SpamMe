@@ -2,6 +2,7 @@ package spam.me;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -110,13 +111,15 @@ public class GroupChatTabHostUI extends Activity
 			numbers[i] = myGroupChat.getMembersList().get(i).getPhoneNum();
 		}
 		//String number = myGroupChat.getMembersList().get(0).getPhoneNum();
-		String msg = String.valueOf(groupID) + " " +inputMsg.getText().toString();
+		String msg = ":" + String.valueOf(groupID)+
+					":" + "my name " + 
+					":" + inputMsg.getText().toString();
 		//Testing the groupID
 		System.out.println(msg);
+		
 
 		if (msg.length()>0){
 			spamMeFacade.sendMsg(msg, numbers);
-			//sendSMS(msg, number);
 		}
 		else {
 			Toast.makeText(getBaseContext(), 
