@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
@@ -31,6 +32,9 @@ import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 
 public class GroupChatTabHostUI extends Activity
@@ -360,5 +364,33 @@ public class GroupChatTabHostUI extends Activity
 		}
 
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	@Override
+	//Creates the Options Menu created by clicking on Menu
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menu, menu);
+	    return true;
+	}
+	
+	@Override
+	//Handler for when Options Menu items are clicked on
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int myReqCode = 1;
+		Intent otherIntent;
+		switch (item.getItemId()) {
+	        //Route to main page
+			case R.id.mainPageButton:
+	        	otherIntent = new Intent(this, SpamMe.class); 
+				startActivityIfNeeded(otherIntent, myReqCode); 
+	            break;
+	        //Route to Create Chat page
+	        case R.id.createChatPageButton:
+	        	otherIntent = new Intent(this, CreateGroupChatUI.class); 
+				startActivityIfNeeded(otherIntent, myReqCode); 
+	            break;
+	    }
+	    return true;
 	}
 }
