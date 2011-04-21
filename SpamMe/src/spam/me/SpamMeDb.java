@@ -132,6 +132,9 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	 public static SQLiteDatabase getDb() {
 		 	return Db;
 	 }
+	 /**
+	  * Method adds message to the database
+	  */
 	public void addMessage(){
 		
 	}

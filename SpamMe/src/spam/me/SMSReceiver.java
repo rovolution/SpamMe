@@ -57,8 +57,11 @@ public class SMSReceiver extends BroadcastReceiver{
 					}
 					System.out.println(items[j]);
 				}
-
+				rcvSender = msgs[i].getOriginatingAddress();
 			}
+			
+			
+			
 			//toast the SMS message
 			Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
 			
