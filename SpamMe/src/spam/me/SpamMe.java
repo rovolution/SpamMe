@@ -70,7 +70,6 @@ public class SpamMe extends Activity {
 					Intent groupChatTabHost = new Intent(arg1.getContext(), GroupChatTabHostUI.class); 
 					groupChatTabHost.putExtra("newGroupChatID", gc.getGroupId());
 					startActivityIfNeeded(groupChatTabHost, myReqCode);
-
 				}
 			}
 
