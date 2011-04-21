@@ -2,7 +2,6 @@ package spam.me;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,9 +16,13 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.PhoneLookup;
+import android.telephony.TelephonyManager;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
@@ -28,13 +31,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 
 public class GroupChatTabHostUI extends Activity
@@ -151,6 +150,12 @@ public class GroupChatTabHostUI extends Activity
 			popup.setTouchable(true);
 			
 			final ListView contactList = (ListView)popup.getContentView().findViewById(R.id.contactList);
+			
+			for (int i = 0; i < myHomies.size(); i++)
+			{
+				System.out.println(myHomies.get(i).getName());
+			}
+			
 			ArrayAdapter myAdapter = new ContactAdapter(this, v.getContext(), R.layout.contactitem, myHomies);
 			contactList.setAdapter(myAdapter);
 			contactList.setVisibility(View.VISIBLE);
@@ -252,7 +257,12 @@ public class GroupChatTabHostUI extends Activity
 						{
 							aContact.setPhoneNum(phone.getString(numberFieldColumnIndex));
 							phone.moveToNext();
-							contactList.add(aContact);
+							TelephonyManager mTelephonyMgr;
+					    	mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+							if (!mTelephonyMgr.getLine1Number().contains(aContact.getPhoneNum()))
+							{
+								contactList.add(aContact);	
+							}
 						}
 					}
 				}
