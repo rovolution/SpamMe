@@ -24,7 +24,7 @@
 			   	android:layout_alignParentTop="true"/>
 			<TextView android:id="@+id/contactListEmpty"
 			   	android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
+			    android:layout_height="800dip"
 			    android:layout_alignParentTop="true"
 			   	android:text="@string/no_contacts"/>
 		</LinearLayout>

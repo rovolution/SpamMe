@@ -142,19 +142,18 @@ public class GroupChatTabHostUI extends Activity
 		v = inflater.inflate(R.layout.contactspopup, null);
 
 		popup = new PopupWindow(v, popupWidth, popupHeight, false);
-		popup.setFocusable(true);
-		popup.setTouchable(true);
-		popup.showAtLocation(findViewById(R.id.groupchattabhost), Gravity.CENTER, 0, 0);
-
 		myHomies = (ArrayList<Person>) getContactList();
-
-		if (myHomies != null || !myHomies.isEmpty())
+		
+		if (!myHomies.isEmpty())
 		{
+			popup.setOutsideTouchable(false);
+			popup.setFocusable(true);
+			popup.setTouchable(true);
+			
 			final ListView contactList = (ListView)popup.getContentView().findViewById(R.id.contactList);
 			ArrayAdapter myAdapter = new ContactAdapter(this, v.getContext(), R.layout.contactitem, myHomies);
 			contactList.setAdapter(myAdapter);
 			contactList.setVisibility(View.VISIBLE);
-			contactList.setMinimumHeight(popupHeight);
 
 			TextView emptyContacts =(TextView) popup.getContentView().findViewById(R.id.contactListEmpty);
 			emptyContacts.setVisibility(View.GONE);
@@ -166,11 +165,11 @@ public class GroupChatTabHostUI extends Activity
 					
 					if (spamMeFacade.addFriend(v, myGroupChat, newMember) == -1)
 					{
-						System.out.println("This person is already a member of this Group Chat");
+						Toast.makeText(getBaseContext(), newMember.getName() + " is already in this Group Chat", Toast.LENGTH_SHORT).show();
 					}
 					else
 					{
-						System.out.println("This person is added to this Group Chat");
+						Toast.makeText(getBaseContext(), newMember.getName() + " is has been added to this Group Chat", Toast.LENGTH_SHORT).show();
 						
 						myGroupChat.addPerson(newMember);
 						list = (ListView) findViewById(R.id.memberList);
@@ -200,13 +199,17 @@ public class GroupChatTabHostUI extends Activity
 		}
 		else
 		{
+			popup.setOutsideTouchable(false);
+			popup.setFocusable(false);
+			popup.setTouchable(false);
+			
 			ListView contactList = (ListView) popup.getContentView().findViewById(R.id.contactList);
 			TextView emptyContacts =(TextView) popup.getContentView().findViewById(R.id.contactListEmpty);
 
 			contactList.setVisibility(View.GONE);
 			emptyContacts.setVisibility(View.VISIBLE);
 
-			contactList.setOnKeyListener(new OnKeyListener() {
+			emptyContacts.setOnKeyListener(new OnKeyListener() {
 				@Override
 				public boolean onKey(View v, int keyCode, KeyEvent event) {
 					if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -219,6 +222,8 @@ public class GroupChatTabHostUI extends Activity
 				}
 			});
 		}
+		
+		popup.showAtLocation(findViewById(R.id.groupchattabhost), Gravity.CENTER, 0, 0);
 	}
 
 	public List<Person> getContactList(){
