@@ -47,9 +47,10 @@ public class SpamMeFacade {
 	 * Method to retrieve all the saved groups
 	 * Returns an array of GroupChats
 	 */
-	public String[] getSavedGroups(){
+	public GroupChat[] getSavedGroups(){
 		return mySpamMeDb.getAllGroupChatNames();
 	}
+	
 	/**
 	 * Makes the necessary calls to add a particular group  member to the group chat
 	 */
@@ -80,8 +81,8 @@ public class SpamMeFacade {
 	public void disableStatus(){
 		
 	}
-	public GroupChat getGroupChat(String groupName){
-		return mySpamMeDb.getGroupChat(groupName);
+	public GroupChat getGroupChat(long groupID){
+		return mySpamMeDb.getGroupChat(groupID);
 		
 	}
 	public void startNewChat(){
