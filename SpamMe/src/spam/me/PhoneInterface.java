@@ -77,18 +77,14 @@ public class PhoneInterface extends Activity {
 		
 		return contactList;
 	}
-	public void sendSMS(String msg, String number){
-		/*
-		Bundle bundle = this.getIntent().getExtras(); 
-		String msg = bundle.getString("message");
-		String number = bundle.getString("phoneNumber");
-		Toast.makeText(getBaseContext(), 
-				"Msg is: " + msg, 
-				Toast.LENGTH_SHORT).show();
-		*/
-		//PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, PhoneInterface.class), 0);
+	public void sendSMS(String msg, String [] number){
+
 		SmsManager sms = SmsManager.getDefault();
-		sms.sendTextMessage(number, null, msg, null, null);
+		for (int i=0; i < number.length; i++){
+			System.out.println("Number being sent " + number[i]);
+			sms.sendTextMessage(number[i], null, msg, null, null);
+		}
+		//sms.sendTextMessage(number, null, msg, null, null);
 	}
 	public void receiveSMS(){
 	}

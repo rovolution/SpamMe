@@ -49,11 +49,12 @@
 			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
 			    android:text="Enter the phone number" />
+			<!--  
 			<EditText
 				android:id="@+id/PhoneNoTxt"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-			/>
+			/> -->
 			<TextView 
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"

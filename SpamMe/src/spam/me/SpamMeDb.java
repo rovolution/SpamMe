@@ -213,7 +213,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		mCursor = getDb().query(false, 
 				TABLE_GROUPMEMBERS, 
 				new String[] {KEY_ID}, 
-				KEY_MEMBER + "=" + "'" + newPerson.getName() + "'" + "and" + KEY_GROUPID + "=" + group.getGroupId(),
+				KEY_MEMBER + "=" + "'" + newPerson.getName() + "'" + "and " + KEY_GROUPID + "=" + group.getGroupId(),
 				null, null, null, null, null);
 		
 		//Name already exists don't create a new entry
@@ -262,15 +262,14 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		//Set groupID for group
 		group.setGroupId(id);
 		
-		//Query Groups table with the groupName to get ID 
+		//Query Groups table with the groupID to get groupName
 		Cursor mCursor = getDb().query(true, TABLE_GROUPS, new String[]{KEY_NAME}, KEY_GROUPSID + "=" + id,
 				null, null, null, null, null);
 		if (mCursor != null && mCursor.moveToFirst()){
 			String groupName = mCursor.getString(mCursor.getColumnIndex(KEY_NAME));
-			//Set groupID for group
+			//Set groupName
 			group.setGroupName(groupName);
 		}
-		
 		
 		//Use the ID to get the members 
 		mCursor = getDb().query(true, TABLE_GROUPMEMBERS, new String[]{KEY_MEMBER, KEY_PHONENUMBER}, KEY_GROUPID + "=" + id,
@@ -287,42 +286,40 @@ public class SpamMeDb extends SQLiteOpenHelper{
 			}
 			//Set members for group
 			group.setMembersList(members);
-			mCursor.close();
-			mCursor.deactivate();
-			
 		}
-		return group;
-		/*
+		
 		//Use ID to get the messages
-		Cursor messageCursor = getDb().query(true, TABLE_MESSAGES, new String[]{KEY_MESSAGE, KEY_SENDER}, KEY_GROUPID + "=" + groupID,
+		mCursor = getDb().query(true, TABLE_MESSAGES, new String[]{KEY_MESSAGE, KEY_SENDER}, KEY_GROUPID + "=" + id,
 				null, null, null, null, null);
-		int messageCount = messageCursor.getCount();
+		int messageCount = mCursor.getCount();
 		//Set the messages in groupChat object
-		if (messageCursor != null && messageCursor.moveToFirst()){
+		if (mCursor != null && mCursor.moveToFirst()){
 			for (int i = 0; i<messageCount; i++){
 				//Set the content, owner, and groupID for message
-				m.setContent(messageCursor.getString(messageCursor.getColumnIndex(KEY_MESSAGE)));
-				phoneNumber = fetchPhoneNum(messageCursor.getString(messageCursor.getColumnIndex(KEY_SENDER)));
-				m.setOwner(messageCursor.getString(messageCursor.getColumnIndex(KEY_SENDER)), phoneNumber);
-				m.setGroupID(groupID);
+				m.setContent(mCursor.getString(mCursor.getColumnIndex(KEY_MESSAGE)));
+				phoneNumber = fetchPhoneNum(mCursor.getString(mCursor.getColumnIndex(KEY_SENDER)));
+				m.setOwner(mCursor.getString(mCursor.getColumnIndex(KEY_SENDER)), phoneNumber);
+				m.setGroupID(id);
 				//Add message to message chain
 				messages.add(m);
 			}
 			//Set members for group
 			group.setMessageChain(messages);
+			mCursor.close();
+			mCursor.deactivate();
 		}
 		return group;
 	}
 	
 	public String fetchPhoneNum (String name){
 		String number = "";
-		Cursor mCursor = getDb().query(true, TABLE_GROUPMEMBERS, new String[]{KEY_PHONENUMBER}, KEY_MEMBER + "=" + name,
+		Cursor mCursor = getDb().query(true, TABLE_GROUPMEMBERS, new String[]{KEY_PHONENUMBER}, KEY_MEMBER + "=" + "'" + name + "'",
 				null, null, null, null, null);
 		if (mCursor != null && mCursor.moveToFirst()){
 			number = mCursor.getString(mCursor.getColumnIndex(KEY_PHONENUMBER));
 		}
 		return number;
-		*/
+		
 	}
 	
 	/**

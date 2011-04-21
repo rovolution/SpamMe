@@ -61,8 +61,8 @@ public class SpamMeFacade {
 	public void removeMe(int groupId){
 		
 	}
-	public void sendMsg(String msg, String number){
-		myPhoneInterface.sendSMS(msg, number);
+	public void sendMsg(String msg, String []numbers){
+		myPhoneInterface.sendSMS(msg, numbers);
 		
 	}
 	public void receiveMsg(){

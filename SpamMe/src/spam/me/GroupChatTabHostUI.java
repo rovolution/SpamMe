@@ -62,13 +62,14 @@ public class GroupChatTabHostUI extends Activity
         
         //Set group chat
         myGroupChat = spamMeFacade.getGroupChat(groupID);
-
+        System.out.println("group name: " + myGroupChat.getGroupName());
+        System.out.println("Members list: " + myGroupChat.getMembersList().toString());
         
         //Setting xml file for UI
         setContentView(R.layout.groupchattabhost);
         
         //Initializing the edit texts
-        inputPhoneNo = (EditText)findViewById(R.id.PhoneNoTxt);
+        //inputPhoneNo = (EditText)findViewById(R.id.PhoneNoTxt);
         inputMsg = (EditText)findViewById(R.id.messageTxt);
         
 		//Setting up tabs
@@ -103,13 +104,18 @@ public class GroupChatTabHostUI extends Activity
 				"Send SMS got clicked", 
 				Toast.LENGTH_SHORT).show();
 
-		String number = inputPhoneNo.getText().toString();
+		//String number = inputPhoneNo.getText().toString();
+		String[] numbers = new String[myGroupChat.getMembersList().size()];
+		for (int i=0; i< myGroupChat.getMembersList().size(); i++){
+			numbers[i] = myGroupChat.getMembersList().get(i).getPhoneNum();
+		}
+		//String number = myGroupChat.getMembersList().get(0).getPhoneNum();
 		String msg = String.valueOf(groupID) + " " +inputMsg.getText().toString();
 		//Testing the groupID
 		System.out.println(msg);
 
-		if (number.length()>0 && msg.length()>0){
-			spamMeFacade.sendMsg(msg, number);
+		if (msg.length()>0){
+			spamMeFacade.sendMsg(msg, numbers);
 			//sendSMS(msg, number);
 		}
 		else {
