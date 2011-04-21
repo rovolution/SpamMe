@@ -208,19 +208,6 @@ public class GroupChatTabHostUI extends Activity
 
 			contactList.setVisibility(View.GONE);
 			emptyContacts.setVisibility(View.VISIBLE);
-
-			emptyContacts.setOnKeyListener(new OnKeyListener() {
-				@Override
-				public boolean onKey(View v, int keyCode, KeyEvent event) {
-					if (keyCode == KeyEvent.KEYCODE_BACK) {
-						if (popup != null) {
-							popup.dismiss();
-							return true;
-						}
-					}
-					return false;
-				}
-			});
 		}
 		
 		popup.showAtLocation(findViewById(R.id.groupchattabhost), Gravity.CENTER, 0, 0);
