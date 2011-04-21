@@ -39,18 +39,19 @@ public class SpamMe extends Activity {
 
 		//Initializing the drop down menu
 		dropDownMenu = (Spinner)findViewById(R.id.savedChatsDropDown);
-		String [] groupNames;
+
 
 		//Query for the saved groups in the database
-		groupNames = spamMeFacade.getSavedGroups();
-		if (groupNames == null){
-			groupNames = new String[] {""};
-		}
+		GroupChat [] savedGroups;
+		savedGroups = spamMeFacade.getSavedGroups();
+		ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, savedGroups);
+		dropDownMenu.setAdapter(adapter);
 
+			
 		//Set the drop down menu 
-		ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, groupNames);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 		dropDownMenu.setAdapter(adapter);
+		
 		dropDownMenu.setOnItemSelectedListener(new OnItemSelectedListener(){
 
 			@Override
@@ -59,15 +60,11 @@ public class SpamMe extends Activity {
 			 */
 			public void onItemSelected(AdapterView<?> parent, View arg1,int pos, long arg3) {
 				if (arg3 != 0){
-					System.out.println("Selected id is " + arg3);
-					String selectedName = parent.getItemAtPosition(pos).toString();
-					GroupChat gc = new GroupChat();
-					System.out.println("The group chat name is " + selectedName);
-					gc = spamMeFacade.getGroupChat(selectedName);
-					System.out.println("The group chat ID is " + gc.getGroupId());
-					if (gc.getMembersList() == null){
-						System.out.println("Members list is empty");
-					}
+					//New
+					GroupChat gc = (GroupChat)dropDownMenu.getSelectedItem();
+					System.out.println("Selected group chat name: " + gc);
+					System.out.println("Selected group chat id " + gc.getGroupId());
+
 					//Start activity for the indicated group chat
 					int myReqCode = 0;
 					Intent groupChatTabHost = new Intent(arg1.getContext(), GroupChatTabHostUI.class); 

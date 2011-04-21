@@ -61,4 +61,9 @@ public class GroupChat {
 	{
 		return groupID;
 	}
+	
+	public String toString()
+	{
+		return (groupName);
+	}
 }

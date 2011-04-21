@@ -60,7 +60,9 @@ public class GroupChatTabHostUI extends Activity
         Bundle extras = getIntent().getExtras();
         groupID = extras.getLong("newGroupChatID");
         
-        myGroupChat.setGroupId(groupID);
+        //Set group chat
+        myGroupChat = spamMeFacade.getGroupChat(groupID);
+
         
         //Setting xml file for UI
         setContentView(R.layout.groupchattabhost);
