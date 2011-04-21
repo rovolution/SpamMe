@@ -11,12 +11,12 @@ import android.widget.Toast;
 
 public class SMSReceiver extends BroadcastReceiver{
 	private SpamMeFacade mySpamMeFacade;
-	
+
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		mySpamMeFacade = new SpamMeFacade(context);
-		
+
 		//Get the SMS message passed in
 		Bundle bundle = intent.getExtras();
 		SmsMessage [] msgs = null;
@@ -36,15 +36,14 @@ public class SMSReceiver extends BroadcastReceiver{
 				str += " :";
 				str += msgs[i].getMessageBody().toString();
 				str += "\n";
-			
-			
-			//Save message to database 
-			//get the group ID 
-			//save to message table
-			//Parsing message
-			Pattern p = Pattern.compile(":");
-			String[] items = p.split(msgs[i].getMessageBody().toString());
-			System.out.println("RECEIVED: ");
+
+				//Save message to database 
+				//get the group ID 
+				//save to message table
+				//Parsing message
+				Pattern p = Pattern.compile(":");
+				String[] items = p.split(msgs[i].getMessageBody().toString());
+				System.out.println("RECEIVED: ");
 				for (int j = 0; j<items.length; j++){
 					if (j==0){
 						rcvGroupID = Long.valueOf(items[j]);
@@ -59,15 +58,15 @@ public class SMSReceiver extends BroadcastReceiver{
 				}
 				rcvSender = msgs[i].getOriginatingAddress();
 			}
-			
-			
-			
+
+
+
 			//toast the SMS message
 			Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
-			
+
 			Toast.makeText(context, sender, Toast.LENGTH_SHORT).show();
 		}
-		
+
 	}
 
 }
