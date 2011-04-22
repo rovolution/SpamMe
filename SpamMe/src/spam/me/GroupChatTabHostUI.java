@@ -2,12 +2,12 @@ package spam.me;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,9 +16,13 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.PhoneLookup;
+import android.telephony.TelephonyManager;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
@@ -27,7 +31,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -139,19 +142,24 @@ public class GroupChatTabHostUI extends Activity
 		v = inflater.inflate(R.layout.contactspopup, null);
 
 		popup = new PopupWindow(v, popupWidth, popupHeight, false);
-		popup.setFocusable(true);
-		popup.setTouchable(true);
-		popup.showAtLocation(findViewById(R.id.groupchattabhost), Gravity.CENTER, 0, 0);
-
 		myHomies = (ArrayList<Person>) getContactList();
-
-		if (myHomies != null || !myHomies.isEmpty())
+		
+		if (!myHomies.isEmpty())
 		{
+			popup.setOutsideTouchable(false);
+			popup.setFocusable(true);
+			popup.setTouchable(true);
+			
 			final ListView contactList = (ListView)popup.getContentView().findViewById(R.id.contactList);
+			
+			for (int i = 0; i < myHomies.size(); i++)
+			{
+				System.out.println(myHomies.get(i).getName());
+			}
+			
 			ArrayAdapter myAdapter = new ContactAdapter(this, v.getContext(), R.layout.contactitem, myHomies);
 			contactList.setAdapter(myAdapter);
 			contactList.setVisibility(View.VISIBLE);
-			contactList.setMinimumHeight(popupHeight);
 
 			TextView emptyContacts =(TextView) popup.getContentView().findViewById(R.id.contactListEmpty);
 			emptyContacts.setVisibility(View.GONE);
@@ -163,11 +171,11 @@ public class GroupChatTabHostUI extends Activity
 					
 					if (spamMeFacade.addFriend(v, myGroupChat, newMember) == -1)
 					{
-						System.out.println("This person is already a member of this Group Chat");
+						Toast.makeText(getBaseContext(), newMember.getName() + " is already in this Group Chat", Toast.LENGTH_SHORT).show();
 					}
 					else
 					{
-						System.out.println("This person is added to this Group Chat");
+						Toast.makeText(getBaseContext(), newMember.getName() + " is has been added to this Group Chat", Toast.LENGTH_SHORT).show();
 						
 						myGroupChat.addPerson(newMember);
 						list = (ListView) findViewById(R.id.memberList);
@@ -197,25 +205,18 @@ public class GroupChatTabHostUI extends Activity
 		}
 		else
 		{
+			popup.setOutsideTouchable(false);
+			popup.setFocusable(false);
+			popup.setTouchable(false);
+			
 			ListView contactList = (ListView) popup.getContentView().findViewById(R.id.contactList);
 			TextView emptyContacts =(TextView) popup.getContentView().findViewById(R.id.contactListEmpty);
 
 			contactList.setVisibility(View.GONE);
 			emptyContacts.setVisibility(View.VISIBLE);
-
-			contactList.setOnKeyListener(new OnKeyListener() {
-				@Override
-				public boolean onKey(View v, int keyCode, KeyEvent event) {
-					if (keyCode == KeyEvent.KEYCODE_BACK) {
-						if (popup != null) {
-							popup.dismiss();
-							return true;
-						}
-					}
-					return false;
-				}
-			});
 		}
+		
+		popup.showAtLocation(findViewById(R.id.groupchattabhost), Gravity.CENTER, 0, 0);
 	}
 
 	public List<Person> getContactList(){
@@ -257,7 +258,12 @@ public class GroupChatTabHostUI extends Activity
 						{
 							aContact.setPhoneNum(phone.getString(numberFieldColumnIndex));
 							phone.moveToNext();
-							contactList.add(aContact);
+							TelephonyManager mTelephonyMgr;
+					    	mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+							if (!mTelephonyMgr.getLine1Number().contains(aContact.getPhoneNum()))
+							{
+								contactList.add(aContact);	
+							}
 						}
 					}
 				}
@@ -361,5 +367,33 @@ public class GroupChatTabHostUI extends Activity
 		}
 
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	@Override
+	//Creates the Options Menu created by clicking on Menu
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menu, menu);
+	    return true;
+	}
+	
+	@Override
+	//Handler for when Options Menu items are clicked on
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int myReqCode = 1;
+		Intent otherIntent;
+		switch (item.getItemId()) {
+	        //Route to main page
+			case R.id.mainPageButton:
+	        	otherIntent = new Intent(this, SpamMe.class); 
+				startActivityIfNeeded(otherIntent, myReqCode); 
+	            break;
+	        //Route to Create Chat page
+	        case R.id.createChatPageButton:
+	        	otherIntent = new Intent(this, CreateGroupChatUI.class); 
+				startActivityIfNeeded(otherIntent, myReqCode); 
+	            break;
+	    }
+	    return true;
 	}
 }

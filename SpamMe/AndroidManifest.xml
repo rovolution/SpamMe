@@ -22,6 +22,8 @@
 		<activity android:name=".GroupChatTabHostUI" android:label="Group Chat" android:launchMode="singleTop" android:screenOrientation="portrait" android:configChanges="orientation|screenLayout|keyboardHidden"></activity>
     </application>
 
+	<uses-permission android:name="android.permission.READ_PHONE_STATE">
+	</uses-permission>
 	<uses-permission android:name="android.permission.READ_CONTACTS">
 	</uses-permission>
 	<uses-permission android:name="android.permission.SEND_SMS">

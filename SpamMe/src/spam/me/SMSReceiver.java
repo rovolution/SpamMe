@@ -11,12 +11,12 @@ import android.widget.Toast;
 
 public class SMSReceiver extends BroadcastReceiver{
 	private SpamMeFacade mySpamMeFacade;
-	
+
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		mySpamMeFacade = new SpamMeFacade(context);
-		
+
 		//Get the SMS message passed in
 		Bundle bundle = intent.getExtras();
 		SmsMessage [] msgs = null;
@@ -60,18 +60,18 @@ public class SMSReceiver extends BroadcastReceiver{
 				}
 				rcvSender = msgs[i].getOriginatingAddress();
 			}
+
 			
 			//Create Message from groupID, phone number, and message
 			Message m = mySpamMeFacade.createMessage(rcvGroupID, rcvSender, rcvMsg);
 			mySpamMeFacade.addMessage(m);
-			
-			
+
 			//toast the SMS message
 			Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
-			
+
 			Toast.makeText(context, sender, Toast.LENGTH_SHORT).show();
 		}
-		
+
 	}
 
 }

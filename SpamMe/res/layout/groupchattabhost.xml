@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content">
 				<ListView android:id="@+id/msgList" 
 				    android:layout_width="wrap_content"
-					android:layout_height="100px" 
+					android:layout_height="180px" 
 			    	android:layout_alignParentTop="true"
 					android:layout_weight="1.0"/>
 				<TextView android:id="@+id/msgListEmpty"
@@ -45,10 +45,6 @@
 			    	android:text="@string/no_chat_history"/>
 		   	</RelativeLayout>
 		    <!-- Other Message Components (message input, send button) -->
-			<TextView android:id="@+id/textone"
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:text="Enter the phone number" />
 			<!--  
 			<EditText
 				android:id="@+id/PhoneNoTxt"
