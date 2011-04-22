@@ -65,7 +65,8 @@ public class GroupChatTabHostUI extends Activity
         myGroupChat = spamMeFacade.getGroupChat(groupID);
         System.out.println("group name: " + myGroupChat.getGroupName());
         System.out.println("Members list: " + myGroupChat.getMembersList().toString());
-        
+       // List<Message> messages = myGroupChat.getMessageChain();
+       // Message [] msgArray = messages.toArray();
         //Setting xml file for UI
         setContentView(R.layout.groupchattabhost);
         
@@ -111,7 +112,7 @@ public class GroupChatTabHostUI extends Activity
 			numbers[i] = myGroupChat.getMembersList().get(i).getPhoneNum();
 		}
 		//String number = myGroupChat.getMembersList().get(0).getPhoneNum();
-		String msg = ":" + String.valueOf(groupID)+
+		String msg = String.valueOf(groupID)+
 					":" + "my name " + 
 					":" + inputMsg.getText().toString();
 		//Testing the groupID

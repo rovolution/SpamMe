@@ -3,6 +3,8 @@ package spam.me;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -17,7 +19,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	
 	
 	private static SQLiteDatabase Db;
-	private static final int DATABASE_VERSION = 17;
+	private static final int DATABASE_VERSION = 19;
 	private static final String DATABASE_NAME = "spamMeDB";
 	private final Context spamMeCtx;
 	
@@ -135,7 +137,34 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	 /**
 	  * Method adds message to the database
 	  */
-	public void addMessage(){
+	public void addMessage(Message m) throws SQLException{
+		/*
+		private String content;
+		private Person owner = new Person();
+		private enum msgType {REMOVE, ADD, TEXT};
+		private msgType type;
+		private long groupID;
+		
+		"create table messages (id integer primary key autoincrement, "
+        + "groupID integer not null,"
+        + "sender text not null,"
+        + "message text not null,"
+        + "FOREIGN KEY(groupID) REFERENCES groups(groupsID));"
+        */
+        
+		long rowID;
+    	ContentValues inputValue = new ContentValues();
+    	inputValue.put(KEY_GROUPID, m.getGroupID());
+    	inputValue.put(KEY_SENDER, m.getOwner().getName());
+    	inputValue.put(KEY_MESSAGE, m.getContent());
+    	rowID = getDb().insert(TABLE_MESSAGES, null, inputValue);
+    	if (rowID >= 0){
+    		System.out.println("Added message succesfully");
+    	}
+    	else{
+    		throw new SQLException();
+    	}
+    	
 		
 	}
 	/**
@@ -211,6 +240,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	 */
 	public int addMember(GroupChat group, Person newPerson){
 		Cursor mCursor = null;
+		newPerson.setPhoneNum(newPerson.getPhoneNum().replace("-", ""));
 		
 		//Check to see if the name is already in the database
 		mCursor = getDb().query(false, 
@@ -353,6 +383,22 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		}
 		return names;
 		
+	}
+	
+	/**
+	 * Method returns the name associated with the phone number from the GroupMembers table
+	 * @param String number
+	 * @return String member
+	 */
+	public String getMember(String number){
+		String memberName = "UNKNOWN";
+		Cursor mCursor = getDb().query(true, TABLE_GROUPMEMBERS, new String[] {KEY_MEMBER}, KEY_PHONENUMBER + "=" + "'" + number + "'",
+		null, null, null, null, null);
+		
+		if (mCursor != null && mCursor.moveToFirst()){
+			memberName = mCursor.getString(mCursor.getColumnIndex(KEY_MEMBER));
+		}
+		return memberName;
 	}
 	
 }

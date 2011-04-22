@@ -24,6 +24,10 @@ public class SpamMeFacade {
 		return mySpamMeDb.addMember(myGroupChat, newMember);
 	}
 	
+	public void addMessage(Message m){
+		mySpamMeDb.addMessage(m);
+	}
+	
 	/**
 	 * Method makes the necessary calls to add a new group to the database
 	 * Returns -1 if entry was not added to the database
@@ -67,6 +71,20 @@ public class SpamMeFacade {
 	}
 	public void receiveMsg(){
 		
+	}
+	
+	/**
+	 * Method creates a message object 
+	 * @param id
+	 * @param senderNumber
+	 * @param msg
+	 */
+	public Message createMessage(long id, String senderNumber, String msg){
+		Message m = new Message(); 
+		m.setGroupID(id);
+		m.setContent(msg);
+		m.setOwner(mySpamMeDb.getMember(senderNumber), senderNumber);
+		return m;
 	}
 	
 	public void setStatusText(SharedPreferences preferences, String statusMsg)

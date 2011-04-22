@@ -22,9 +22,9 @@ public class SMSReceiver extends BroadcastReceiver{
 		SmsMessage [] msgs = null;
 		String str = "";
 		String sender = "";
-		Long rcvGroupID;
-		String rcvMsg;
-		String rcvSender;
+		Long rcvGroupID = (long) -1;
+		String rcvMsg = "";
+		String rcvSender = "";
 		if (bundle != null){
 			//Retrieve the SMS message
 			Object[] pdus = (Object[]) bundle.get("pdus");
@@ -44,22 +44,26 @@ public class SMSReceiver extends BroadcastReceiver{
 			//Parsing message
 			Pattern p = Pattern.compile(":");
 			String[] items = p.split(msgs[i].getMessageBody().toString());
-			System.out.println("RECEIVED: ");
+			System.out.println("RECEIVED: " + msgs[i].getMessageBody().toString());
 				for (int j = 0; j<items.length; j++){
 					if (j==0){
 						rcvGroupID = Long.valueOf(items[j]);
 					}
+					
 					else if (j==1){
 						rcvSender = items[j];
 					}
+					
 					else if (j==2){
 						rcvMsg = items[j];
 					}
-					System.out.println(items[j]);
 				}
 				rcvSender = msgs[i].getOriginatingAddress();
 			}
 			
+			//Create Message from groupID, phone number, and message
+			Message m = mySpamMeFacade.createMessage(rcvGroupID, rcvSender, rcvMsg);
+			mySpamMeFacade.addMessage(m);
 			
 			
 			//toast the SMS message

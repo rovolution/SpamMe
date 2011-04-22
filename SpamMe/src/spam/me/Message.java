@@ -13,6 +13,7 @@ public class Message {
 	}
 	
 	public void setContent(String msg){
+		content = msg;
 	}
 	
 	public Person getOwner(){
@@ -38,5 +39,9 @@ public class Message {
 	
 	public void setGroupID(long id){
 		groupID = id;
+	}
+	
+	public String toString(){
+		return ("Group ID: " + groupID + "\n" + owner.getName() + " " + owner.getPhoneNum() + " " + content);
 	}
 }
