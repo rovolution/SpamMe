@@ -33,9 +33,19 @@ public class GroupChat {
 		return membersList;
 	}
 	
-	public List<Message> getMessageChain(){
-		return messageChain;
+	public String[] getMessageChain(){
+		int index;
+		//Create-initialize a return array of Strings
+		String[] retStrArray = new String[messageChain.size()];
+		//Loop through the messages in the array and add them to the return array
+		index = 0;
+		for (Message msg:messageChain) {
+			retStrArray[index] = msg.getContent();
+			index++;
+		}
+		return retStrArray;
 	}
+	
 	public void setMembersList (List<Person> p){
 		membersList = p;
 	}

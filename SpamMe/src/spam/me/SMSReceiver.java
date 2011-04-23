@@ -36,31 +36,29 @@ public class SMSReceiver extends BroadcastReceiver{
 				str += " :";
 				str += msgs[i].getMessageBody().toString();
 				str += "\n";
-			
-			
-			//Save message to database 
-			//get the group ID 
-			//save to message table
-			//Parsing message
-			Pattern p = Pattern.compile(":");
-			String[] items = p.split(msgs[i].getMessageBody().toString());
-			System.out.println("RECEIVED: " + msgs[i].getMessageBody().toString());
+
+
+				//Save message to database 
+				//get the group ID 
+				//save to message table
+				//Parsing message
+				Pattern p = Pattern.compile(":");
+				String[] items = p.split(msgs[i].getMessageBody().toString());
+				System.out.println("RECEIVED: " + msgs[i].getMessageBody().toString());
 				for (int j = 0; j<items.length; j++){
 					if (j==0){
 						rcvGroupID = Long.valueOf(items[j]);
-					}
-					
-					else if (j==1){
+					} else if (j==1){
 						rcvSender = items[j];
-					}
-					
-					else if (j==2){
+					} else if (j==2){
 						rcvMsg = items[j];
 					}
 				}
 				rcvSender = msgs[i].getOriginatingAddress();
 			}
 
+			//DEBUG
+			//System.out.println("WTF is this?" + rcvMsg);
 			
 			//Create Message from groupID, phone number, and message
 			Message m = mySpamMeFacade.createMessage(rcvGroupID, rcvSender, rcvMsg);

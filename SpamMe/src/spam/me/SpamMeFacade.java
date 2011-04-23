@@ -65,9 +65,18 @@ public class SpamMeFacade {
 	public void removeMe(int groupId){
 		
 	}
-	public void sendMsg(String msg, String []numbers){
+	public void sendMsg(String msg, String []numbers, long groupID){
+		//Send the message via myPhoneInterface
 		myPhoneInterface.sendSMS(msg, numbers);
 		
+		//Add the message to the list of messages
+		//Strip out the message content from the existing message
+		String msgContent[] = msg.split(":");
+		//Add the "Me: " prefix to the message
+		msg = "Me: " + msgContent[2];
+		//Add the sent message to the groupChat message list
+		Message sentMsg = createMessage(groupID, "myNumber", msg);
+		mySpamMeDb.addMessage(sentMsg);
 	}
 	public void receiveMsg(){
 		

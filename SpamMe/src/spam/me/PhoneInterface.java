@@ -85,6 +85,7 @@ public class PhoneInterface extends Activity {
 			sms.sendTextMessage(number[i], null, msg, null, null);
 		}
 		//sms.sendTextMessage(number, null, msg, null, null);
+		
 	}
 	public void receiveSMS(){
 	}

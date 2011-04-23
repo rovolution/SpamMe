@@ -83,8 +83,11 @@ public class GroupChatTabHostUI extends Activity
 		tabHost.setCurrentTab(0);
 
 		//Dummy data for messages (NOTE: Later replace with read messages from DB)
-		String[] messages = new String[] { "Bob: werwerwerwerwer", "Me: Blue screen of death", "Me: Loading forever", "Suse: wooho",
-		"Ubuntu: sudo rm *" };
+		//String[] messages = new String[] { "Bob: werwerwerwerwer", "Me: Blue screen of death", "Me: Loading forever", "Suse: wooho",
+		//"Ubuntu: sudo rm *" };
+		String[] messages =  myGroupChat.getMessageChain();
+
+		
 		//Find the messageList and msgListEmpty error msg
 		list=(ListView)findViewById(R.id.msgList);
 		errorMsg=(TextView)findViewById(R.id.msgListEmpty);
@@ -123,7 +126,7 @@ public class GroupChatTabHostUI extends Activity
 		
 
 		if (msg.length()>0){
-			spamMeFacade.sendMsg(msg, numbers);
+			spamMeFacade.sendMsg(msg, numbers, myGroupChat.getGroupId());
 		}
 		else {
 			Toast.makeText(getBaseContext(), 
