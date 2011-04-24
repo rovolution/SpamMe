@@ -19,7 +19,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	
 	
 	private static SQLiteDatabase Db;
-	private static final int DATABASE_VERSION = 28;
+	private static final int DATABASE_VERSION = 31;
 	private static final String DATABASE_NAME = "spamMeDB";
 	private final Context spamMeCtx;
 	
@@ -417,12 +417,12 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	 * @return long groupID
 	 */
 	public long getGroupIDFromGroupName(String groupName) {
-		long groupID = (long)0;
-		Cursor gCursor = getDb().query(true, TABLE_GROUPS, new String[] {KEY_GROUPID}, KEY_NAME + "=" + "'" + groupName + "'",
+		long groupID = (long)-1;
+		Cursor gCursor = getDb().query(true, TABLE_GROUPS, new String[] {KEY_GROUPSID}, KEY_NAME + "=" + "'" + groupName + "'",
 		null, null, null, null, null);
 		
 		if (gCursor != null && gCursor.moveToFirst()){
-			groupID = gCursor.getLong(gCursor.getColumnIndex(KEY_GROUPID));
+			groupID = gCursor.getLong(gCursor.getColumnIndex(KEY_GROUPSID));
 		}
 		return groupID;
 	}

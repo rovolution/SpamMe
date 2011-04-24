@@ -82,9 +82,7 @@ public class GroupChatTabHostUI extends Activity
 		doTabSetup(tabHost);
 		tabHost.setCurrentTab(0);
 
-		//Dummy data for messages (NOTE: Later replace with read messages from DB)
-		//String[] messages = new String[] { "Bob: werwerwerwerwer", "Me: Blue screen of death", "Me: Loading forever", "Suse: wooho",
-		//"Ubuntu: sudo rm *" };
+		//Read in messages to display
 		String[] messages =  myGroupChat.getMessageChain();
 		
 		//DEBUG
@@ -123,13 +121,9 @@ public class GroupChatTabHostUI extends Activity
 		}
 		//String number = myGroupChat.getMembersList().get(0).getPhoneNum();
 		//Create the message to send
-		//String msg = myGroupChat.getGroupName() +
-		//			":" + "my name" + 
-		//			":" + inputMsg.getText().toString();
-		String msg = String.valueOf(groupID)+
-		":" + "my name " + 
-		":" + inputMsg.getText().toString();
-		//Testing the groupID
+		String msg = myGroupChat.getGroupName() +
+					":" + "my name" + 
+					":" + inputMsg.getText().toString();
 		System.out.println(msg);
 		
 
@@ -288,13 +282,6 @@ public class GroupChatTabHostUI extends Activity
 	}
 
 	/*
-	public void sendSMS(String msg, String number){
-		PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, GroupChatTabHostUI.class), 0);
-		SmsManager sms = SmsManager.getDefault();
-		sms.sendTextMessage(number, null, msg, pi, null);
-	}
-	 */
-	/*
 	 * Set up the tabs in the tab host
 	 */
 	private void doTabSetup(TabHost tHost){
@@ -340,7 +327,6 @@ public class GroupChatTabHostUI extends Activity
 			inputErrorMsg.setVisibility(View.INVISIBLE);
 		}		
 	}
-
 
 	//Used to expand a message bubble's text if it is clicked on
 	public void expandMsgClicked(View v) {

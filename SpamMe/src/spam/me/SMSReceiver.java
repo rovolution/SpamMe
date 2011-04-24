@@ -47,8 +47,8 @@ public class SMSReceiver extends BroadcastReceiver{
 				System.out.println("RECEIVED: " + msgs[i].getMessageBody().toString());
 				for (int j = 0; j<items.length; j++){
 					if (j==0){
-						//rcvGroupID = mySpamMeFacade.findGroupIDByName(items[j]);
-						rcvGroupID = Long.valueOf(items[j]);
+						rcvGroupID = mySpamMeFacade.findGroupIDByName(items[j]);
+						//rcvGroupID = Long.valueOf(items[j]);
 					} else if (j==1){
 						rcvSender = items[j];
 					} else if (j==2){
@@ -57,20 +57,32 @@ public class SMSReceiver extends BroadcastReceiver{
 				}
 				rcvSender = msgs[i].getOriginatingAddress();
 			}
-
-			//DEBUG
-			//System.out.println("WTF is this?" + rcvMsg);
 			
-			//Create Message from groupID, phone number, and message
-			Message m = mySpamMeFacade.createMessage(rcvGroupID, rcvSender, rcvMsg);
-			mySpamMeFacade.addMessage(m);
-
+			//Check to see if the group exists, if so add the message to it
+			if (doesGroupExist(rcvGroupID)) {
+				//Create Message from groupID, phone number, and message
+				Message m = mySpamMeFacade.createMessage(rcvGroupID, rcvSender, rcvMsg);
+				mySpamMeFacade.addMessage(m);	
+			}
+			//DEBUG
+			else {
+				Toast.makeText(context, "Chat room does not exist", Toast.LENGTH_SHORT).show();
+			}
+			
 			//toast the SMS message
 			Toast.makeText(context, rcvMsg, Toast.LENGTH_SHORT).show();
 
 			Toast.makeText(context, sender, Toast.LENGTH_SHORT).show();
 		}
 
+	}
+	
+	/*
+	* If the Chat group exists, returns true, if not, returns false
+	*
+	*/
+	public boolean doesGroupExist(long groupExistsStatus) {
+		return (groupExistsStatus!=(long)(-1));
 	}
 
 }
