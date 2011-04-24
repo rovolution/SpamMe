@@ -19,7 +19,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	
 	
 	private static SQLiteDatabase Db;
-	private static final int DATABASE_VERSION = 19;
+	private static final int DATABASE_VERSION = 24;
 	private static final String DATABASE_NAME = "spamMeDB";
 	private final Context spamMeCtx;
 	
@@ -107,7 +107,6 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	      	  e1.printStackTrace();  
 	        }
 	    	this.spamMeCtx = ctx;
-	    	
 	 }
 	 
 	 public void open() throws SQLException {
@@ -284,12 +283,12 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	 * @param groupName
 	 * @return GroupChat
 	 */
-	public GroupChat getGroupChat(long id){
+	public GroupChat getGroupChat(long id){	
 		GroupChat group = new GroupChat();
 		List <Person> members = new ArrayList(); 
 		List <Message> messages = new ArrayList();
 		Person p = new Person(); 
-		Message m = new Message();
+		Message m;
 		String phoneNumber;
 
 		//Set groupID for group
@@ -328,13 +327,20 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		//Set the messages in groupChat object
 		if (mCursor != null && mCursor.moveToFirst()){
 			for (int i = 0; i<messageCount; i++){
+				//Create a new message
+				m = new Message();
 				//Set the content, owner, and groupID for message
 				m.setContent(mCursor.getString(mCursor.getColumnIndex(KEY_MESSAGE)));
+				
+				//DEBUG
+				//System.out.println("DB msg: " + mCursor.getString(mCursor.getColumnIndex(KEY_MESSAGE)));
 				phoneNumber = fetchPhoneNum(mCursor.getString(mCursor.getColumnIndex(KEY_SENDER)));
 				m.setOwner(mCursor.getString(mCursor.getColumnIndex(KEY_SENDER)), phoneNumber);
 				m.setGroupID(id);
 				//Add message to message chain
 				messages.add(m);
+				//Move to next message
+				mCursor.moveToNext();
 			}
 			//Set members for group
 			group.setMessageChain(messages);
@@ -399,6 +405,23 @@ public class SpamMeDb extends SQLiteOpenHelper{
 			memberName = mCursor.getString(mCursor.getColumnIndex(KEY_MEMBER));
 		}
 		return memberName;
+	}
+	
+	/**
+	 * Takes a groupName and returns the groupID corresponding to that groupName
+	 * 
+	 * @param String groupName
+	 * @return long groupID
+	 */
+	public long getGroupIDFromGroupName(String groupName) {
+		long groupID = (long)0;
+		Cursor gCursor = getDb().query(true, TABLE_GROUPS, new String[] {KEY_GROUPID}, KEY_NAME + "=" + "'" + groupName + "'",
+		null, null, null, null, null);
+		
+		if (gCursor != null && gCursor.moveToFirst()){
+			groupID = gCursor.getLong(gCursor.getColumnIndex(KEY_GROUPID));
+		}
+		return groupID;
 	}
 	
 }

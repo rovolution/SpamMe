@@ -86,7 +86,11 @@ public class GroupChatTabHostUI extends Activity
 		//String[] messages = new String[] { "Bob: werwerwerwerwer", "Me: Blue screen of death", "Me: Loading forever", "Suse: wooho",
 		//"Ubuntu: sudo rm *" };
 		String[] messages =  myGroupChat.getMessageChain();
-
+		
+		//DEBUG
+		for (int index = 0; index < messages.length; index++) {
+			System.out.println("Message " + index + ": " + messages[index]);
+		}
 		
 		//Find the messageList and msgListEmpty error msg
 		list=(ListView)findViewById(R.id.msgList);
@@ -118,9 +122,13 @@ public class GroupChatTabHostUI extends Activity
 			numbers[i] = myGroupChat.getMembersList().get(i).getPhoneNum();
 		}
 		//String number = myGroupChat.getMembersList().get(0).getPhoneNum();
+		//Create the message to send
+		//String msg = myGroupChat.getGroupName() +
+		//			":" + "my name" + 
+		//			":" + inputMsg.getText().toString();
 		String msg = String.valueOf(groupID)+
-					":" + "my name " + 
-					":" + inputMsg.getText().toString();
+		":" + "my name " + 
+		":" + inputMsg.getText().toString();
 		//Testing the groupID
 		System.out.println(msg);
 		

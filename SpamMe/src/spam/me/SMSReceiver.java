@@ -47,6 +47,7 @@ public class SMSReceiver extends BroadcastReceiver{
 				System.out.println("RECEIVED: " + msgs[i].getMessageBody().toString());
 				for (int j = 0; j<items.length; j++){
 					if (j==0){
+						//rcvGroupID = mySpamMeFacade.findGroupIDByName(items[j]);
 						rcvGroupID = Long.valueOf(items[j]);
 					} else if (j==1){
 						rcvSender = items[j];
@@ -65,7 +66,7 @@ public class SMSReceiver extends BroadcastReceiver{
 			mySpamMeFacade.addMessage(m);
 
 			//toast the SMS message
-			Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, rcvMsg, Toast.LENGTH_SHORT).show();
 
 			Toast.makeText(context, sender, Toast.LENGTH_SHORT).show();
 		}

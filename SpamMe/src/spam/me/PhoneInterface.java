@@ -77,16 +77,16 @@ public class PhoneInterface extends Activity {
 		
 		return contactList;
 	}
+	
 	public void sendSMS(String msg, String [] number){
 
 		SmsManager sms = SmsManager.getDefault();
 		for (int i=0; i < number.length; i++){
 			System.out.println("Number being sent " + number[i]);
 			sms.sendTextMessage(number[i], null, msg, null, null);
-		}
-		//sms.sendTextMessage(number, null, msg, null, null);
-		
+		}		
 	}
+	
 	public void receiveSMS(){
 	}
 }

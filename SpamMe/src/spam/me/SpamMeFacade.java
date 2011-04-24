@@ -115,4 +115,9 @@ public class SpamMeFacade {
 	public void startNewChat(){
 		
 	}
+	public long findGroupIDByName(String groupName) {
+		return mySpamMeDb.getGroupIDFromGroupName(groupName);
+	}
+	
+	
 }
