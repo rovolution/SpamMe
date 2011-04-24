@@ -19,7 +19,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	
 	
 	private static SQLiteDatabase Db;
-	private static final int DATABASE_VERSION = 24;
+	private static final int DATABASE_VERSION = 28;
 	private static final String DATABASE_NAME = "spamMeDB";
 	private final Context spamMeCtx;
 	
@@ -36,6 +36,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
         + "groupID integer not null,"
         + "sender text not null,"
         + "message text not null,"
+        + "timeAdded TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
         + "FOREIGN KEY(groupID) REFERENCES groups(groupsID));";
 	
 	private static final String TABLE_CREATE_GROUPMEMBERS =
@@ -63,6 +64,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	private static final String KEY_GROUPID = "groupID";
 	private static final String KEY_SENDER = "sender";
 	private static final String KEY_MESSAGE = "message";
+	private static final String KEY_TIMEADDED = "timeAdded";
 	
 	 @Override
 	public void onCreate(SQLiteDatabase db){
@@ -162,9 +164,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
     	}
     	else{
     		throw new SQLException();
-    	}
-    	
-		
+    	}	
 	}
 	/**
 	 * Method adds the new group name to the database
@@ -322,7 +322,8 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		
 		//Use ID to get the messages
 		mCursor = getDb().query(true, TABLE_MESSAGES, new String[]{KEY_MESSAGE, KEY_SENDER}, KEY_GROUPID + "=" + id,
-				null, null, null, null, null);
+				null, null, null, KEY_TIMEADDED, null);
+
 		int messageCount = mCursor.getCount();
 		//Set the messages in groupChat object
 		if (mCursor != null && mCursor.moveToFirst()){
@@ -333,7 +334,9 @@ public class SpamMeDb extends SQLiteOpenHelper{
 				m.setContent(mCursor.getString(mCursor.getColumnIndex(KEY_MESSAGE)));
 				
 				//DEBUG
-				//System.out.println("DB msg: " + mCursor.getString(mCursor.getColumnIndex(KEY_MESSAGE)));
+				System.out.println("DB msg: " + mCursor.getString(mCursor.getColumnIndex(KEY_MESSAGE)));
+				
+				
 				phoneNumber = fetchPhoneNum(mCursor.getString(mCursor.getColumnIndex(KEY_SENDER)));
 				m.setOwner(mCursor.getString(mCursor.getColumnIndex(KEY_SENDER)), phoneNumber);
 				m.setGroupID(id);
