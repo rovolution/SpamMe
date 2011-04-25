@@ -2,21 +2,23 @@ package spam.me;
 
 import java.util.regex.Pattern;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SMSReceiver extends BroadcastReceiver{
 	private SpamMeFacade mySpamMeFacade;
-
-
+	
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		mySpamMeFacade = new SpamMeFacade(context);
-
+		
 		//Get the SMS message passed in
 		Bundle bundle = intent.getExtras();
 		SmsMessage [] msgs = null;
@@ -62,7 +64,9 @@ public class SMSReceiver extends BroadcastReceiver{
 			if (doesGroupExist(rcvGroupID)) {
 				//Create Message from groupID, phone number, and message
 				Message m = mySpamMeFacade.createMessage(rcvGroupID, rcvSender, rcvMsg);
-				mySpamMeFacade.addMessage(m);	
+				mySpamMeFacade.addMessage(m);
+
+				//Update the chat room if this group is currently being displayed
 			}
 			//DEBUG
 			else {
@@ -84,5 +88,4 @@ public class SMSReceiver extends BroadcastReceiver{
 	public boolean doesGroupExist(long groupExistsStatus) {
 		return (groupExistsStatus!=(long)(-1));
 	}
-
 }

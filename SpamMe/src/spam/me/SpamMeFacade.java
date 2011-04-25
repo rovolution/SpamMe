@@ -6,7 +6,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+
 
 public class SpamMeFacade {
 	private List<GroupChat> groupChatList; 
@@ -98,15 +101,12 @@ public class SpamMeFacade {
 	
 	public void setStatusText(SharedPreferences preferences, String statusMsg)
 	{
-		System.out.println(statusMsg);
 		mySpamMePreferences.setStatusText(preferences, statusMsg);
 	}
 	
 	public void enableStatus(){
-		
 	}
 	public void disableStatus(){
-		
 	}
 	public GroupChat getGroupChat(long groupID){
 		return mySpamMeDb.getGroupChat(groupID);
@@ -119,5 +119,5 @@ public class SpamMeFacade {
 		return mySpamMeDb.getGroupIDFromGroupName(groupName);
 	}
 	
-	
+
 }

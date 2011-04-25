@@ -19,7 +19,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	
 	
 	private static SQLiteDatabase Db;
-	private static final int DATABASE_VERSION = 31;
+	private static final int DATABASE_VERSION = 34;
 	private static final String DATABASE_NAME = "spamMeDB";
 	private final Context spamMeCtx;
 	
@@ -139,20 +139,6 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	  * Method adds message to the database
 	  */
 	public void addMessage(Message m) throws SQLException{
-		/*
-		private String content;
-		private Person owner = new Person();
-		private enum msgType {REMOVE, ADD, TEXT};
-		private msgType type;
-		private long groupID;
-		
-		"create table messages (id integer primary key autoincrement, "
-        + "groupID integer not null,"
-        + "sender text not null,"
-        + "message text not null,"
-        + "FOREIGN KEY(groupID) REFERENCES groups(groupsID));"
-        */
-        
 		long rowID;
     	ContentValues inputValue = new ContentValues();
     	inputValue.put(KEY_GROUPID, m.getGroupID());

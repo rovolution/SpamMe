@@ -100,8 +100,10 @@ public class SpamMe extends Activity {
 		TextView statusText = (TextView) findViewById(R.id.statusText);
 		String statusMsg = statusText.getText().toString();
 
+		mySelf.setMyStatus(statusMsg);
 		spamMeFacade.setStatusText(preferences, statusMsg);
-
+		
+		
 		Toast.makeText(getBaseContext(), "New Status set", 3).show();
 		setStatusHint();
 		statusText.setText("");
@@ -109,10 +111,14 @@ public class SpamMe extends Activity {
 
 	public void statusOnClicked (View v) {	
 		Toast.makeText(getBaseContext(), "Status enabled", 3).show();
+		//mySelf.activateStatus();
+		//spamMeFacade.enableStatus(mySelf);
 	}
 
 	public void statusOffClicked (View v) {	
 		Toast.makeText(getBaseContext(), "Status disabled", 3).show();
+		//mySelf.deactivateStatus();
+		//spamMeFacade.disableStatus(mySelf);
 	}
 
 	private void setStatusHint() {	

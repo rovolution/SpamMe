@@ -41,7 +41,7 @@ public class GroupChatTabHostUI extends Activity
 	//SpamMeFacade - API for application
 	private SpamMeFacade spamMeFacade;
 
-	private GroupChat myGroupChat = new GroupChat();
+	private GroupChat myGroupChat;
 	private EditText inputPhoneNo; 
 	private EditText inputMsg;
 
@@ -56,9 +56,15 @@ public class GroupChatTabHostUI extends Activity
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         
+		
         //Initializations
         spamMeFacade = new SpamMeFacade(this);
         myGroupChat = new GroupChat();
+        
+		//Update the list and errorMsg parameters in the SpamMeFacade
+		list=(ListView)findViewById(R.id.msgList);
+		errorMsg=(TextView)findViewById(R.id.msgListEmpty);
+        
         
         //Getting the groupID from CreateGroupChatUI
         Bundle extras = getIntent().getExtras();
@@ -66,15 +72,15 @@ public class GroupChatTabHostUI extends Activity
         
         //Set group chat
         myGroupChat = spamMeFacade.getGroupChat(groupID);
+        
+        //DEBUG
         System.out.println("group name: " + myGroupChat.getGroupName());
         System.out.println("Members list: " + myGroupChat.getMembersList().toString());
-       // List<Message> messages = myGroupChat.getMessageChain();
-       // Message [] msgArray = messages.toArray();
+
         //Setting xml file for UI
         setContentView(R.layout.groupchattabhost);
         
         //Initializing the edit texts
-        //inputPhoneNo = (EditText)findViewById(R.id.PhoneNoTxt);
         inputMsg = (EditText)findViewById(R.id.messageTxt);
         
 		//Setting up tabs
@@ -82,22 +88,11 @@ public class GroupChatTabHostUI extends Activity
 		doTabSetup(tabHost);
 		tabHost.setCurrentTab(0);
 
-		//Read in messages to display
-		String[] messages =  myGroupChat.getMessageChain();
-		
-		//DEBUG
-		for (int index = 0; index < messages.length; index++) {
-			System.out.println("Message " + index + ": " + messages[index]);
-		}
-		
+		//Populate the chat room with messages
+		updateChatRoomMsgView();
 		//Find the messageList and msgListEmpty error msg
-		list=(ListView)findViewById(R.id.msgList);
-		errorMsg=(TextView)findViewById(R.id.msgListEmpty);
-		//Check the list to see if it is empty too see whether to display it or not
-		setListVisibility(messages.length, list, errorMsg);
-		//By using setAdpater method in listview we an add members array in memberList.
-		ArrayAdapter<String> msgAdapter = new MessageArrayAdaptor(this, messages);
-		list.setAdapter(msgAdapter);
+		//Populate the chat room with messages via the SpamMe Facade
+		//DEBUG
 		
 		//Find the memberList
 		list=(ListView)findViewById(R.id.memberList);
@@ -114,12 +109,11 @@ public class GroupChatTabHostUI extends Activity
 				"Send SMS got clicked", 
 				Toast.LENGTH_SHORT).show();
 
-		//String number = inputPhoneNo.getText().toString();
 		String[] numbers = new String[myGroupChat.getMembersList().size()];
 		for (int i=0; i< myGroupChat.getMembersList().size(); i++){
 			numbers[i] = myGroupChat.getMembersList().get(i).getPhoneNum();
 		}
-		//String number = myGroupChat.getMembersList().get(0).getPhoneNum();
+
 		//Create the message to send
 		String msg = myGroupChat.getGroupName() +
 					":" + "my name" + 
@@ -128,7 +122,10 @@ public class GroupChatTabHostUI extends Activity
 		
 
 		if (msg.length()>0){
+			//Send the message via the SpamMeFacade
 			spamMeFacade.sendMsg(msg, numbers, myGroupChat.getGroupId());
+			//Update the chat room message view
+			updateChatRoomMsgView();
 		}
 		else {
 			Toast.makeText(getBaseContext(), 
@@ -137,6 +134,32 @@ public class GroupChatTabHostUI extends Activity
 		}
 	}
 
+	/*
+	 * Updates the list of messages in the chat room
+	 * 
+	 */
+	public void updateChatRoomMsgView() {
+	    //Read in the latest group chat instance
+		myGroupChat = spamMeFacade.getGroupChat(groupID);		
+		//Read in messages to display
+		String[] messages =  myGroupChat.getMessageChain();
+		
+		//DEBUG
+		for (int index = 0; index < messages.length; index++) {
+			System.out.println("Message " + index + ": " + messages[index]);
+		}
+		
+		//Find the messageList and msgListEmpty error msg
+		list=(ListView)findViewById(R.id.msgList);
+		errorMsg=(TextView)findViewById(R.id.msgListEmpty);
+		//Check the list to see if it is empty too see whether to display it or not
+		setListVisibility(messages.length, list, errorMsg);
+		//By using setAdpater method in listview we an add members array in memberList.
+		ArrayAdapter<String> msgAdapter = new MessageArrayAdaptor(this, messages);
+		list.setAdapter(msgAdapter);
+		msgAdapter.notifyDataSetChanged();
+	}
+		
 	public void addNewMemberClicked(View v){
 		List<Person> myHomies = new ArrayList<Person>();
 
