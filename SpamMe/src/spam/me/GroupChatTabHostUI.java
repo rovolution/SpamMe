@@ -148,8 +148,6 @@ public class GroupChatTabHostUI extends Activity
 		if (msg.length()>0){
 			//Send the message via the SpamMeFacade
 			spamMeFacade.sendMsg(msg, numbers, myGroupChat.getGroupId());
-			//Update the chat room message view
-			updateChatRoomMsgView();
 		}
 		else {
 			Toast.makeText(getBaseContext(), 
