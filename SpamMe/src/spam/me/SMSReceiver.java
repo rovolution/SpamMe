@@ -23,10 +23,11 @@ public class SMSReceiver extends BroadcastReceiver{
 		Bundle bundle = intent.getExtras();
 		SmsMessage [] msgs = null;
 		String str = "";
-		String sender = "";
+		String senderPhoneNumber = "";
 		Long rcvGroupID = (long) -1;
 		String rcvMsg = "";
 		String rcvSender = "";
+
 		if (bundle != null){
 			//Retrieve the SMS message
 			Object[] pdus = (Object[]) bundle.get("pdus");
@@ -34,7 +35,8 @@ public class SMSReceiver extends BroadcastReceiver{
 			for (int i=0; i<msgs.length; i++){
 				msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
 				str += "SMS from " + msgs[i].getOriginatingAddress();
-				sender = msgs[i].getOriginatingAddress();
+				//Set the sender phone number
+				senderPhoneNumber = msgs[i].getOriginatingAddress().substring(7);
 				str += " :";
 				str += msgs[i].getMessageBody().toString();
 				str += "\n";
@@ -60,8 +62,14 @@ public class SMSReceiver extends BroadcastReceiver{
 				rcvSender = msgs[i].getOriginatingAddress();
 			}
 			
-			//Check to see if the group exists, if so add the message to it
+			//Check to see if the group exists and if the sender exists in that group, 
+			//and if so add the message to it
 			if (doesGroupExist(rcvGroupID)) {
+				//Retrieve the sender's name from the DB using their phone number and rcvGroupID
+		        String senderName = mySpamMeFacade.getPersonNameViaPhone(senderPhoneNumber, rcvGroupID);
+				//Append the senderName to the message
+		        rcvMsg = senderName + ": " + rcvMsg;
+		        
 				//Create Message from groupID, phone number, and message
 				Message m = mySpamMeFacade.createMessage(rcvGroupID, rcvSender, rcvMsg);
 				mySpamMeFacade.addMessage(m);
@@ -74,9 +82,7 @@ public class SMSReceiver extends BroadcastReceiver{
 			}
 			
 			//toast the SMS message
-			Toast.makeText(context, rcvMsg, Toast.LENGTH_SHORT).show();
-
-			Toast.makeText(context, sender, Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
 		}
 
 	}

@@ -76,4 +76,13 @@ public class GroupChat {
 	{
 		return (groupName);
 	}
+	public String getMemberWithNumber(String phoneNumber) {
+		for (Person p:membersList) {
+			if (p.getPhoneNum().equals(phoneNumber)) {
+				return p.getName();
+			}
+		}
+		return "User DNE in chat: ";
+	}
+	
 }

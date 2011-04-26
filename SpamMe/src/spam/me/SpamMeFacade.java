@@ -119,5 +119,13 @@ public class SpamMeFacade {
 		return mySpamMeDb.getGroupIDFromGroupName(groupName);
 	}
 	
+	public String getPersonNameViaPhone(String phoneNumber, long groupID) {
+		//Get the group associated with groupID
+		GroupChat group = getGroupChat(groupID);
+		//Get the Name of the person from the group using the phone #
+		String phoneNum = group.getMemberWithNumber(phoneNumber);
+		return phoneNum;
+	}
+	
 
 }
