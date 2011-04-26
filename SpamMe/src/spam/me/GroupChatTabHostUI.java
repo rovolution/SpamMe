@@ -2,7 +2,8 @@ package spam.me;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import android.os.Handler;
+import android.os.Message;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -72,10 +73,6 @@ public class GroupChatTabHostUI extends Activity
         
         //Set group chat
         myGroupChat = spamMeFacade.getGroupChat(groupID);
-        
-        //DEBUG
-        System.out.println("group name: " + myGroupChat.getGroupName());
-        System.out.println("Members list: " + myGroupChat.getMembersList().toString());
 
         //Setting xml file for UI
         setContentView(R.layout.groupchattabhost);
@@ -90,9 +87,6 @@ public class GroupChatTabHostUI extends Activity
 
 		//Populate the chat room with messages
 		updateChatRoomMsgView();
-		//Find the messageList and msgListEmpty error msg
-		//Populate the chat room with messages via the SpamMe Facade
-		//DEBUG
 		
 		//Find the memberList
 		list=(ListView)findViewById(R.id.memberList);
@@ -101,6 +95,36 @@ public class GroupChatTabHostUI extends Activity
 		setListVisibility(myGroupChat.getMembersList().size(), list, errorMsg);
 		//By using setAdpater method in listview we an add members array in memberList.
 		list.setAdapter(new ContactAdapter(this, this.getBaseContext(), R.layout.contactitem, myGroupChat.getMembersList()));
+		
+		//Handles any message received from the chat room update thread
+		final Handler myHandler = new Handler(){
+			@Override
+			public void handleMessage(Message msg) {
+				//Update message list in the chat room
+				updateChatRoomMsgView();
+			}
+		};
+		
+		//Create thread to handle live message updates to this group chat
+		(new Thread(new Runnable() {
+			@Override
+			public void run() {
+				int prevCount = myGroupChat.getMessageCount();
+				while(true) {
+					myGroupChat = spamMeFacade.getGroupChat(groupID);
+					//If any new messages have been added to the chat room
+					if (myGroupChat.getMessageCount() != prevCount) {
+						//Update the prevCount variable
+						prevCount = myGroupChat.getMessageCount();
+						//Send message to main thread to update the chat room UI
+						Message msg = myHandler.obtainMessage();
+						myHandler.sendMessage(msg);
+					}
+				}
+			}
+		})).start();
+		
+		
 	}
 
 	//Handler for SendSMS button
@@ -143,12 +167,6 @@ public class GroupChatTabHostUI extends Activity
 		myGroupChat = spamMeFacade.getGroupChat(groupID);		
 		//Read in messages to display
 		String[] messages =  myGroupChat.getMessageChain();
-		
-		//DEBUG
-		for (int index = 0; index < messages.length; index++) {
-			System.out.println("Message " + index + ": " + messages[index]);
-		}
-		
 		//Find the messageList and msgListEmpty error msg
 		list=(ListView)findViewById(R.id.msgList);
 		errorMsg=(TextView)findViewById(R.id.msgListEmpty);
@@ -157,6 +175,8 @@ public class GroupChatTabHostUI extends Activity
 		//By using setAdpater method in listview we an add members array in memberList.
 		ArrayAdapter<String> msgAdapter = new MessageArrayAdaptor(this, messages);
 		list.setAdapter(msgAdapter);
+		list.setStackFromBottom(true);
+		list.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 		msgAdapter.notifyDataSetChanged();
 	}
 		

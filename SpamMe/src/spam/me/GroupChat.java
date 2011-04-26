@@ -33,6 +33,14 @@ public class GroupChat {
 		return membersList;
 	}
 	
+	/*
+	 * 
+	 * Returns number of messages in this GroupChat
+	 */
+	public int getMessageCount(){
+		return messageChain.size();
+	}
+	
 	public String[] getMessageChain(){
 		int index;
 		//Create-initialize a return array of Strings

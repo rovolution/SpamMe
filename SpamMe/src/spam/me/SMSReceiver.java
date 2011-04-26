@@ -73,15 +73,12 @@ public class SMSReceiver extends BroadcastReceiver{
 				//Create Message from groupID, phone number, and message
 				Message m = mySpamMeFacade.createMessage(rcvGroupID, rcvSender, rcvMsg);
 				mySpamMeFacade.addMessage(m);
-
-				//Update the chat room if this group is currently being displayed
 			}
-			//DEBUG
 			else {
 				Toast.makeText(context, "Chat room does not exist", Toast.LENGTH_SHORT).show();
 			}
 			
-			//toast the SMS message
+			//DEBUG: toast the SMS message
 			Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
 		}
 
