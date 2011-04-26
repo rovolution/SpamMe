@@ -5,5 +5,10 @@
 			android:key="statusMessage"
 			android:defaultValue="Available"
 		/>
+		<CheckBoxPreference android:title="Status State"
+			android:key="statusState"
+			android:defaultValue="false"
+		/>
 	</PreferenceCategory>
+	
 </PreferenceScreen>

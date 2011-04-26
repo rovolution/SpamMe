@@ -3,7 +3,9 @@ package spam.me;
 public class Status {
 	private String statusMsg;
 	private boolean isActive; 
-	
+	public Status (){
+		isActive = false;
+	}
 	public String getStatusMsg() {
 		return statusMsg;
 	}

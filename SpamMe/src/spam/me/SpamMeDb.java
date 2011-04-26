@@ -76,6 +76,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
          	Log.i(TAG, "DB TABLE Successfully");
          }
          catch (SQLException e){
+        	 //DEBUG
          	Log.i(TAG, "DB Create failed " + e.getMessage() );
          }
 		
@@ -87,6 +88,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
       *
       */
      public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		 //DEBUG
          Log.w(TAG, "Upgrading database from  " + oldVersion + " to "
         		 + newVersion + ", which will destroy all old data");
          db.execSQL("DROP TABLE IF EXISTS groups");
@@ -99,9 +101,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	  * Constructor
 	  */
 	 public SpamMeDb(Context ctx){
-		 super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
-	        //DB Test   
-		 
+		 super(ctx, DATABASE_NAME, null, DATABASE_VERSION); 
 	        try{open();} //Opens or creates the database  
 	        catch(Exception e1)
 	        {

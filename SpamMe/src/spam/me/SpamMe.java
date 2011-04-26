@@ -15,6 +15,7 @@ import android.provider.ContactsContract.PhoneLookup;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,11 +23,14 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class SpamMe extends Activity {
 	private SharedPreferences preferences;
+	private SharedPreferences statusStatePreference; //saving the state of status
 	private User mySelf;
 	private Spinner dropDownMenu;
 	//SpamMeFacade - API for application
 	private SpamMeFacade spamMeFacade;
 	private ArrayAdapter adapter;
+	private RadioButton statusOn;
+	private RadioButton statusOff;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -35,7 +39,22 @@ public class SpamMe extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		spamMeFacade = new SpamMeFacade(this);
+		mySelf = new User();
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		statusStatePreference = PreferenceManager.getDefaultSharedPreferences(this);
+		statusOn = (RadioButton)findViewById(R.id.statusOn);
+		statusOff = (RadioButton)findViewById(R.id.statusOff);
+		
+		//If the status is set to active - set the radio buttons
+		if (spamMeFacade.getStatus(statusStatePreference)){
+			statusOn.setChecked(true);
+			statusOff.setChecked(false);
+		}
+		else{ //If the status is set to inactive - set the radio buttons
+			statusOn.setChecked(false);
+			statusOff.setChecked(true);
+		}
+		
 		setStatusHint();
 
 		//Initializing the drop down menu
@@ -104,21 +123,35 @@ public class SpamMe extends Activity {
 		spamMeFacade.setStatusText(preferences, statusMsg);
 		
 		
-		Toast.makeText(getBaseContext(), "New Status set", 3).show();
+		Toast.makeText(getBaseContext(), "New Status set " + statusMsg, 3).show();
 		setStatusHint();
 		statusText.setText("");
+		
 	}
-
-	public void statusOnClicked (View v) {	
+	/**
+	 * Handler for Status radio button (on)
+	 * @param View v
+	 */
+	public void statusOnClicked (View v) {
+		//Activate the status 
+		mySelf.activateStatus();
+		spamMeFacade.enableStatus(statusStatePreference);
+		
+		//Debug
 		Toast.makeText(getBaseContext(), "Status enabled", 3).show();
-		//mySelf.activateStatus();
-		//spamMeFacade.enableStatus(mySelf);
 	}
 
+	/**
+	 * Handler for Staus radio button (off)
+	 * @param View v
+	 */
 	public void statusOffClicked (View v) {	
+		//Deactivate the status
+		mySelf.deactivateStatus();
+		spamMeFacade.disableStatus(statusStatePreference);
+		
+		//Debug
 		Toast.makeText(getBaseContext(), "Status disabled", 3).show();
-		//mySelf.deactivateStatus();
-		//spamMeFacade.disableStatus(mySelf);
 	}
 
 	private void setStatusHint() {	

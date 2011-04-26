@@ -3,7 +3,9 @@ package spam.me;
 
 public class User extends Person {
 	private Status myStatus;
-	
+	public User (){
+		myStatus = new Status();
+	}
 	public String getMyStatus() {
 		return myStatus.getStatusMsg();
 	}

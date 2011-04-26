@@ -99,22 +99,31 @@ public class SpamMeFacade {
 		return m;
 	}
 	
-	public void setStatusText(SharedPreferences preferences, String statusMsg)
-	{
+	public void setStatusText(SharedPreferences preferences, String statusMsg){
 		mySpamMePreferences.setStatusText(preferences, statusMsg);
 	}
 	
-	public void enableStatus(){
+	public void enableStatus(SharedPreferences preferences){
+		mySpamMePreferences.setStatusState(preferences, true);
 	}
-	public void disableStatus(){
+	
+	public void disableStatus(SharedPreferences preferences){
+		mySpamMePreferences.setStatusState(preferences, false);
 	}
+	
+	public boolean getStatus(SharedPreferences preferences){
+		return mySpamMePreferences.getStatusState(preferences);
+	}
+	
 	public GroupChat getGroupChat(long groupID){
 		return mySpamMeDb.getGroupChat(groupID);
 		
 	}
+	
 	public void startNewChat(){
 		
 	}
+	
 	public long findGroupIDByName(String groupName) {
 		return mySpamMeDb.getGroupIDFromGroupName(groupName);
 	}

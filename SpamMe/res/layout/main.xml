@@ -45,7 +45,6 @@
 	>
 		<RadioButton
 			android:id="@+id/statusOn"
-			android:checked="true"
 			android:text="On"
 			android:onClick="statusOnClicked"
 		/>
@@ -53,6 +52,7 @@
 			android:id="@+id/statusOff"
 			android:layout_marginLeft="40dip"
 			android:text="Off"
+			android:checked = "true"
 			android:onClick="statusOffClicked"
 		/>
 	</RadioGroup>
