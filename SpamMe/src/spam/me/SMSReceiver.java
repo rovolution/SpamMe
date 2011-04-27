@@ -6,7 +6,9 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.telephony.SmsMessage;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,16 +16,19 @@ import android.widget.Toast;
 
 public class SMSReceiver extends BroadcastReceiver{
 	private SpamMeFacade mySpamMeFacade;
+	private SharedPreferences preferences;
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		mySpamMeFacade = new SpamMeFacade(context);
+		preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		
 		//Get the SMS message passed in
 		Bundle bundle = intent.getExtras();
 		SmsMessage [] msgs = null;
 		String str = "";
 		String senderPhoneNumber = "";
+		String senderNumber = "";
 		Long rcvGroupID = (long) -1;
 		String rcvMsg = "";
 		String rcvSender = "";
@@ -35,6 +40,7 @@ public class SMSReceiver extends BroadcastReceiver{
 			for (int i=0; i<msgs.length; i++){
 				msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
 				str += "SMS from " + msgs[i].getOriginatingAddress();
+				senderNumber = msgs[i].getOriginatingAddress();
 				//Set the sender phone number
 				senderPhoneNumber = msgs[i].getOriginatingAddress().substring(7);
 				str += " :";
@@ -78,6 +84,22 @@ public class SMSReceiver extends BroadcastReceiver{
 				Toast.makeText(context, "Chat room does not exist", Toast.LENGTH_SHORT).show();
 			}
 			
+			//Check to see if the status is set
+			//Send a message if the status is ACTIVE
+			if (mySpamMeFacade.getStatus(preferences)){
+				//Debug
+				//Toast.makeText(context, "STATUS IS ACTIVE and Status: " + mySpamMeFacade.getStatusText(preferences), Toast.LENGTH_LONG).show();
+				//Toast.makeText(context, "NUMBER: " + senderNumber, Toast.LENGTH_LONG).show();
+				String[] senderNumArray = new String [1]; 
+				senderNumArray[0] = senderNumber;
+				//Formatting a message to send the status
+				GroupChat gc = 	mySpamMeFacade.getGroupChat(rcvGroupID);
+				String statusMsg = gc.getGroupName() +
+				":" + "my name" + 
+				":" + mySpamMeFacade.getStatusText(preferences);
+				
+				mySpamMeFacade.sendMsg(statusMsg, senderNumArray, rcvGroupID);
+			}
 			//DEBUG: toast the SMS message
 			Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
 		}

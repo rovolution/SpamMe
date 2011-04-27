@@ -39,4 +39,14 @@ public class SpamMePreferences extends PreferenceActivity {
 		boolean state = p.getBoolean("statusState", false);
 		return state;
 	}
+	
+	/**
+	 * Method returns the status
+	 * @param p
+	 * @return string
+	 */
+	public String getStatusText(SharedPreferences p){
+		return p.getString("statusMessage", "");
+		
+	}
 }

@@ -114,6 +114,9 @@ public class SpamMeFacade {
 	public boolean getStatus(SharedPreferences preferences){
 		return mySpamMePreferences.getStatusState(preferences);
 	}
+	public String getStatusText(SharedPreferences preferences){
+		return mySpamMePreferences.getStatusText(preferences);
+	}
 	
 	public GroupChat getGroupChat(long groupID){
 		return mySpamMeDb.getGroupChat(groupID);
