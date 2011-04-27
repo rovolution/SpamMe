@@ -73,6 +73,9 @@ public class GroupChatTabHostUI extends Activity
         
         //Set group chat
         myGroupChat = spamMeFacade.getGroupChat(groupID);
+       
+        //Set title
+        setTitle("Group Chat - " + myGroupChat.getGroupName());
 
         //Setting xml file for UI
         setContentView(R.layout.groupchattabhost);
@@ -320,6 +323,12 @@ public class GroupChatTabHostUI extends Activity
 		}
 
 		return contactList;
+	}
+	
+	public void removeGroupClicked(View v){
+		Toast.makeText(getBaseContext(), 
+				"Remove Group Chat got clicked", 
+				Toast.LENGTH_SHORT).show();
 	}
 
 	/*

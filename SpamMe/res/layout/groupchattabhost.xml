@@ -122,6 +122,22 @@
 		              android:layout_width="wrap_content"
 		              android:layout_height="wrap_content"
 		              android:text="Hello, I'm the options tab!" />
+		              
+		<RelativeLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent" 
+            android:layout_height="fill_parent">
+			    	
+			<!-- The button to remove group -->
+			<Button
+				android:id="@+id/removeGroup"
+				android:layout_width="fill_parent"
+				android:layout_height="50dip"
+				android:layout_alignParentBottom="true"
+				android:text="Remove Group Chat"
+				android:onClick="removeGroupClicked"
+			/>
+		</RelativeLayout>
 		</LinearLayout>
 	</FrameLayout>
 	
