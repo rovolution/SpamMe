@@ -123,7 +123,7 @@ public class GroupChatTabHostUI extends SpamMeActivity
 							myHandler.sendMessage(msg);
 						}
 						// Only check every minute
-						sleep(60000);
+						sleep(30000);
 					}
 					catch (InterruptedException e)
 					{
@@ -156,6 +156,9 @@ public class GroupChatTabHostUI extends SpamMeActivity
 		if (msg.length()>0){
 			//Send the message via the SpamMeFacade
 			spamMeFacade.sendMsg(msg, numbers, myGroupChat.getGroupId());
+			//Update the message views with recently sent message
+			myGroupChat = spamMeFacade.getGroupChat(groupID);
+			updateView();
 		}
 		else {
 			Toast.makeText(getBaseContext(), 
@@ -230,9 +233,11 @@ public class GroupChatTabHostUI extends SpamMeActivity
 					}
 					else
 					{
-						Toast.makeText(getBaseContext(), newMember.getName() + " is has been added to this Group Chat", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getBaseContext(), newMember.getName() + " has been added to this Group Chat", Toast.LENGTH_SHORT).show();
+						//Update the members views with recently added members
+						myGroupChat = spamMeFacade.getGroupChat(groupID);
+						updateView();
 					}
-
 					popup.dismiss();
 				}
 			});
