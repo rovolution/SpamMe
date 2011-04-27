@@ -71,8 +71,7 @@ public class GroupChatTabHostUI extends SpamMeActivity
 		Bundle extras = getIntent().getExtras();
 		groupID = extras.getLong("newGroupChatID");
 
-		//Set title
-		setTitle("Group Chat - " + myGroupChat.getGroupName());
+		
 
 		//Setting xml file for UI
 		setContentView(R.layout.groupchattabhost);
@@ -87,6 +86,9 @@ public class GroupChatTabHostUI extends SpamMeActivity
 
 		//Populate the chat room with messages
 		myGroupChat = spamMeFacade.getGroupChat(groupID);
+		
+		//Set title
+		setTitle("Group Chat - " + myGroupChat.getGroupName());
 		updateView();
 
 		//Handles any message received from the chat room update thread
@@ -325,6 +327,22 @@ public class GroupChatTabHostUI extends SpamMeActivity
 		Toast.makeText(getBaseContext(), 
 				"Remove Group Chat got clicked", 
 				Toast.LENGTH_SHORT).show();
+
+		//Create the message to send
+		String msg = myGroupChat.getGroupName() +
+		":" + "my name" + 
+		":" + "I'm leaving " + myGroupChat.getGroupName();
+		
+		//Getting member's numbers to end message 
+		String[] numbers = new String[myGroupChat.getMembersList().size()];
+		for (int i=0; i< myGroupChat.getMembersList().size(); i++){
+			numbers[i] = myGroupChat.getMembersList().get(i).getPhoneNum();
+		}
+		
+		//Send the message via the SpamMeFacade
+		spamMeFacade.sendMsg(msg, numbers, myGroupChat.getGroupId());
+		
+		//Remove myself from group
 		spamMeFacade.removeMe(myGroupChat.getGroupId());
 		Intent leaveGroupIntent = new Intent(this, SpamMe.class); 
 		startActivityIfNeeded(leaveGroupIntent, 1);
