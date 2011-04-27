@@ -43,7 +43,7 @@ public class GroupChatTabHostUI extends SpamMeActivity
 	private SpamMeFacade spamMeFacade;
 
 	private GroupChat myGroupChat;
-	private EditText inputPhoneNo; 
+	private EditText inputPhoneNo;
 	private EditText inputMsg;
 
 	private ListView list;
@@ -325,6 +325,9 @@ public class GroupChatTabHostUI extends SpamMeActivity
 		Toast.makeText(getBaseContext(), 
 				"Remove Group Chat got clicked", 
 				Toast.LENGTH_SHORT).show();
+		spamMeFacade.removeMe(myGroupChat.getGroupId());
+		Intent leaveGroupIntent = new Intent(this, SpamMe.class); 
+		startActivityIfNeeded(leaveGroupIntent, 1);
 	}
 
 	/*

@@ -65,9 +65,10 @@ public class SpamMeFacade {
 		return 0;
 	}
 	
-	public void removeMe(int groupId){
-		
+	public void removeMe(long groupId){
+		mySpamMeDb.removeGroupChat(groupId);
 	}
+	
 	public void sendMsg(String msg, String []numbers, long groupID){
 		//Send the message via myPhoneInterface
 		myPhoneInterface.sendSMS(msg, numbers);
