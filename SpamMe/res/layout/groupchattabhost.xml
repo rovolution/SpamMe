@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content">
 				<ListView android:id="@+id/msgList" 
 				    android:layout_width="wrap_content"
-					android:layout_height="180px" 
+					android:layout_height="230px" 
 			    	android:layout_alignParentTop="true"
 					android:layout_weight="1.0"/>
 				<TextView android:id="@+id/msgListEmpty"
@@ -90,13 +90,13 @@
 					android:layout_height="fill_parent" 
 			    	android:layout_alignParentTop="true"
 					android:layout_weight="1.0"
-					android:layout_marginBottom = "50dip"/>
+					android:layout_marginBottom = "100dip"/>
 				<TextView android:id="@+id/memberListEmpty"
 			    	android:layout_width="wrap_content"
 			    	android:layout_height="wrap_content"
 			    	android:layout_alignParentTop="true"
 			    	android:text="@string/no_members"
-			    	android:layout_marginBottom = "50dip"/>
+			    	android:layout_marginBottom = "100dip"/>
 		    
 	    	<!-- The button to add members to the group -->
 			<Button
@@ -104,40 +104,21 @@
 				android:layout_width="fill_parent"
 				android:layout_height="50dip"
 				android:layout_alignParentBottom="true"
-				android:text="Add New Members"
+				android:text="Add Member"
 				android:onClick="addNewMemberClicked"
 			/>
-			</RelativeLayout>
-		</LinearLayout>
-		
-		<!-- Options Tab -->
-		<LinearLayout 
-		  	android:id="@+id/optionstab"
-		  	xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:orientation="vertical"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent">
-	    
-		<TextView android:id="@+id/textthree"
-		              android:layout_width="wrap_content"
-		              android:layout_height="wrap_content"
-		              android:text="Hello, I'm the options tab!" />
-		              
-		<RelativeLayout
-			xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent" 
-            android:layout_height="fill_parent">
-			    	
-			<!-- The button to remove group -->
+			
+			<!-- The button to leave the group chat -->
 			<Button
-				android:id="@+id/removeGroup"
+				android:id="@+id/leaveGroup"
 				android:layout_width="fill_parent"
 				android:layout_height="50dip"
+				android:layout_marginBottom="50dip"
 				android:layout_alignParentBottom="true"
-				android:text="Remove Group Chat"
-				android:onClick="removeGroupClicked"
+				android:text="Leave GroupChat"
+				android:onClick="leaveGroupClicked"
 			/>
-		</RelativeLayout>
+			</RelativeLayout>
 		</LinearLayout>
 	</FrameLayout>
 	

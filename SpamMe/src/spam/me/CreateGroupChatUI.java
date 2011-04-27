@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class CreateGroupChatUI extends Activity{
+public class CreateGroupChatUI extends SpamMeActivity {
 	private GroupChat myGroupChat = new GroupChat();
 	String groupName;
 	EditText inputGroupName;

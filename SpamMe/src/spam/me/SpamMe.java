@@ -21,8 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class SpamMe extends Activity {
-	private SharedPreferences preferences;
+public class SpamMe extends SpamMeActivity {
 	private SharedPreferences statusStatePreference; //saving the state of status
 	private User mySelf;
 	private Spinner dropDownMenu;
@@ -40,7 +39,6 @@ public class SpamMe extends Activity {
 		setContentView(R.layout.main);
 		spamMeFacade = new SpamMeFacade(this);
 		mySelf = new User();
-		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		statusStatePreference = PreferenceManager.getDefaultSharedPreferences(this);
 		statusOn = (RadioButton)findViewById(R.id.statusOn);
 		statusOff = (RadioButton)findViewById(R.id.statusOff);

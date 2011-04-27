@@ -33,7 +33,7 @@
 		android:layout_below="@id/statusText"
       	android:layout_marginTop="12dip"
       	android:layout_marginRight="10dip"
-		android:text="Status Is:"
+		android:text="Status is:"
 	/>
 	<RadioGroup
 		android:id="@+id/statusToggle" 
@@ -52,7 +52,7 @@
 			android:id="@+id/statusOff"
 			android:layout_marginLeft="40dip"
 			android:text="Off"
-			android:checked = "true"
+			android:checked="true"
 			android:onClick="statusOffClicked"
 		/>
 	</RadioGroup>

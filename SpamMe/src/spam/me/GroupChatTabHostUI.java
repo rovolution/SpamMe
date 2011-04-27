@@ -37,7 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class GroupChatTabHostUI extends Activity
+public class GroupChatTabHostUI extends SpamMeActivity
 {
 	//SpamMeFacade - API for application
 	private SpamMeFacade spamMeFacade;
@@ -321,7 +321,7 @@ public class GroupChatTabHostUI extends Activity
 		return contactList;
 	}
 
-	public void removeGroupClicked(View v){
+	public void leaveGroupClicked(View v){
 		Toast.makeText(getBaseContext(), 
 				"Remove Group Chat got clicked", 
 				Toast.LENGTH_SHORT).show();
@@ -345,12 +345,7 @@ public class GroupChatTabHostUI extends Activity
 		spec = tHost.newTabSpec("members");
 		spec.setIndicator("Members", res.getDrawable(R.drawable.icon));
 		spec.setContent(R.id.memberstab);
-		tHost.addTab(spec);	
-
-		spec = tHost.newTabSpec("options");
-		spec.setIndicator("Options", res.getDrawable(R.drawable.icon));
-		spec.setContent(R.id.optionstab);
-		tHost.addTab(spec);		
+		tHost.addTab(spec);
 	}
 
 	/*
@@ -410,33 +405,5 @@ public class GroupChatTabHostUI extends Activity
 		}
 
 		return super.onKeyDown(keyCode, event);
-	}
-
-	@Override
-	//Creates the Options Menu created by clicking on Menu
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu, menu);
-		return true;
-	}
-
-	@Override
-	//Handler for when Options Menu items are clicked on
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int myReqCode = 1;
-		Intent otherIntent;
-		switch (item.getItemId()) {
-		//Route to main page
-		case R.id.mainPageButton:
-			otherIntent = new Intent(this, SpamMe.class); 
-			startActivityIfNeeded(otherIntent, myReqCode); 
-			break;
-			//Route to Create Chat page
-		case R.id.createChatPageButton:
-			otherIntent = new Intent(this, CreateGroupChatUI.class); 
-			startActivityIfNeeded(otherIntent, myReqCode); 
-			break;
-		}
-		return true;
 	}
 }
