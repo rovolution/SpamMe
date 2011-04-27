@@ -42,7 +42,8 @@ public class SMSReceiver extends BroadcastReceiver{
 				str += "SMS from " + msgs[i].getOriginatingAddress();
 				senderNumber = msgs[i].getOriginatingAddress();
 				//Set the sender phone number
-				senderPhoneNumber = msgs[i].getOriginatingAddress().substring(7);
+				//senderPhoneNumber = msgs[i].getOriginatingAddress().substring(7);
+				senderPhoneNumber = msgs[i].getOriginatingAddress();
 				str += " :";
 				str += msgs[i].getMessageBody().toString();
 				str += "\n";
@@ -96,7 +97,7 @@ public class SMSReceiver extends BroadcastReceiver{
 				GroupChat gc = 	mySpamMeFacade.getGroupChat(rcvGroupID);
 				String statusMsg = gc.getGroupName() +
 				":" + "my name" + 
-				":" + mySpamMeFacade.getStatusText(preferences);
+				":" + "(AUTO-RESPONSE) "+ mySpamMeFacade.getStatusText(preferences);
 				
 				mySpamMeFacade.sendMsg(statusMsg, senderNumArray, rcvGroupID);
 			}

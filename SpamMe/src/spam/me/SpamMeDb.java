@@ -19,7 +19,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 	
 	
 	private static SQLiteDatabase Db;
-	private static final int DATABASE_VERSION = 34;
+	private static final int DATABASE_VERSION = 35;
 	private static final String DATABASE_NAME = "spamMeDB";
 	private final Context spamMeCtx;
 	
