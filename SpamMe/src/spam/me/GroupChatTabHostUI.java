@@ -56,78 +56,81 @@ public class GroupChatTabHostUI extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        
-		
-        //Initializations
-        spamMeFacade = new SpamMeFacade(this);
-        myGroupChat = new GroupChat();
-        
+
+
+		//Initializations
+		spamMeFacade = new SpamMeFacade(this);
+		myGroupChat = new GroupChat();
+
 		//Update the list and errorMsg parameters in the SpamMeFacade
 		list=(ListView)findViewById(R.id.msgList);
 		errorMsg=(TextView)findViewById(R.id.msgListEmpty);
-        
-        
-        //Getting the groupID from CreateGroupChatUI
-        Bundle extras = getIntent().getExtras();
-        groupID = extras.getLong("newGroupChatID");
-        
-        //Set group chat
-        myGroupChat = spamMeFacade.getGroupChat(groupID);
-       
-        //Set title
-        setTitle("Group Chat - " + myGroupChat.getGroupName());
 
-        //Setting xml file for UI
-        setContentView(R.layout.groupchattabhost);
-        
-        //Initializing the edit texts
-        inputMsg = (EditText)findViewById(R.id.messageTxt);
-        
+
+		//Getting the groupID from CreateGroupChatUI
+		Bundle extras = getIntent().getExtras();
+		groupID = extras.getLong("newGroupChatID");
+
+		//Set title
+		setTitle("Group Chat - " + myGroupChat.getGroupName());
+
+		//Setting xml file for UI
+		setContentView(R.layout.groupchattabhost);
+
+		//Initializing the edit texts
+		inputMsg = (EditText)findViewById(R.id.messageTxt);
+
 		//Setting up tabs
 		TabHost tabHost = (TabHost) this.findViewById(R.id.groupchattabhost);  // The activity TabHost
 		doTabSetup(tabHost);
 		tabHost.setCurrentTab(0);
 
 		//Populate the chat room with messages
-		updateChatRoomMsgView();
-		
-		//Find the memberList
-		list=(ListView)findViewById(R.id.memberList);
-		errorMsg=(TextView)findViewById(R.id.memberListEmpty);
-		//Check the list to see if it is empty too see whether to display it or not
-		setListVisibility(myGroupChat.getMembersList().size(), list, errorMsg);
-		//By using setAdpater method in listview we an add members array in memberList.
-		list.setAdapter(new ContactAdapter(this, this.getBaseContext(), R.layout.contactitem, myGroupChat.getMembersList()));
-		
+		myGroupChat = spamMeFacade.getGroupChat(groupID);
+		updateView();
+
 		//Handles any message received from the chat room update thread
 		final Handler myHandler = new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
 				//Update message list in the chat room
-				updateChatRoomMsgView();
+				updateView();
 			}
 		};
-		
-		//Create thread to handle live message updates to this group chat
-		(new Thread(new Runnable() {
+
+		//Create thread to handle live updates to this group chat
+		(new Thread(new Thread() {
 			@Override
 			public void run() {
-				int prevCount = myGroupChat.getMessageCount();
+				int prevMsgCount = myGroupChat.getMessageCount();
+				int prevMemberCount = myGroupChat.getMembersList().size();
 				while(true) {
-					myGroupChat = spamMeFacade.getGroupChat(groupID);
-					//If any new messages have been added to the chat room
-					if (myGroupChat.getMessageCount() != prevCount) {
-						//Update the prevCount variable
-						prevCount = myGroupChat.getMessageCount();
-						//Send message to main thread to update the chat room UI
-						Message msg = myHandler.obtainMessage();
-						myHandler.sendMessage(msg);
+					try
+					{
+						myGroupChat = spamMeFacade.getGroupChat(groupID);
+						//If any new messages have been added to the chat room
+						if ((myGroupChat.getMessageCount() != prevMsgCount)
+								|| (myGroupChat.getMembersList().size() != prevMemberCount))
+						{
+							//Update the prevCount variable
+							prevMsgCount = myGroupChat.getMessageCount();
+							prevMemberCount = myGroupChat.getMembersList().size();
+
+							//Send message to main thread to update the chat room UI
+							Message msg = myHandler.obtainMessage();
+							myHandler.sendMessage(msg);
+						}
+						// Only check every minute
+						sleep(60000);
+					}
+					catch (InterruptedException e)
+					{
+
 					}
 				}
 			}
 		})).start();
-		
-		
+
 	}
 
 	//Handler for SendSMS button
@@ -143,10 +146,10 @@ public class GroupChatTabHostUI extends Activity
 
 		//Create the message to send
 		String msg = myGroupChat.getGroupName() +
-					":" + "my name" + 
-					":" + inputMsg.getText().toString();
+		":" + "my name" + 
+		":" + inputMsg.getText().toString();
 		System.out.println(msg);
-		
+
 
 		if (msg.length()>0){
 			//Send the message via the SpamMeFacade
@@ -163,9 +166,7 @@ public class GroupChatTabHostUI extends Activity
 	 * Updates the list of messages in the chat room
 	 * 
 	 */
-	public void updateChatRoomMsgView() {
-	    //Read in the latest group chat instance
-		myGroupChat = spamMeFacade.getGroupChat(groupID);		
+	public void updateView() {		
 		//Read in messages to display
 		String[] messages =  myGroupChat.getMessageChain();
 		//Find the messageList and msgListEmpty error msg
@@ -179,8 +180,16 @@ public class GroupChatTabHostUI extends Activity
 		list.setStackFromBottom(true);
 		list.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 		msgAdapter.notifyDataSetChanged();
+
+		//Find the memberList
+		list=(ListView)findViewById(R.id.memberList);
+		errorMsg=(TextView)findViewById(R.id.memberListEmpty);
+		//Check the list to see if it is empty too see whether to display it or not
+		setListVisibility(myGroupChat.getMembersList().size(), list, errorMsg);
+		//By using setAdpater method in listview we an add members array in memberList.
+		list.setAdapter(new ContactAdapter(this, this.getBaseContext(), R.layout.contactitem, myGroupChat.getMembersList()));
 	}
-		
+
 	public void addNewMemberClicked(View v){
 		List<Person> myHomies = new ArrayList<Person>();
 
@@ -192,20 +201,15 @@ public class GroupChatTabHostUI extends Activity
 
 		popup = new PopupWindow(v, popupWidth, popupHeight, false);
 		myHomies = (ArrayList<Person>) getContactList();
-		
+
 		if (!myHomies.isEmpty())
 		{
 			popup.setOutsideTouchable(false);
 			popup.setFocusable(true);
 			popup.setTouchable(true);
-			
+
 			final ListView contactList = (ListView)popup.getContentView().findViewById(R.id.contactList);
-			
-			for (int i = 0; i < myHomies.size(); i++)
-			{
-				System.out.println(myHomies.get(i).getName());
-			}
-			
+
 			ArrayAdapter myAdapter = new ContactAdapter(this, v.getContext(), R.layout.contactitem, myHomies);
 			contactList.setAdapter(myAdapter);
 			contactList.setVisibility(View.VISIBLE);
@@ -217,7 +221,7 @@ public class GroupChatTabHostUI extends Activity
 			contactList.setOnItemClickListener(new OnItemClickListener(){
 				public void onItemClick(AdapterView<?> a, View v, int position,long id) {
 					Person newMember = (Person) contactList.getItemAtPosition(position);
-					
+
 					if (spamMeFacade.addFriend(v, myGroupChat, newMember) == -1)
 					{
 						Toast.makeText(getBaseContext(), newMember.getName() + " is already in this Group Chat", Toast.LENGTH_SHORT).show();
@@ -225,14 +229,6 @@ public class GroupChatTabHostUI extends Activity
 					else
 					{
 						Toast.makeText(getBaseContext(), newMember.getName() + " is has been added to this Group Chat", Toast.LENGTH_SHORT).show();
-						
-						myGroupChat.addPerson(newMember);
-						list = (ListView) findViewById(R.id.memberList);
-						list.setAdapter(new ContactAdapter(thisOne, v.getContext(), R.layout.contactitem, myGroupChat.getMembersList()));
-						list.setVisibility(View.VISIBLE);
-						
-						errorMsg = (TextView)findViewById(R.id.memberListEmpty);
-						errorMsg.setVisibility(View.GONE);
 					}
 
 					popup.dismiss();
@@ -257,14 +253,14 @@ public class GroupChatTabHostUI extends Activity
 			popup.setOutsideTouchable(false);
 			popup.setFocusable(false);
 			popup.setTouchable(false);
-			
+
 			ListView contactList = (ListView) popup.getContentView().findViewById(R.id.contactList);
 			TextView emptyContacts =(TextView) popup.getContentView().findViewById(R.id.contactListEmpty);
 
 			contactList.setVisibility(View.GONE);
 			emptyContacts.setVisibility(View.VISIBLE);
 		}
-		
+
 		popup.showAtLocation(findViewById(R.id.groupchattabhost), Gravity.CENTER, 0, 0);
 	}
 
@@ -308,7 +304,7 @@ public class GroupChatTabHostUI extends Activity
 							aContact.setPhoneNum(phone.getString(numberFieldColumnIndex));
 							phone.moveToNext();
 							TelephonyManager mTelephonyMgr;
-					    	mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+							mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 							if (!mTelephonyMgr.getLine1Number().contains(aContact.getPhoneNum()))
 							{
 								contactList.add(aContact);	
@@ -324,7 +320,7 @@ public class GroupChatTabHostUI extends Activity
 
 		return contactList;
 	}
-	
+
 	public void removeGroupClicked(View v){
 		Toast.makeText(getBaseContext(), 
 				"Remove Group Chat got clicked", 
@@ -415,32 +411,32 @@ public class GroupChatTabHostUI extends Activity
 
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	@Override
 	//Creates the Options Menu created by clicking on Menu
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.menu, menu);
-	    return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		return true;
 	}
-	
+
 	@Override
 	//Handler for when Options Menu items are clicked on
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int myReqCode = 1;
 		Intent otherIntent;
 		switch (item.getItemId()) {
-	        //Route to main page
-			case R.id.mainPageButton:
-	        	otherIntent = new Intent(this, SpamMe.class); 
-				startActivityIfNeeded(otherIntent, myReqCode); 
-	            break;
-	        //Route to Create Chat page
-	        case R.id.createChatPageButton:
-	        	otherIntent = new Intent(this, CreateGroupChatUI.class); 
-				startActivityIfNeeded(otherIntent, myReqCode); 
-	            break;
-	    }
-	    return true;
+		//Route to main page
+		case R.id.mainPageButton:
+			otherIntent = new Intent(this, SpamMe.class); 
+			startActivityIfNeeded(otherIntent, myReqCode); 
+			break;
+			//Route to Create Chat page
+		case R.id.createChatPageButton:
+			otherIntent = new Intent(this, CreateGroupChatUI.class); 
+			startActivityIfNeeded(otherIntent, myReqCode); 
+			break;
+		}
+		return true;
 	}
 }

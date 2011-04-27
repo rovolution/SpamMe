@@ -171,9 +171,10 @@ public class SpamMeDb extends SQLiteOpenHelper{
 
 		//Name already exists don't create a new entry
 		if (mCursor != null && mCursor.moveToFirst()){
+			mCursor.close();
+			mCursor.deactivate();
 			return -1;
 		}
-
 		//Name doesn't exist, create a new entry
 		else{
 			long rowID;
@@ -206,12 +207,18 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		if (mCursor != null && mCursor.moveToFirst()){
 			Log.i("SpamMeDB: ", "removeGroupChat name: " + removeName); 
 			int deleteSuccess = getDb().delete(TABLE_GROUPS, KEY_GROUPSID + "==" + (mCursor.getInt(mCursor.getColumnIndex(KEY_GROUPSID))), null);
-
+			
+			mCursor.close();
+			mCursor.deactivate();
+			
 			if (deleteSuccess == 1){
 				return true;
 			}
 			return false;
 		}
+		
+		mCursor.close();
+		mCursor.deactivate();
 		return false;
 
 	}
@@ -235,6 +242,8 @@ public class SpamMeDb extends SQLiteOpenHelper{
 
 		//Name already exists don't create a new entry
 		if (mCursor != null && mCursor.moveToFirst()){
+			mCursor.close();
+			mCursor.deactivate();
 			return -1;
 		}
 
@@ -273,7 +282,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		GroupChat group = new GroupChat();
 		List <Person> members = new ArrayList(); 
 		List <Message> messages = new ArrayList();
-		Person p = new Person(); 
+		Person p; 
 		Message m;
 		String phoneNumber;
 
@@ -295,12 +304,16 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		int membersCount = mCursor.getCount();
 		//Set the members in groupChat object
 		if (mCursor != null && mCursor.moveToFirst()){
-			for (int i = 0; i<membersCount; i++){
+			for (int i = 0; i < membersCount; i++){
+				p = new Person(); 
+				
 				//Set the name and phone number for person
 				p.setName(mCursor.getString(mCursor.getColumnIndex(KEY_MEMBER)));
 				p.setPhoneNum(mCursor.getString(mCursor.getColumnIndex(KEY_PHONENUMBER)));
 				//Add person to the members list
 				members.add(p);
+				
+				mCursor.moveToNext();
 			}
 			//Set members for group
 			group.setMembersList(members);
@@ -333,9 +346,10 @@ public class SpamMeDb extends SQLiteOpenHelper{
 			}
 			//Set members for group
 			group.setMessageChain(messages);
-			mCursor.close();
-			mCursor.deactivate();
 		}
+		
+		mCursor.close();
+		mCursor.deactivate();
 		return group;
 	}
 
@@ -346,6 +360,9 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		if (mCursor != null && mCursor.moveToFirst()){
 			number = mCursor.getString(mCursor.getColumnIndex(KEY_PHONENUMBER));
 		}
+		
+		mCursor.close();
+		mCursor.deactivate();
 		return number;
 
 	}
@@ -376,8 +393,10 @@ public class SpamMeDb extends SQLiteOpenHelper{
 				mCursor.moveToNext();
 			}
 		}
+		
+		mCursor.close();
+		mCursor.deactivate();
 		return names;
-
 	}
 
 	/**
@@ -393,6 +412,9 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		if (mCursor != null && mCursor.moveToFirst()){
 			memberName = mCursor.getString(mCursor.getColumnIndex(KEY_MEMBER));
 		}
+		
+		mCursor.close();
+		mCursor.deactivate();
 		return memberName;
 	}
 
@@ -410,6 +432,9 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		if (gCursor != null && gCursor.moveToFirst()){
 			groupID = gCursor.getLong(gCursor.getColumnIndex(KEY_GROUPSID));
 		}
+		
+		gCursor.close();
+		gCursor.deactivate();
 		return groupID;
 	}
 
