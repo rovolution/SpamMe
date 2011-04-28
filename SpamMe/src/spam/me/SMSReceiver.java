@@ -32,6 +32,7 @@ public class SMSReceiver extends BroadcastReceiver{
 		Long rcvGroupID = (long) -1;
 		String rcvMsg = "";
 		String rcvSender = "";
+		String rcvGroupName = "";
 
 		if (bundle != null){
 			//Retrieve the SMS message
@@ -58,6 +59,7 @@ public class SMSReceiver extends BroadcastReceiver{
 				System.out.println("RECEIVED: " + msgs[i].getMessageBody().toString());
 				for (int j = 0; j<items.length; j++){
 					if (j==0){
+						rcvGroupName = items[j];
 						rcvGroupID = mySpamMeFacade.findGroupIDByName(items[j]);
 						//rcvGroupID = Long.valueOf(items[j]);
 					} else if (j==1){
@@ -100,6 +102,14 @@ public class SMSReceiver extends BroadcastReceiver{
 				":" + "(AUTO-RESPONSE) "+ mySpamMeFacade.getStatusText(preferences);
 				
 				mySpamMeFacade.sendMsg(statusMsg, senderNumArray, rcvGroupID);
+			}
+			
+			//Check the message to see if it's a LEAVE message
+			if (rcvMsg.equals("I'm leaving " + rcvGroupName)){
+				//Remove member
+				String senderName = mySpamMeFacade.getPersonNameViaPhone(senderPhoneNumber, rcvGroupID);
+				mySpamMeFacade.removeMember(senderName, rcvGroupID);
+				
 			}
 			//DEBUG: toast the SMS message
 			Toast.makeText(context, str, Toast.LENGTH_SHORT).show();

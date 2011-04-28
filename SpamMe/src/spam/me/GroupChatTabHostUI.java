@@ -71,8 +71,7 @@ public class GroupChatTabHostUI extends SpamMeActivity
 		Bundle extras = getIntent().getExtras();
 		groupID = extras.getLong("newGroupChatID");
 
-		//Set title
-		setTitle("Group Chat - " + myGroupChat.getGroupName());
+		
 
 		//Setting xml file for UI
 		setContentView(R.layout.groupchattabhost);
@@ -87,6 +86,9 @@ public class GroupChatTabHostUI extends SpamMeActivity
 
 		//Populate the chat room with messages
 		myGroupChat = spamMeFacade.getGroupChat(groupID);
+		
+		//Set title
+		setTitle("Group Chat - " + myGroupChat.getGroupName());
 		updateView();
 
 		//Handles any message received from the chat room update thread
@@ -121,7 +123,7 @@ public class GroupChatTabHostUI extends SpamMeActivity
 							myHandler.sendMessage(msg);
 						}
 						// Only check every minute
-						sleep(60000);
+						sleep(30000);
 					}
 					catch (InterruptedException e)
 					{
@@ -154,6 +156,9 @@ public class GroupChatTabHostUI extends SpamMeActivity
 		if (msg.length()>0){
 			//Send the message via the SpamMeFacade
 			spamMeFacade.sendMsg(msg, numbers, myGroupChat.getGroupId());
+			//Update the message views with recently sent message
+			myGroupChat = spamMeFacade.getGroupChat(groupID);
+			updateView();
 		}
 		else {
 			Toast.makeText(getBaseContext(), 
@@ -228,9 +233,11 @@ public class GroupChatTabHostUI extends SpamMeActivity
 					}
 					else
 					{
-						Toast.makeText(getBaseContext(), newMember.getName() + " is has been added to this Group Chat", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getBaseContext(), newMember.getName() + " has been added to this Group Chat", Toast.LENGTH_SHORT).show();
+						//Update the members views with recently added members
+						myGroupChat = spamMeFacade.getGroupChat(groupID);
+						updateView();
 					}
-
 					popup.dismiss();
 				}
 			});
@@ -325,6 +332,22 @@ public class GroupChatTabHostUI extends SpamMeActivity
 		Toast.makeText(getBaseContext(), 
 				"Remove Group Chat got clicked", 
 				Toast.LENGTH_SHORT).show();
+
+		//Create the message to send
+		String msg = myGroupChat.getGroupName() +
+		":" + "my name" + 
+		":" + "I'm leaving " + myGroupChat.getGroupName();
+		
+		//Getting member's numbers to end message 
+		String[] numbers = new String[myGroupChat.getMembersList().size()];
+		for (int i=0; i< myGroupChat.getMembersList().size(); i++){
+			numbers[i] = myGroupChat.getMembersList().get(i).getPhoneNum();
+		}
+		
+		//Send the message via the SpamMeFacade
+		spamMeFacade.sendMsg(msg, numbers, myGroupChat.getGroupId());
+		
+		//Remove myself from group
 		spamMeFacade.removeMe(myGroupChat.getGroupId());
 		Intent leaveGroupIntent = new Intent(this, SpamMe.class); 
 		startActivityIfNeeded(leaveGroupIntent, 1);

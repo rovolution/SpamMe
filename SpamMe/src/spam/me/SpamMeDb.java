@@ -207,6 +207,13 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		return false;
 	}
 
+	public boolean removeMember(String name, long groupID){
+		int deleteSuccess = getDb().delete(TABLE_GROUPMEMBERS, KEY_GROUPSID + "==" + groupID + " and" + KEY_MEMBER + "==" + name, null);
+		if (deleteSuccess >0){
+			return true;
+		}
+		return false;
+	}
 	/**
 	 * Method adds the new member to the database (Table_GroupMembers)
 	 * If the name already exists or empty string returns -1
