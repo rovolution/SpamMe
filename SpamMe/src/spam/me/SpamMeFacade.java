@@ -69,8 +69,8 @@ public class SpamMeFacade {
 		mySpamMeDb.removeGroupChat(groupId);
 	}
 	
-	public void removeMember(String name, long groupId){
-		mySpamMeDb.removeMember(name, groupId);
+	public void removeMember(String name, String groupName){
+		mySpamMeDb.removeMember(name, groupName);
 	}
 	
 	public void sendMsg(String msg, String []numbers, long groupID){

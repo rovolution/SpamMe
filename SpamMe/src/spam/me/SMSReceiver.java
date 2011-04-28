@@ -103,12 +103,12 @@ public class SMSReceiver extends BroadcastReceiver{
 				
 				mySpamMeFacade.sendMsg(statusMsg, senderNumArray, rcvGroupID);
 			}
-			
+			System.out.println("Received message: " + rcvMsg);
 			//Check the message to see if it's a LEAVE message
-			if (rcvMsg.equals("I'm leaving " + rcvGroupName)){
+			if (rcvMsg.contains("I'm leaving " + rcvGroupName)){
 				//Remove member
 				String senderName = mySpamMeFacade.getPersonNameViaPhone(senderPhoneNumber, rcvGroupID);
-				mySpamMeFacade.removeMember(senderName, rcvGroupID);
+				mySpamMeFacade.removeMember(senderName, rcvGroupName);
 				
 			}
 			//DEBUG: toast the SMS message

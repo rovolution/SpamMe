@@ -19,7 +19,7 @@ public class SpamMeDb extends SQLiteOpenHelper{
 
 
 	private static SQLiteDatabase Db;
-	private static final int DATABASE_VERSION = 35;
+	private static final int DATABASE_VERSION = 43;
 	private static final String DATABASE_NAME = "spamMeDB";
 	private final Context spamMeCtx;
 
@@ -207,11 +207,27 @@ public class SpamMeDb extends SQLiteOpenHelper{
 		return false;
 	}
 
-	public boolean removeMember(String name, long groupID){
-		int deleteSuccess = getDb().delete(TABLE_GROUPMEMBERS, KEY_GROUPSID + "==" + groupID + " and" + KEY_MEMBER + "==" + name, null);
-		if (deleteSuccess >0){
+	public boolean removeMember(String name, String groupName){
+		long id = -1;
+		//Query to find the groupID
+		Cursor mCursor = getDb().query(false, 
+				TABLE_GROUPS, 
+				new String[] {KEY_GROUPSID, KEY_NAME}, 
+				KEY_NAME+ "==" + "'" + groupName + "'",
+				null, null, null, null, null);
+		
+		if (mCursor != null && mCursor.moveToFirst()){
+			id = mCursor.getInt(mCursor.getColumnIndex(KEY_GROUPSID));
+		}
+		System.out.println("DABATABASE REMOVEMEMBER ID is " + id);
+		System.out.println("DATABASE removeMember name is " + name);
+		int deleteSuccess = getDb().delete(TABLE_GROUPMEMBERS, KEY_GROUPID + "==" + id + " and " + KEY_MEMBER + "==" + "'" + name + "'", null);
+		System.out.println("deleteSuccess is " + deleteSuccess);
+		if (deleteSuccess == 1){
 			return true;
 		}
+		mCursor.close();
+		mCursor.deactivate();
 		return false;
 	}
 	/**
