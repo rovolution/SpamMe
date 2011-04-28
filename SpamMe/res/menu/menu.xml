@@ -4,5 +4,5 @@
         android:icon="@drawable/icon" />
     <item android:id="@+id/createChatPageButton"
         android:title="Create New Chat" 
-        android:icon="@drawable/create_chat_icon"/>
+        android:icon="@drawable/icon"/>
 </menu>

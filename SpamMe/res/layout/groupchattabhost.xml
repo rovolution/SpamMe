@@ -12,7 +12,8 @@
             android:id="@android:id/tabs"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0" />
+            android:layout_weight="0" 
+            />
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="fill_parent"
@@ -45,12 +46,6 @@
 			    	android:text="@string/no_chat_history"/>
 		   	</RelativeLayout>
 		    <!-- Other Message Components (message input, send button) -->
-			<!--  
-			<EditText
-				android:id="@+id/PhoneNoTxt"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-			/> -->
 			<TextView 
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
@@ -77,7 +72,8 @@
 		  	xmlns:android="http://schemas.android.com/apk/res/android"
 		    android:orientation="vertical"
 		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent">
+		    android:layout_height="fill_parent"
+		    >
 		    
 		    
 		   	<!--List of members in chatroom -->

@@ -361,15 +361,14 @@ public class GroupChatTabHostUI extends SpamMeActivity
 
 		TabHost.TabSpec spec;  // Reusable TabSpec for each tab
 		tHost.setup();
-
 		// Set the tabs to change views when clicked
 		spec = tHost.newTabSpec("messages");
-		spec.setIndicator("Messages", res.getDrawable(R.drawable.icon));
+		spec.setIndicator("Messages", res.getDrawable(R.drawable.chat_icon));
 		spec.setContent(R.id.messagetab);
 		tHost.addTab(spec);
 
 		spec = tHost.newTabSpec("members");
-		spec.setIndicator("Members", res.getDrawable(R.drawable.icon));
+		spec.setIndicator("Members", res.getDrawable(R.drawable.members_icon));
 		spec.setContent(R.id.memberstab);
 		tHost.addTab(spec);
 	}
