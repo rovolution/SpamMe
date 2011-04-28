@@ -17,12 +17,12 @@ import android.widget.Toast;
 public class SMSReceiver extends BroadcastReceiver{
 	private SpamMeFacade mySpamMeFacade;
 	private SharedPreferences preferences;
-	
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		mySpamMeFacade = new SpamMeFacade(context);
 		preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		
+
 		//Get the SMS message passed in
 		Bundle bundle = intent.getExtras();
 		SmsMessage [] msgs = null;
@@ -33,7 +33,7 @@ public class SMSReceiver extends BroadcastReceiver{
 		String rcvMsg = "";
 		String rcvSender = "";
 		String rcvGroupName = "";
-		
+
 		String [] newMemberData;
 		Person newMember;
 		GroupChat theGroup;
@@ -52,7 +52,7 @@ public class SMSReceiver extends BroadcastReceiver{
 				str += " :";
 				str += msgs[i].getMessageBody().toString();
 				str += "\n";
-				
+
 				//Save message to database 
 				//get the group ID 
 				//save to message table
@@ -72,7 +72,7 @@ public class SMSReceiver extends BroadcastReceiver{
 							theGroup = new GroupChat();
 							theGroup.setGroupId(rcvGroupID);
 							theGroup.setGroupName(items[j]);
-							
+
 							newMember = new Person();
 							newMemberData = rcvSender.substring(rcvSender.indexOf("=")+1).split("=");
 							newMember.setPhoneNum(newMemberData[0]);
@@ -85,15 +85,15 @@ public class SMSReceiver extends BroadcastReceiver{
 				}
 				rcvSender = msgs[i].getOriginatingAddress();
 			}
-			
+
 			//Check to see if the group exists and if the sender exists in that group, 
 			//and if so add the message to it
 			if (doesGroupExist(rcvGroupID)) {
 				//Retrieve the sender's name from the DB using their phone number and rcvGroupID
-		        String senderName = mySpamMeFacade.getPersonNameViaPhone(senderPhoneNumber, rcvGroupID);
+				String senderName = mySpamMeFacade.getPersonNameViaPhone(senderPhoneNumber, rcvGroupID);
 				//Append the senderName to the message
-		        rcvMsg = senderName + ": " + rcvMsg;
-		        
+				rcvMsg = senderName + ": " + rcvMsg;
+
 				//Create Message from groupID, phone number, and message
 				Message m = mySpamMeFacade.createMessage(rcvGroupID, rcvSender, rcvMsg);
 				mySpamMeFacade.addMessage(m);
@@ -101,7 +101,7 @@ public class SMSReceiver extends BroadcastReceiver{
 			else {
 				Toast.makeText(context, "Chat room does not exist", Toast.LENGTH_SHORT).show();
 			}
-			
+
 			//Check to see if the status is set
 			//Send a message if the status is ACTIVE
 			if (mySpamMeFacade.getStatus(preferences)){
@@ -115,7 +115,7 @@ public class SMSReceiver extends BroadcastReceiver{
 				String statusMsg = gc.getGroupName() +
 				":" + "my name" + 
 				":" + "(AUTO-RESPONSE) "+ mySpamMeFacade.getStatusText(preferences);
-				
+
 				mySpamMeFacade.sendMsg(statusMsg, senderNumArray, rcvGroupID);
 			}
 			System.out.println("Received message: " + rcvMsg);
@@ -124,16 +124,16 @@ public class SMSReceiver extends BroadcastReceiver{
 				//Remove member
 				String senderName = mySpamMeFacade.getPersonNameViaPhone(senderPhoneNumber, rcvGroupID);
 				mySpamMeFacade.removeMember(senderName, rcvGroupName);
-				
+
 			}
 		}
 
 	}
-	
+
 	/*
-	* If the Chat group exists, returns true, if not, returns false
-	*
-	*/
+	 * If the Chat group exists, returns true, if not, returns false
+	 *
+	 */
 	public boolean doesGroupExist(long groupExistsStatus) {
 		return (groupExistsStatus!=(long)(-1));
 	}
