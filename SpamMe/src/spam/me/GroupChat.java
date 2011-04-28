@@ -86,11 +86,11 @@ public class GroupChat {
 	}
 	public String getMemberWithNumber(String phoneNumber) {
 		for (Person p:membersList) {
-			if (p.getPhoneNum().equals(phoneNumber)) {
+			if (p.getPhoneNum().contains(phoneNumber) || phoneNumber.contains(p.getPhoneNum())) {
 				return p.getName();
 			}
 		}
-		return "User DNE in chat: ";
+		return "Unknown";
 	}
 	
 }

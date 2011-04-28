@@ -33,6 +33,10 @@ public class SMSReceiver extends BroadcastReceiver{
 		String rcvMsg = "";
 		String rcvSender = "";
 		String rcvGroupName = "";
+		
+		String [] newMemberData;
+		Person newMember;
+		GroupChat theGroup;
 
 		if (bundle != null){
 			//Retrieve the SMS message
@@ -48,8 +52,7 @@ public class SMSReceiver extends BroadcastReceiver{
 				str += " :";
 				str += msgs[i].getMessageBody().toString();
 				str += "\n";
-
-
+				
 				//Save message to database 
 				//get the group ID 
 				//save to message table
@@ -64,6 +67,18 @@ public class SMSReceiver extends BroadcastReceiver{
 						//rcvGroupID = Long.valueOf(items[j]);
 					} else if (j==1){
 						rcvSender = items[j];
+						if (rcvSender.contains("spamMeAdd"))
+						{
+							theGroup = new GroupChat();
+							theGroup.setGroupId(rcvGroupID);
+							theGroup.setGroupName(items[j]);
+							
+							newMember = new Person();
+							newMemberData = rcvSender.substring(rcvSender.indexOf("=")+1).split("=");
+							newMember.setPhoneNum(newMemberData[0]);
+							newMember.setName(newMemberData[1]);
+							mySpamMeFacade.addFriend(null, theGroup, newMember);
+						}
 					} else if (j==2){
 						rcvMsg = items[j];
 					}
@@ -111,8 +126,6 @@ public class SMSReceiver extends BroadcastReceiver{
 				mySpamMeFacade.removeMember(senderName, rcvGroupName);
 				
 			}
-			//DEBUG: toast the SMS message
-			Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
 		}
 
 	}

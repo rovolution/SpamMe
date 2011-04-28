@@ -137,10 +137,12 @@ public class GroupChatTabHostUI extends SpamMeActivity
 
 	//Handler for SendSMS button
 	public void SendSMSButtonClicked(View v){
+		if (inputMsg.getText().toString().length() > 0)
+		{
 		Toast.makeText(getBaseContext(), 
-				"Send SMS got clicked", 
+				"Message sent", 
 				Toast.LENGTH_SHORT).show();
-
+		
 		String[] numbers = new String[myGroupChat.getMembersList().size()];
 		for (int i=0; i< myGroupChat.getMembersList().size(); i++){
 			numbers[i] = myGroupChat.getMembersList().get(i).getPhoneNum();
@@ -152,17 +154,16 @@ public class GroupChatTabHostUI extends SpamMeActivity
 		":" + inputMsg.getText().toString();
 		System.out.println(msg);
 
-
-		if (msg.length()>0){
-			//Send the message via the SpamMeFacade
-			spamMeFacade.sendMsg(msg, numbers, myGroupChat.getGroupId());
-			//Update the message views with recently sent message
-			myGroupChat = spamMeFacade.getGroupChat(groupID);
-			updateView();
+		//Send the message via the SpamMeFacade
+		spamMeFacade.sendMsg(msg, numbers, myGroupChat.getGroupId());
+		//Update the message views with recently sent message
+		myGroupChat = spamMeFacade.getGroupChat(groupID);
+		updateView();
 		}
-		else {
+		else
+		{
 			Toast.makeText(getBaseContext(), 
-					"Please enter both number and message.", 
+					"Please enter a message.", 
 					Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -237,6 +238,26 @@ public class GroupChatTabHostUI extends SpamMeActivity
 						//Update the members views with recently added members
 						myGroupChat = spamMeFacade.getGroupChat(groupID);
 						updateView();
+						
+						//Create the message to send
+						String msg = myGroupChat.getGroupName() +
+						":" + "spamMeAdd=" + newMember.getPhoneNum() + "=" + newMember.getName() + 
+						":" + newMember.getName() + " has been added to " + myGroupChat.getGroupName();
+						
+						//Getting member's numbers to end message 
+						List<String> numbers = new ArrayList<String>();
+						for (int i = 0; i < myGroupChat.getMembersList().size(); i++){
+							if (!myGroupChat.getMembersList().get(i).getPhoneNum().contains(newMember.getPhoneNum()))
+							{
+								numbers.add(myGroupChat.getMembersList().get(i).getPhoneNum());
+							}
+						}
+						
+						//Send the message via the SpamMeFacade
+						if (numbers.size() > 0)
+						{
+							spamMeFacade.sendMsg(msg, listToStringArray(numbers), myGroupChat.getGroupId());
+						}
 					}
 					popup.dismiss();
 				}
@@ -269,6 +290,19 @@ public class GroupChatTabHostUI extends SpamMeActivity
 		}
 
 		popup.showAtLocation(findViewById(R.id.groupchattabhost), Gravity.CENTER, 0, 0);
+	}
+	
+	public String[] listToStringArray(List<String> messageChain){
+		int index;
+		//Create-initialize a return array of Strings
+		String[] retStrArray = new String[messageChain.size()];
+		//Loop through the messages in the array and add them to the return array
+		index = 0;
+		for (String msg:messageChain) {
+			retStrArray[index] = msg;
+			index++;
+		}
+		return retStrArray;
 	}
 
 	public List<Person> getContactList(){
