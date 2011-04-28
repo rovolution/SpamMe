@@ -159,6 +159,8 @@ public class GroupChatTabHostUI extends SpamMeActivity
 		//Update the message views with recently sent message
 		myGroupChat = spamMeFacade.getGroupChat(groupID);
 		updateView();
+		
+		inputMsg.setText("");
 		}
 		else
 		{
